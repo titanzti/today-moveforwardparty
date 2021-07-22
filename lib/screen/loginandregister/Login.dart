@@ -217,43 +217,11 @@ class _LoginState extends State<Login> {
                     child: InkWell(
                       onTap: () async {
                         print('กด');
-
-                        // if (_emailController.text == "" ||
-                        //     _passController.text == "") {}
-
                         setState(() {
                           _isloading = true;
                         });
                         await singin(
                             _emailController.text, _passController.text);
-    
-                        // if (mytoken == "") {
-                        //   SimpleDialog(
-                        //     title: Text('Username or Password error?🤷🏻‍♂️'),
-                        //     children: <Widget>[
-                        //       SimpleDialogOption(
-                        //         child: Text('cancel🙅🏻‍♂️'),
-                        //         onPressed: () {
-                        //           Navigator.pop(context);
-                        //         },
-                        //       )
-                        //     ],
-                        //   );
-                        // } else if (mytoken != null) {
-                        //   await singin(
-                        //       _emailController.text, _passController.text);
-                        //   Navigator.of(context).pushAndRemoveUntil(
-                        //       CupertinoPageRoute(
-                        //           builder: (BuildContext context) => Appbar(
-                        //                 istoken: mytoken,
-                        //               )),
-                        //       (Route<dynamic> route) => false);
-                        // }
-
-                        //           Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(builder: (context) => TTt()),
-                        // );
                       },
                       child: Center(
                         child: Text(

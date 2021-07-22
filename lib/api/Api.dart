@@ -21,6 +21,13 @@ class Api {
     return clear;
   }
 
+  static Future<Http.Response> getuserprofile(String token) async {
+  final responseData = await Http.get(
+        "https://today-api.moveforwardparty.org/api/check_status?token=$token");
+ 
+    return responseData;
+  }
+
   static Future gettoke() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var tokenname = prefs.getString('token');
@@ -282,21 +289,52 @@ class Api {
     return responseData;
   }
 
-   static Future<Http.Response> sendcomment(String postid) async {
-    print('sendcomment');
-   
+  //  static Future<Http.Response> sendcomment(String postid) async {
+  //   print('sendcomment');
+  //   var url = "https://today-api.moveforwardparty.org/api/post/$postid/comment";
+  //   final headers = {
+  //     "userid": "60c9cc216923656607919f06",
+  //           "content-type":"application/json",
+  //           "accept":"application/json"
+  //     // "whereConditions": {"isHideStory": false},
+  //   };
+  //   Map data = {
+  //    "commentAsPage":"60c9cc216923656607919f06",
+  //    "comment":"testsend"
+  //   };
+  //   var body = jsonEncode(data);
+
+  //   final responseData = await Http.post(
+  //     url,
+  //     headers: headers,
+  //     body: body,
+  //   );
+  //   print('body$body');
+  //   print('responseDatacommentlist${responseData.body}');
+
+  //   return responseData;
+  // }
+
   
-    var url = "https://today-api.moveforwardparty.org/api/post/$postid/comment";
+   static Future<Http.Response> updataimage(String id,String base64image,String fileName,String token) async {
+    print('sendcomment');
+    var url = "https://today-api.moveforwardparty.org/api/profile/$id/image";
     final headers = {
-      "userid": "60c9cc216923656607919f06",
+      "userid": id,
+      "authorization": "Bearer $token",
             "content-type":"application/json",
             "accept":"application/json"
       // "whereConditions": {"isHideStory": false},
     };
     Map data = {
-     "commentAsPage":"60c9cc216923656607919f06",
-     "comment":"testsend"
+     "asset":
+     {"mimeType":"image/png",
+     "data":base64image,
+     "fileName":fileName,
+     "size":193148}
+     
     };
+
     var body = jsonEncode(data);
 
     final responseData = await Http.post(
@@ -305,8 +343,9 @@ class Api {
       body: body,
     );
     print('body$body');
-    print('responseDatacommentlist${responseData.body}');
+    print('responseupdataimage${responseData.body}');
 
     return responseData;
   }
+
 }

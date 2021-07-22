@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'package:appmove/api/Api.dart';
 import 'package:appmove/model/postModel.dart';
 import 'package:appmove/model/searchpostlist.dart';
+import 'package:appmove/screen/comment/commentlist.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class SearchList extends StatefulWidget {
   final String label;
@@ -21,10 +23,19 @@ class SearchList extends StatefulWidget {
 class _SearchListState extends State<SearchList> {
   List<SearchPostList> listSearchPostList = [];
   var loading = false;
-  var dataht;
+  var dataht,myuid;
 Future getsearchlist;
   @override
   void initState() {
+    setState(() {
+          Api.getmyuid().then((value) => ({
+                         setState(() {
+                        myuid = value;
+                              }),
+                        print('myuidhome$myuid'),
+
+                     }));
+    });
     if(widget.type=="Null"){
 getsearchlist=      Api.apisearchlist( widget.label,"").then((responseData) => ({
         setState(() {
@@ -173,8 +184,15 @@ getsearchlist,
     // var displayname = nDataList1.owner.displayName.toString();
     // displayNamereplaceAll = displayname.replaceAll("DisplayName.", "");
     var base64String="https://today-api.moveforwardparty.org/api${nDataList1.post.coverImage.toString()}/image";
+                var postid =nDataList1.post.id;
 
     return InkWell(
+      onTap: (){
+        showCupertinoModalBottomSheet(
+                            context: context,
+                            builder: (context) => CommentList(myuid: myuid,postid: postid,),
+                          );
+      },
       child: Card(
         child: ListTile(
       title:  nDataList1.page.name == " "

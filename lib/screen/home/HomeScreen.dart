@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:developer';
+import 'dart:typed_data';
 import 'package:appmove/api/Api.dart';
 import 'package:appmove/model/postModel.dart';
 import 'package:appmove/screen/home/EventList.dart';
@@ -20,6 +22,7 @@ import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:appmove/screen/comment/commentlist.dart';
+
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -36,10 +39,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   var loading = false;
   final format = new DateFormat(' h:mm');
   var checktoken;
-  var dataht, datapostlist , myuid;
+  var dataht, datapostlist, myuid,   dataht1;
   Future getDataFuture, getDataPostListFuture;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
+var base;
   List<EmergencyEventsContent> listModel = [];
   List<PurpleOwner> listPurpleOwner = [];
   bool isEmty = false;
@@ -100,21 +103,45 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   // Create storage
   final _storage = new FlutterSecureStorage();
 
+//  Future<http.Response> fetchAlbum( ) async{
+//  print('fetchAlbum');
+//  String url =  "https://today-api.moveforwardparty.org/api/file/60d29d10d9b235079c054f9a/";
+//  await http.get(Uri.parse(url)).then((response ){
+//    if(response.statusCode==200){
+//     //  Uint8List image = base64Decode(response.body);
+//     //  print('imageUi${response.body}');
+//    }
+
+//    var body =jsonDecode(response.body);
+//         print('imageUi$body');
+
+//    return body;
+
+//  });
+//     // final responseData = await http.get(
+//     //     "https://today-api.moveforwardparty.org/api/file/60d29d10d9b235079c054f9a/");
+//     //     final database = jsonDecode(responseData.body);
+//     //     print('database$database');
+
+//   // return responseData;
+// }
+
   @override
   void initState() {
     checkInternetConnectivity().then((value) => {
           value == true
               ? () {
                   setState(() {
+                    // fetchAlbum();
                     scrollController = ScrollController();
-                     Api.getmyuid().then((value) => ({
-                         setState(() {
-                        myuid = value;
-                              }),
-                        print('myuidhome$myuid'),
 
-                     }));
-                   
+                    Api.getmyuid().then((value) => ({
+                          setState(() {
+                            myuid = value;
+                          }),
+                          print('myuidhome$myuid'),
+                        }));
+                          
                     getDataFuture =
                         Api.getHashtagData().then((responseData) => ({
                               setState(() {
@@ -127,11 +154,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   for (Map i in dataht["data"]
                                       ["emergencyEvents"]["contents"])
                                     {
+                                  
                                       listModel.add(
                                           EmergencyEventsContent.fromJson(i)),
+                                
                                     },
+                                        
                                   loading = false,
                                 }
+                                
                             }));
                     getDataPostListFuture =
                         Api.getPostList().then((responseData) => ({
@@ -145,10 +176,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   for (Map i in datapostlist["data"]
                                       ["postSectionModel"]["contents"])
                                     {
-                                      listModelPostClass.add(
-                                          PostSectionModelContent.fromJson(i)),
+                                         setState(() {
+                               listModelPostClass.add(
+                                          PostSectionModelContent.fromJson(i));
+                              }),
+                                      
                                     },
+                                    
                                   loading = false,
+                    
                                 }
                               else if (responseData.statusCode == 400)
                                 {}
@@ -173,9 +209,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     // print(Jiffy(jiffy1).fromNow());
     // 7 years ago
- Api.gettoke().then((value) => value({
-                          checktoken = value,
-                        }));
+    Api.gettoke().then((value) => value({
+          checktoken = value,
+        }));
     return Container(
       color: Color(0xffF47932),
       child: SafeArea(
@@ -551,7 +587,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                 ) {
                                                   final nDataList =
                                                       listModel[index];
-                                                      var isHt= listModel[index].title;
+                                                  var isHt =
+                                                      listModel[index].title;
 
                                                   return Container(
                                                     height: 30,
@@ -617,10 +654,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                               final nDataList1 =
                                                   listModelPostClass[index];
 
-                                              // print(
-                                              //     'coverImage=>>>${nDataList1.coverImage}');
+                                                
 
-                                              return PostList(nDataList1);
+
+                                              return PostList(nDataList1,base);
                                             });
                                       },
                                     );
@@ -636,11 +673,29 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       ),
     );
   }
+ 
 
-  Widget PostList(nDataList1) {
-    var displayNamereplaceAll;
-    var displayname = nDataList1.owner.displayName.toString();
-    displayNamereplaceAll = displayname.replaceAll("DisplayName.", "");
+  Widget PostList(nDataList1,base) {
+      
+                             
+   String imageUri= base;
+                  // final UriData imageUri = Uri.parse("https://today-api.moveforwardparty.org/api/file/60d29d10d9b235079c054f9a/").data;
+                  print('imageUri$imageUri');
+
+
+        var displayNamereplaceAll;
+    var displayname = imageUri.toString();
+    displayNamereplaceAll = displayname.replaceAll("data:undefined;base64,","");
+      // String base = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAApgAAAKYB3X3/OAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAANCSURBVEiJtZZPbBtFFMZ/M7ubXdtdb1xSFyeilBapySVU8h8OoFaooFSqiihIVIpQBKci6KEg9Q6H9kovIHoCIVQJJCKE1ENFjnAgcaSGC6rEnxBwA04Tx43t2FnvDAfjkNibxgHxnWb2e/u992bee7tCa00YFsffekFY+nUzFtjW0LrvjRXrCDIAaPLlW0nHL0SsZtVoaF98mLrx3pdhOqLtYPHChahZcYYO7KvPFxvRl5XPp1sN3adWiD1ZAqD6XYK1b/dvE5IWryTt2udLFedwc1+9kLp+vbbpoDh+6TklxBeAi9TL0taeWpdmZzQDry0AcO+jQ12RyohqqoYoo8RDwJrU+qXkjWtfi8Xxt58BdQuwQs9qC/afLwCw8tnQbqYAPsgxE1S6F3EAIXux2oQFKm0ihMsOF71dHYx+f3NND68ghCu1YIoePPQN1pGRABkJ6Bus96CutRZMydTl+TvuiRW1m3n0eDl0vRPcEysqdXn+jsQPsrHMquGeXEaY4Yk4wxWcY5V/9scqOMOVUFthatyTy8QyqwZ+kDURKoMWxNKr2EeqVKcTNOajqKoBgOE28U4tdQl5p5bwCw7BWquaZSzAPlwjlithJtp3pTImSqQRrb2Z8PHGigD4RZuNX6JYj6wj7O4TFLbCO/Mn/m8R+h6rYSUb3ekokRY6f/YukArN979jcW+V/S8g0eT/N3VN3kTqWbQ428m9/8k0P/1aIhF36PccEl6EhOcAUCrXKZXXWS3XKd2vc/TRBG9O5ELC17MmWubD2nKhUKZa26Ba2+D3P+4/MNCFwg59oWVeYhkzgN/JDR8deKBoD7Y+ljEjGZ0sosXVTvbc6RHirr2reNy1OXd6pJsQ+gqjk8VWFYmHrwBzW/n+uMPFiRwHB2I7ih8ciHFxIkd/3Omk5tCDV1t+2nNu5sxxpDFNx+huNhVT3/zMDz8usXC3ddaHBj1GHj/As08fwTS7Kt1HBTmyN29vdwAw+/wbwLVOJ3uAD1wi/dUH7Qei66PfyuRj4Ik9is+hglfbkbfR3cnZm7chlUWLdwmprtCohX4HUtlOcQjLYCu+fzGJH2QRKvP3UNz8bWk1qMxjGTOMThZ3kvgLI5AzFfo379UAAAAASUVORK5CYII=";
+              // log('data: $image');
+
+// print('isBase64${data.isBase64}');  // Should print true
+// print('contentAsBytes${data.contentAsBytes()}');  
+
+              // Uint8List image = base64Decode(data.contentAsBytes().toString());
+  // String imagenJson = "iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAApgAAAKYB3X3/OAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAANCSURBVEiJtZZPbBtFFMZ/M7ubXdtdb1xSFyeilBapySVU8h8OoFaooFSqiihIVIpQBKci6KEg9Q6H9kovIHoCIVQJJCKE1ENFjnAgcaSGC6rEnxBwA04Tx43t2FnvDAfjkNibxgHxnWb2e/u992bee7tCa00YFsffekFY+nUzFtjW0LrvjRXrCDIAaPLlW0nHL0SsZtVoaF98mLrx3pdhOqLtYPHChahZcYYO7KvPFxvRl5XPp1sN3adWiD1ZAqD6XYK1b/dvE5IWryTt2udLFedwc1+9kLp+vbbpoDh+6TklxBeAi9TL0taeWpdmZzQDry0AcO+jQ12RyohqqoYoo8RDwJrU+qXkjWtfi8Xxt58BdQuwQs9qC/afLwCw8tnQbqYAPsgxE1S6F3EAIXux2oQFKm0ihMsOF71dHYx+f3NND68ghCu1YIoePPQN1pGRABkJ6Bus96CutRZMydTl+TvuiRW1m3n0eDl0vRPcEysqdXn+jsQPsrHMquGeXEaY4Yk4wxWcY5V/9scqOMOVUFthatyTy8QyqwZ+kDURKoMWxNKr2EeqVKcTNOajqKoBgOE28U4tdQl5p5bwCw7BWquaZSzAPlwjlithJtp3pTImSqQRrb2Z8PHGigD4RZuNX6JYj6wj7O4TFLbCO/Mn/m8R+h6rYSUb3ekokRY6f/YukArN979jcW+V/S8g0eT/N3VN3kTqWbQ428m9/8k0P/1aIhF36PccEl6EhOcAUCrXKZXXWS3XKd2vc/TRBG9O5ELC17MmWubD2nKhUKZa26Ba2+D3P+4/MNCFwg59oWVeYhkzgN/JDR8deKBoD7Y+ljEjGZ0sosXVTvbc6RHirr2reNy1OXd6pJsQ+gqjk8VWFYmHrwBzW/n+uMPFiRwHB2I7ih8ciHFxIkd/3Omk5tCDV1t+2nNu5sxxpDFNx+huNhVT3/zMDz8usXC3ddaHBj1GHj/As08fwTS7Kt1HBTmyN29vdwAw+/wbwLVOJ3uAD1wi/dUH7Qei66PfyuRj4Ik9is+hglfbkbfR3cnZm7chlUWLdwmprtCohX4HUtlOcQjLYCu+fzGJH2QRKvP3UNz8bWk1qMxjGTOMThZ3kvgLI5AzFfo379UAAAAASUVORK5CYII=";
+  Uint8List _image = base64Decode(displayNamereplaceAll);
+
 
     return Card(
         child: ListTile(
@@ -655,14 +710,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           nDataList1.post.coverImage != null
               ? Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: CachedNetworkImage(
-                    imageUrl:
-                        "https://today-api.moveforwardparty.org/api${nDataList1.post.coverImage.toString()}/image",
-                    placeholder: (context, url) =>
-                        new CupertinoActivityIndicator(),
-                    errorWidget: (context, url, error) =>
-                        new Image.asset('images/placeholder.png'),
-                  ),
+                  child: Image.memory(_image)
+                  //     CachedNetworkImage(
+                  //   imageUrl:
+                  //       "https://today-api.moveforwardparty.org/api${nDataList1.post.coverImage.toString()}/image",
+                  //   placeholder: (context, url) =>
+                  //       new CupertinoActivityIndicator(),
+                  //   errorWidget: (context, url, error) =>
+                  //       new Image.asset('images/placeholder.png'),
+                  // ),
 
                   // Image.network(
                   //   "https://today-api.moveforwardparty.org/api${nDataList1.post.coverImage}/image",
@@ -703,37 +759,41 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           SizedBox(
             height: 10,
           ),
-          Divider(height:2,),
+          Divider(
+            height: 2,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-
-         checktoken  ==""?IconButton(icon: Icon(Icons.comment), 
-              onPressed: (){
-                   showCupertinoModalBottomSheet(
-                            context: context,
-                            builder: (context) => Intro(),
-                          );
-
- 
-              }):  IconButton(icon: Icon(Icons.comment), 
-              onPressed: (){
-                var postid =nDataList1.post.id;
-                print("postid${nDataList1.post.id}");
-                 showCupertinoModalBottomSheet(
-                            context: context,
-                            builder: (context) => CommentList(myuid: myuid,postid: postid,),
-                          );
-
- 
-              }),
-              
+              checktoken == ""
+                  ? IconButton(
+                      icon: Icon(Icons.comment),
+                      onPressed: () {
+                        showCupertinoModalBottomSheet(
+                          context: context,
+                          builder: (context) => Intro(),
+                        );
+                      })
+                  : IconButton(
+                      icon: Icon(Icons.comment),
+                      onPressed: () {
+                        var postid = nDataList1.post.id;
+                        print("postid${nDataList1.post.id}");
+                        showCupertinoModalBottomSheet(
+                          context: context,
+                          builder: (context) => CommentList(
+                            myuid: myuid,
+                            postid: postid,
+                          ),
+                        );
+                      }),
               Icon(Icons.repeat),
               Icon(Icons.favorite_border),
             ],
           ),
-                    Divider(height:2,),
-
+          Divider(
+            height: 2,
+          ),
         ],
       ),
       leading: CircleAvatar(
