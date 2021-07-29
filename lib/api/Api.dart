@@ -95,18 +95,16 @@ class Api {
   }
 
   static Future<Http.Response> getPostList() async {
-    final responseData = await Http.get(
+   print('getHashtagList');
+      final responseData = await Http.get(
         "https://today-api.moveforwardparty.org/api/main/content");
+
     return responseData;
   }
-
-  static Future<Http.Response> getPostListSS(String idss) async {
-    print('getPostListSS');
-
-    // print('getData');
-
-    final responseData = await Http.get(
-        "https://today-api.moveforwardparty.org/api/page/$idss/post/?offset=0&limit=5");
+   static Future<Http.Response> getPostemergencyEventsList() async {
+   print('getHashtagList');
+      final responseData = await Http.get(
+        "https://today-api.moveforwardparty.org/api/main/content");
 
     return responseData;
   }
@@ -344,6 +342,37 @@ class Api {
     );
     print('body$body');
     print('responseupdataimage${responseData.body}');
+
+    return responseData;
+  }
+  static Future<Http.Response> islike(String postid,String uid, String token) async {
+    print('sendcomment');
+    var url = "https://today-api.moveforwardparty.org/api/post/$postid/like";
+    final headers = {
+      "userid": uid,
+      "authorization": "Bearer $token",
+            "content-type":"application/json",
+            "accept":"application/json"
+      // "whereConditions": {"isHideStory": false},
+    };
+    Map data = {
+    //  "asset":
+    //  {"mimeType":"image/png",
+    //  "data":base64image,
+    //  "fileName":fileName,
+    //  "size":193148}
+     
+    };
+
+    var body = jsonEncode(data);
+
+    final responseData = await Http.post(
+      url,
+      headers: headers,
+      body: body,
+    );
+    print('body$body');
+    print('islike${responseData.body}');
 
     return responseData;
   }

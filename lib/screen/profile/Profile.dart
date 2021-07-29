@@ -1,7 +1,7 @@
 import 'package:appmove/api/Api.dart';
 import 'package:appmove/main.dart';
 import 'package:appmove/model/postModel.dart';
-import 'package:appmove/screen/home/appbar.dart';
+import 'package:appmove/screen/home/NavigationBar.dart';
 import 'package:appmove/screen/profile/Editprofile.dart';
 import 'package:appmove/screen/settings/settingsSc.dart';
 import 'package:cached_network_image/cached_network_image.dart';

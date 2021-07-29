@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:appmove/screen/home/appbar.dart';
+import 'package:appmove/screen/home/NavigationBar.dart';
 import 'package:appmove/screen/loginandregister/Intro.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/cupertino.dart';

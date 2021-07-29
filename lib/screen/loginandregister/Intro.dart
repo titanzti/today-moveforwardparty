@@ -1,4 +1,4 @@
-import 'package:appmove/screen/home/appbar.dart';
+import 'package:appmove/screen/home/NavigationBar.dart';
 import 'package:appmove/screen/loginandregister/Login.dart';
 import 'package:appmove/screen/loginandregister/Register.dart';
 import 'package:appmove/screen/profile/Profile.dart';

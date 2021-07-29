@@ -1,5 +1,5 @@
 import 'package:appmove/screen/home/HomeScreen.dart';
-import 'package:appmove/screen/home/appbar.dart';
+import 'package:appmove/screen/home/NavigationBar.dart';
 import 'package:appmove/screen/loginandregister/Register.dart';
 import 'package:appmove/utils/colors.dart';
 import 'package:appmove/utils/internetConnectivity.dart';

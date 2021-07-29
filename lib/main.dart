@@ -1,7 +1,7 @@
-import 'package:appmove/info.dart';
+import 'package:appmove/screen/info/info.dart';
 import 'package:appmove/screen/home/HomeScreen.dart';
 import 'package:appmove/screen/home/Sp%20Screen.dart';
-import 'package:appmove/screen/home/appbar.dart';
+import 'package:appmove/screen/home/NavigationBar.dart';
 import 'package:appmove/screen/loginandregister/Intro.dart';
 import 'package:appmove/screen/loginandregister/Login.dart';
 import 'package:appmove/screen/loginandregister/Register.dart';
@@ -57,77 +57,77 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key}) : super(key: key);
+// class MyHomePage extends StatefulWidget {
+//   MyHomePage({Key key}) : super(key: key);
 
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
+//   @override
+//   _MyHomePageState createState() => _MyHomePageState();
+// }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+// class _MyHomePageState extends State<MyHomePage> {
+//   int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+//   void _incrementCounter() {
+//     setState(() {
+//       _counter++;
+//     });
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Appbar()),
-                );
-              },
-              tooltip: 'Increment',
-              icon: Icon(Icons.add),
-            ),
-            Text('test'),
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SpScreen()),
-                );
-              },
-              tooltip: 'Increment',
-              icon: Icon(Icons.add),
-            ),
-            Text('Spscreen'),
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Intro()),
-                );
-              },
-              tooltip: 'Increment',
-              icon: Icon(Icons.add),
-            ),
-            Text('Intro'),
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ProfilessScreen()),
-                );
-              },
-              tooltip: 'Increment',
-              icon: Icon(Icons.add),
-            ),
-            Text('Profiless'),
-          ],
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(),
+//       body: Center(
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: <Widget>[
+//             IconButton(
+//               onPressed: () {
+//                 Navigator.push(
+//                   context,
+//                   MaterialPageRoute(builder: (context) => Appbar()),
+//                 );
+//               },
+//               tooltip: 'Increment',
+//               icon: Icon(Icons.add),
+//             ),
+//             Text('test'),
+//             IconButton(
+//               onPressed: () {
+//                 Navigator.push(
+//                   context,
+//                   MaterialPageRoute(builder: (context) => SpScreen()),
+//                 );
+//               },
+//               tooltip: 'Increment',
+//               icon: Icon(Icons.add),
+//             ),
+//             Text('Spscreen'),
+//             IconButton(
+//               onPressed: () {
+//                 Navigator.push(
+//                   context,
+//                   MaterialPageRoute(builder: (context) => Intro()),
+//                 );
+//               },
+//               tooltip: 'Increment',
+//               icon: Icon(Icons.add),
+//             ),
+//             Text('Intro'),
+//             IconButton(
+//               onPressed: () {
+//                 Navigator.push(
+//                   context,
+//                   MaterialPageRoute(builder: (context) => ProfilessScreen()),
+//                 );
+//               },
+//               tooltip: 'Increment',
+//               icon: Icon(Icons.add),
+//             ),
+//             Text('Profiless'),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }

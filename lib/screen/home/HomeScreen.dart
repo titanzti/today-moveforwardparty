@@ -3,8 +3,9 @@ import 'dart:developer';
 import 'dart:typed_data';
 import 'package:appmove/api/Api.dart';
 import 'package:appmove/model/postModel.dart';
+import 'package:appmove/model/searchpostlistModel.dart';
 import 'package:appmove/screen/home/EventList.dart';
-import 'package:appmove/screen/home/appbar.dart';
+import 'package:appmove/screen/home/NavigationBar.dart';
 import 'package:appmove/screen/home/search.dart';
 import 'package:appmove/screen/home/searchList.dart';
 import 'package:appmove/screen/home/searchbar.dart';
@@ -14,6 +15,7 @@ import 'package:appmove/utils/internetConnectivity.dart';
 import 'package:appmove/widgets/allWidgets.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -29,23 +31,29 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
-  ScrollController scrollController;
+    ScrollController _scrollController = ScrollController();
+
   final List<String> imgList = [
     'https://www.moveforwardparty.org/wp-content/uploads/2021/06/cover-pita1421-01.jpg',
     'https://www.moveforwardparty.org/wp-content/uploads/2021/06/tfc-web-cover-02.png',
   ];
   List<PostSectionModelContent> listModelPostClass = [];
+  List<EmergencyEventsContent> listemergencyEvents = [];
 
   var loading = false;
+    var islikes = false;
+
   final format = new DateFormat(' h:mm');
   var checktoken;
-  var dataht, datapostlist, myuid,   dataht1;
-  Future getDataFuture, getDataPostListFuture;
+  var dataht, datapostlist, myuid, dataht1;
+  Future getDataFuture, getDataPostListFuture,getDataemergencyEvents;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-var base;
+  var base;
   List<EmergencyEventsContent> listModel = [];
   List<PurpleOwner> listPurpleOwner = [];
   bool isEmty = false;
+    int _currentMax = 5;
+
   // var str = '/file/60b9d87ae9375e7025dc0c96';
 
 // final end = 'over';
@@ -74,58 +82,65 @@ var base;
     "content-type": "image/jpeg",
   };
 
-  Future<Null> getDatasectionModels() async {
-    print('getDatasectionModels');
-    setState(() {
-      loading = true;
-    });
-    final responseData = await http
-        .get("https://today-api.moveforwardparty.org/api/main/content");
-    if (responseData.statusCode == 200) {
-      final data = jsonDecode(responseData.body);
-      setState(() {
-        for (Map i in data["data"]["postSectionModel"]["contents"]) {
-          // Map test = i["post"];
-          // print('test$test');
-          listModelPostClass.add(PostSectionModelContent.fromJson(i));
-        }
-        loading = false;
-      });
-    }
-    if (responseData.statusCode == 400) {
-      setState(() {
-        print('400');
-        isEmty = true;
-      });
-    }
-  }
+  // Future<Null> getDatasectionModels() async {
+  //   print('getDatasectionModels');
+  //   setState(() {
+  //     loading = true;
+  //   });
+  //   final responseData = await http
+  //       .get("https://today-api.moveforwardparty.org/api/main/content");
+  //   if (responseData.statusCode == 200) {
+  //     final data = jsonDecode(responseData.body);
+  //     setState(() {
+  //       for (Map i in data["data"]["postSectionModel"]["contents"]) {
+  //         // Map test = i["post"];
+  //         // print('test$test');
+  //         listModelPostClass.add(PostSearchModel.fromJson(i));
+  //       }
+  //       loading = false;
+  //     });
+  //   }
+  //   if (responseData.statusCode == 400) {
+  //     setState(() {
+  //       print('400');
+  //       isEmty = true;
+  //     });
+  //   }
+  // }
 
   // Create storage
   final _storage = new FlutterSecureStorage();
 
-//  Future<http.Response> fetchAlbum( ) async{
-//  print('fetchAlbum');
-//  String url =  "https://today-api.moveforwardparty.org/api/file/60d29d10d9b235079c054f9a/";
-//  await http.get(Uri.parse(url)).then((response ){
-//    if(response.statusCode==200){
-//     //  Uint8List image = base64Decode(response.body);
-//     //  print('imageUi${response.body}');
-//    }
+   fetchAlbum(String urlimage) async {
+    print('fetchAlbum');
+    String url = urlimage;
+    var  displayNamereplaceAll;
+    await http.get(Uri.parse(url)).then((response) {
+      if (response.statusCode == 200) {
+        //  Uint8List image = base64Decode(response.body);
+        //  print('imageUi${response.body}');
+  //   String displayname = body.toString();
+  //   displayNamereplaceAll = displayname.replaceAll("data:undefined;base64,","");
+  //       displayNamereplaceAll = displayname.replaceAll("data:image/png;base64,","");
+  //       displayNamereplaceAll = displayname.replaceAll("data:image/jpeg;base64,","");
 
-//    var body =jsonDecode(response.body);
-//         print('imageUi$body');
+  // print('displayNamereplaceAll$displayNamereplaceAll');
+      }
+           var body = jsonDecode(response.body);
 
-//    return body;
+   
+      return body;
+    });
+    // final responseData = await http.get(
+    //     "https://today-api.moveforwardparty.org/api/file/60d29d10d9b235079c054f9a/");
+    //     final database = jsonDecode(responseData.body);
+    //     print('database$database');
 
-//  });
-//     // final responseData = await http.get(
-//     //     "https://today-api.moveforwardparty.org/api/file/60d29d10d9b235079c054f9a/");
-//     //     final database = jsonDecode(responseData.body);
-//     //     print('database$database');
+    // return responseData;
+  }
 
-//   // return responseData;
-// }
 
+ 
   @override
   void initState() {
     checkInternetConnectivity().then((value) => {
@@ -133,7 +148,7 @@ var base;
               ? () {
                   setState(() {
                     // fetchAlbum();
-                    scrollController = ScrollController();
+                  
 
                     Api.getmyuid().then((value) => ({
                           setState(() {
@@ -141,7 +156,20 @@ var base;
                           }),
                           print('myuidhome$myuid'),
                         }));
-                          
+
+
+                    //         _scrollController.addListener(() async{
+                    //   if (_scrollController.position.pixels ==
+                    //       _scrollController.position.maxScrollExtent) {
+                    //     print('At the End');
+                    //     setState(() {
+                    //       _currentMax = _currentMax + 5;
+                    //     getPostList(_currentMax);
+                       
+                    //     });
+                    //   }
+                    // });
+
                     getDataFuture =
                         Api.getHashtagData().then((responseData) => ({
                               setState(() {
@@ -154,17 +182,17 @@ var base;
                                   for (Map i in dataht["data"]
                                       ["emergencyEvents"]["contents"])
                                     {
-                                  
                                       listModel.add(
                                           EmergencyEventsContent.fromJson(i)),
-                                
                                     },
-                                        
                                   loading = false,
                                 }
-                                
                             }));
-                    getDataPostListFuture =
+                  
+
+
+                  
+                   getDataPostListFuture =
                         Api.getPostList().then((responseData) => ({
                               print('getPostList'),
                               setState(() {
@@ -177,8 +205,7 @@ var base;
                                       ["postSectionModel"]["contents"])
                                     {
                                          setState(() {
-                               listModelPostClass.add(
-                                          PostSectionModelContent.fromJson(i));
+                               listModelPostClass.add( PostSectionModelContent.fromJson(i));
                               }),
                                       
                                     },
@@ -189,6 +216,30 @@ var base;
                               else if (responseData.statusCode == 400)
                                 {}
                             }));
+                  getDataemergencyEvents=           Api.getPostemergencyEventsList().then((responseData) => ({
+                              print('getPostList'),
+                              setState(() {
+                                loading = true;
+                              }),
+                              if (responseData.statusCode == 200)
+                                {
+                                  datapostlist = jsonDecode(responseData.body),
+                                  for (Map i in datapostlist["data"]
+                                      ["emergencyEvents"]["contents"])
+                                    {
+                                         setState(() {
+                               listemergencyEvents.add(EmergencyEventsContent.fromJson(i));
+                              }),
+                                      
+                                    },
+                                    
+                                  loading = false,
+                    
+                                }
+                              else if (responseData.statusCode == 400)
+                                {}
+                            }));
+
 
                     // getData();
                     // getDatasectionModels();
@@ -202,8 +253,54 @@ var base;
 
   @override
   void dispose() {
+    _scrollController.dispose();
     super.dispose();
   }
+// Future getPostList(int offset) async {
+//    print('getHashtagList');
+//     var url = "https://today-api.moveforwardparty.org/api/main/content/search";
+//     final headers = {
+//       // "mode": "EMAIL",
+//       "content-type": "application/json",
+//     };
+//     Map data = {
+//      "keyword":[],
+//      "hashtag":["ก้าวไกล"],
+//      "type":"",
+//      "createBy":[],
+//      "objective":"",
+//      "pageCategories":[],
+//      "sortBy":"LASTEST_DATE","filter":{"limit":5,"offset":offset}
+//     };
+//     var body = jsonEncode(data);
+
+//     final responseData = await http.post(
+//       url,
+//       headers: headers,
+//       body: body,
+//     );
+//     print('body$body');
+//     print('responseData${responseData.body}');
+
+//     if (responseData.statusCode == 200)
+//                                 {
+//                                   datapostlist = jsonDecode(responseData.body);
+//                             //  print('name${datapostlist["data"][i]["page"]["name"]}');
+
+//                                   for (Map i in datapostlist["data"] )
+//                                     {
+//                                       setState(() {
+//                                         listModelPostClass.add(
+//                                             PostSearchModel.fromJson( i));
+//                                                         print(listModelPostClass.length);
+
+//                                       });
+//                                     }
+//                                   loading = false;
+//                                 }
+//                               else if (responseData.statusCode == 400)
+//                                 {}
+//   }
 
   @override
   Widget build(BuildContext context) {
@@ -225,7 +322,7 @@ var base;
               await getDataPostListFuture;
             }(),
             child: SingleChildScrollView(
-              controller: scrollController,
+              controller: _scrollController,
               physics: BouncingScrollPhysics(),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -629,6 +726,48 @@ var base;
                               SizedBox(
                                 height: 10,
                               ),
+                              Text('เหตุการ์ณด่วน',style: TextStyle(fontSize: 18),),
+                              FutureBuilder(
+                                  future: Future.wait([
+                                    getDataPostListFuture,
+
+                                  ]),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<dynamic> snapshot) {
+                                    if (!snapshot.hasData) {
+                                      return CupertinoActivityIndicator();
+                                    }
+                                    return new Builder(
+                                      builder: (BuildContext context) {
+                                        return ListView.builder(
+                                            physics: ClampingScrollPhysics(),
+                                            shrinkWrap: true,
+                                            padding: const EdgeInsets.all(8.0),
+                                            scrollDirection: Axis.vertical,
+                                            itemCount:
+                                                listemergencyEvents.length,
+                                            itemBuilder: (
+                                              BuildContext context,
+                                              int index,
+                                            ) {
+                                    //             if (index == listModelPostClass.length) {
+                                    //   return CupertinoActivityIndicator();
+                                    // }
+                                    
+                                    if(listemergencyEvents.length==0){
+                                      return Center(child: Text("ไม่มีข้อมูล"));
+                                    }
+                                              final nDataList1 =
+                                                  listemergencyEvents[index];
+                                                
+                                                  // var imageNodecode=  fetchAlbum(nDataList1.coverPageUrl.toString());
+
+                                              return PostListemergencyEvents(nDataList1.coverPageUrl,nDataList1.title, nDataList1.description);
+                                            });
+                                      },
+                                    );
+                                  }),
+                              Text('data'),
                               FutureBuilder(
                                   future: Future.wait([
                                     getDataPostListFuture,
@@ -651,17 +790,31 @@ var base;
                                               BuildContext context,
                                               int index,
                                             ) {
+                                    //             if (index == listModelPostClass.length) {
+                                    //   return CupertinoActivityIndicator();
+                                    // }
+                                    
+                                    // if(listModelPostClass.length==0){
+                                    //   return Center(child: Text("ไม่มีข้อมูล"));
+                                    // }
                                               final nDataList1 =
                                                   listModelPostClass[index];
+  
 
-                                                
-
-
-                                              return PostList(nDataList1,base);
+                                              return PostList(base,
+                                                nDataList1.post.page.name,
+                                              nDataList1.post.coverImage,
+                                              nDataList1.post.title,
+                                              nDataList1.post.detail,
+                                              nDataList1.post.id,
+                                             nDataList1.post.likeCount.toString(),
+                                             nDataList1.post.page.imageUrl,
+                                             );
                                             });
                                       },
                                     );
                                   }),
+                                  
                             ],
                           ),
                         ),
@@ -673,9 +826,15 @@ var base;
       ),
     );
   }
- 
 
-  Widget PostList(nDataList1,base) {
+   Widget PostList(base,
+   String postpagename,
+   String postcoverImage,
+   String posttitle,
+   String postdetail,
+   String postid,
+   String postlikeCount,
+   String ownerimageUrl) {
       
                              
    String imageUri= base;
@@ -693,21 +852,19 @@ var base;
 // print('contentAsBytes${data.contentAsBytes()}');  
 
               // Uint8List image = base64Decode(data.contentAsBytes().toString());
-  // String imagenJson = "iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAApgAAAKYB3X3/OAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAANCSURBVEiJtZZPbBtFFMZ/M7ubXdtdb1xSFyeilBapySVU8h8OoFaooFSqiihIVIpQBKci6KEg9Q6H9kovIHoCIVQJJCKE1ENFjnAgcaSGC6rEnxBwA04Tx43t2FnvDAfjkNibxgHxnWb2e/u992bee7tCa00YFsffekFY+nUzFtjW0LrvjRXrCDIAaPLlW0nHL0SsZtVoaF98mLrx3pdhOqLtYPHChahZcYYO7KvPFxvRl5XPp1sN3adWiD1ZAqD6XYK1b/dvE5IWryTt2udLFedwc1+9kLp+vbbpoDh+6TklxBeAi9TL0taeWpdmZzQDry0AcO+jQ12RyohqqoYoo8RDwJrU+qXkjWtfi8Xxt58BdQuwQs9qC/afLwCw8tnQbqYAPsgxE1S6F3EAIXux2oQFKm0ihMsOF71dHYx+f3NND68ghCu1YIoePPQN1pGRABkJ6Bus96CutRZMydTl+TvuiRW1m3n0eDl0vRPcEysqdXn+jsQPsrHMquGeXEaY4Yk4wxWcY5V/9scqOMOVUFthatyTy8QyqwZ+kDURKoMWxNKr2EeqVKcTNOajqKoBgOE28U4tdQl5p5bwCw7BWquaZSzAPlwjlithJtp3pTImSqQRrb2Z8PHGigD4RZuNX6JYj6wj7O4TFLbCO/Mn/m8R+h6rYSUb3ekokRY6f/YukArN979jcW+V/S8g0eT/N3VN3kTqWbQ428m9/8k0P/1aIhF36PccEl6EhOcAUCrXKZXXWS3XKd2vc/TRBG9O5ELC17MmWubD2nKhUKZa26Ba2+D3P+4/MNCFwg59oWVeYhkzgN/JDR8deKBoD7Y+ljEjGZ0sosXVTvbc6RHirr2reNy1OXd6pJsQ+gqjk8VWFYmHrwBzW/n+uMPFiRwHB2I7ih8ciHFxIkd/3Omk5tCDV1t+2nNu5sxxpDFNx+huNhVT3/zMDz8usXC3ddaHBj1GHj/As08fwTS7Kt1HBTmyN29vdwAw+/wbwLVOJ3uAD1wi/dUH7Qei66PfyuRj4Ik9is+hglfbkbfR3cnZm7chlUWLdwmprtCohX4HUtlOcQjLYCu+fzGJH2QRKvP3UNz8bWk1qMxjGTOMThZ3kvgLI5AzFfo379UAAAAASUVORK5CYII=";
-  Uint8List _image = base64Decode(displayNamereplaceAll);
+  String imagenJson = "iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAApgAAAKYB3X3/OAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAANCSURBVEiJtZZPbBtFFMZ/M7ubXdtdb1xSFyeilBapySVU8h8OoFaooFSqiihIVIpQBKci6KEg9Q6H9kovIHoCIVQJJCKE1ENFjnAgcaSGC6rEnxBwA04Tx43t2FnvDAfjkNibxgHxnWb2e/u992bee7tCa00YFsffekFY+nUzFtjW0LrvjRXrCDIAaPLlW0nHL0SsZtVoaF98mLrx3pdhOqLtYPHChahZcYYO7KvPFxvRl5XPp1sN3adWiD1ZAqD6XYK1b/dvE5IWryTt2udLFedwc1+9kLp+vbbpoDh+6TklxBeAi9TL0taeWpdmZzQDry0AcO+jQ12RyohqqoYoo8RDwJrU+qXkjWtfi8Xxt58BdQuwQs9qC/afLwCw8tnQbqYAPsgxE1S6F3EAIXux2oQFKm0ihMsOF71dHYx+f3NND68ghCu1YIoePPQN1pGRABkJ6Bus96CutRZMydTl+TvuiRW1m3n0eDl0vRPcEysqdXn+jsQPsrHMquGeXEaY4Yk4wxWcY5V/9scqOMOVUFthatyTy8QyqwZ+kDURKoMWxNKr2EeqVKcTNOajqKoBgOE28U4tdQl5p5bwCw7BWquaZSzAPlwjlithJtp3pTImSqQRrb2Z8PHGigD4RZuNX6JYj6wj7O4TFLbCO/Mn/m8R+h6rYSUb3ekokRY6f/YukArN979jcW+V/S8g0eT/N3VN3kTqWbQ428m9/8k0P/1aIhF36PccEl6EhOcAUCrXKZXXWS3XKd2vc/TRBG9O5ELC17MmWubD2nKhUKZa26Ba2+D3P+4/MNCFwg59oWVeYhkzgN/JDR8deKBoD7Y+ljEjGZ0sosXVTvbc6RHirr2reNy1OXd6pJsQ+gqjk8VWFYmHrwBzW/n+uMPFiRwHB2I7ih8ciHFxIkd/3Omk5tCDV1t+2nNu5sxxpDFNx+huNhVT3/zMDz8usXC3ddaHBj1GHj/As08fwTS7Kt1HBTmyN29vdwAw+/wbwLVOJ3uAD1wi/dUH7Qei66PfyuRj4Ik9is+hglfbkbfR3cnZm7chlUWLdwmprtCohX4HUtlOcQjLYCu+fzGJH2QRKvP3UNz8bWk1qMxjGTOMThZ3kvgLI5AzFfo379UAAAAASUVORK5CYII=";
+  Uint8List _image = base64Decode(imagenJson);
 
 
     return Card(
         child: ListTile(
-      title: nDataList1.owner.displayName == " "
-          ? Text("Lable")
-          : Text(nDataList1.post.page.name),
+      title: Text(postpagename),
       subtitle: Column(
         children: <Widget>[
           SizedBox(
             height: 5,
           ),
-          nDataList1.post.coverImage != null
+         postcoverImage != null
               ? Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: Image.memory(_image)
@@ -729,8 +886,9 @@ var base;
                   //   headers: headers,
                   // ),
                 )
-              : const SizedBox.shrink(),
-          nDataList1.post.title == null
+              : 
+              const SizedBox.shrink(),
+          posttitle == null
               ? Text(
                   "Lable",
                   overflow: TextOverflow.clip,
@@ -738,12 +896,12 @@ var base;
                   // maxLines: 2,
                 )
               : Text(
-                  "${nDataList1.post.title}",
+                  "$posttitle",
                   overflow: TextOverflow.clip,
                   style: TextStyle(color: Colors.black),
                   // maxLines: 2,
                 ),
-          nDataList1.post.detail == null
+          postdetail == null
               ? Text(
                   "Lable",
                   overflow: TextOverflow.clip,
@@ -751,7 +909,7 @@ var base;
                   // maxLines: 2,
                 )
               : Text(
-                  "${nDataList1.post.detail}",
+                  "$postdetail",
                   overflow: TextOverflow.clip,
                   // style: TextStyle(color: Colors.black),
                   // maxLines: 2,
@@ -777,8 +935,7 @@ var base;
                   : IconButton(
                       icon: Icon(Icons.comment),
                       onPressed: () {
-                        var postid = nDataList1.post.id;
-                        print("postid${nDataList1.post.id}");
+                        // print("postid${post.id}");
                         showCupertinoModalBottomSheet(
                           context: context,
                           builder: (context) => CommentList(
@@ -787,20 +944,29 @@ var base;
                           ),
                         );
                       }),
+                                    Spacer(),
+
               Icon(Icons.repeat),
-              Icon(Icons.favorite_border),
+              Spacer(),
+           Text(postlikeCount.toString()),
+           IconButton(
+                      icon: Icon(Icons.favorite_border),
+                      onPressed: ()async {
+                     await Api.islike(postid, myuid, checktoken);
+                     print("กดlike");
+                      }),
             ],
           ),
-          Divider(
-            height: 2,
-          ),
+          // Divider(
+          //   height: 2,
+          // ),
         ],
       ),
       leading: CircleAvatar(
         child: Container(
           color: Colors.white,
           child: Image.network(
-              "https://today-api.moveforwardparty.org/api${nDataList1.owner.imageUrl}/image"),
+              "https://today-api.moveforwardparty.org/api$ownerimageUrl/image"),
         ),
       ),
 
@@ -808,112 +974,168 @@ var base;
       //     "https://today-api.moveforwardparty.org/api${nDataList1.owner.imageUrl}/image")),
       // trailing: Icon(icons[index])
     ));
-    // Container(
-    //   child: Expanded(
-    //       child: Padding(
-    //     padding: EdgeInsets.all(8),
-    //     child: Container(
-    //       decoration: BoxDecoration(
-    //           color: Colors.grey[200],
-    //           borderRadius: BorderRadius.all(
-    //             Radius.circular(10),
-    //           )),
-    //       child: Expanded(
-    //         child: Column(
-    //           children: [
-    //             //============TitleList===============
-    //             Container(
-    //               child: ListTile(
-    //                 title: Text(
-    //                   "${nDataList1.title}",
-    //                   // maxLines:
-    //                   //     1,
-    //                   overflow: TextOverflow
-    //                       .ellipsis, // TextOverflow.clip // TextOverflow.fade
-    //                   // softWrap:
-    //                   //     false,
-    //                   style: TextStyle(
-    //                     fontSize: 18,
-    //                     fontWeight: FontWeight.bold,
-    //                     color: Color(0xffF47932),
-    //                   ),
-    //                 ),
-    //                 trailing: Wrap(
-    //                   spacing: 2, // space between two icons
-    //                   children: <Widget>[
-    //                     Container(
-    //                       padding: EdgeInsets.fromLTRB(1, 6, 1, 1),
-    //                       child: InkWell(
-    //                         child: Text(
-    //                           "${format.format(nDataList1.startDateTime)}",
-    //                           style: TextStyle(
-    //                               fontWeight: FontWeight.bold,
-    //                               color: Colors.red[500]),
-    //                         ),
-    //                       ),
-    //                     ),
-    //                   ],
-    //                 ),
-    //               ),
-    //             ),
-    //             //============TitleList===============
-    //             //============SubTitleList===============
-
-    //             Padding(
-    //               padding: const EdgeInsets.symmetric(vertical: 8.0),
-    //               child: Image.network(
-    //                 'today-api.moveforwardparty.org/api${nDataList1.coverImage}/image',
-    //               ),
-    //               // imageUrl:'https://today-api.moveforwardparty.org/api${nDataList1.coverImage}/image'),
-    //               // "https://today-api.moveforwardparty.org/api/${nDataList1.coverImage}/image"),
-    //             ),
-    //             // : const SizedBox.shrink(),
-    //             Container(
-    //               padding: EdgeInsets.all(10),
-    //               child: Expanded(
-    //                 child: Text(
-    //                   "${nDataList1.detail}",
-    //                   maxLines: 4,
-    //                   softWrap: true,
-    //                   style: TextStyle(
-    //                     fontSize: 18,
-    //                     fontWeight: FontWeight.bold,
-    //                     color: Colors.black,
-    //                   ),
-    //                 ),
-    //               ),
-    //             ),
-    //             Row(
-    //               children: <Widget>[
-    //                 Spacer(),
-    //                 Align(
-    //                   alignment: Alignment.topRight,
-    //                   child: Text('0ความคิดเห็น'),
-    //                 ),
-    //                 SizedBox(
-    //                   width: 2,
-    //                 ),
-    //                 Align(
-    //                   alignment: Alignment.topRight,
-    //                   child: Text('0ถูกใจ'),
-    //                 ),
-    //                 SizedBox(
-    //                   width: 2,
-    //                 ),
-    //                 Align(
-    //                   alignment: Alignment.topRight,
-    //                   child: Text('0แชร์'),
-    //                 ),
-    //                 SizedBox(
-    //                   width: 9,
-    //                 ),
-    //               ],
-    //             ),
-    //           ],
-    //         ),
-    //       ),
-    //     ),
-    //   )),
-    // );
   }
+ 
+ 
+   Widget PostListemergencyEvents(
+  //  String postpagename,
+   String postcoverImage,
+   String posttitle,
+   String postdetail,
+  //  String postid,
+  //  String postlikeCount,
+  //  String ownerimageUrl
+   )  {
+      
+                             
+  //  String imageUri= base;
+                  // var imageUri = Uri.parse("https://today-api.moveforwardparty.org/api$postcoverImage/");
+                  // print('imageUri$imageUri');
+
+
+//         var displayNamereplaceAll;
+//     String displayname = postcoverImage;
+//     displayNamereplaceAll = displayname.replaceAll("data:undefined;base64,","");
+//       // String base = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAApgAAAKYB3X3/OAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAANCSURBVEiJtZZPbBtFFMZ/M7ubXdtdb1xSFyeilBapySVU8h8OoFaooFSqiihIVIpQBKci6KEg9Q6H9kovIHoCIVQJJCKE1ENFjnAgcaSGC6rEnxBwA04Tx43t2FnvDAfjkNibxgHxnWb2e/u992bee7tCa00YFsffekFY+nUzFtjW0LrvjRXrCDIAaPLlW0nHL0SsZtVoaF98mLrx3pdhOqLtYPHChahZcYYO7KvPFxvRl5XPp1sN3adWiD1ZAqD6XYK1b/dvE5IWryTt2udLFedwc1+9kLp+vbbpoDh+6TklxBeAi9TL0taeWpdmZzQDry0AcO+jQ12RyohqqoYoo8RDwJrU+qXkjWtfi8Xxt58BdQuwQs9qC/afLwCw8tnQbqYAPsgxE1S6F3EAIXux2oQFKm0ihMsOF71dHYx+f3NND68ghCu1YIoePPQN1pGRABkJ6Bus96CutRZMydTl+TvuiRW1m3n0eDl0vRPcEysqdXn+jsQPsrHMquGeXEaY4Yk4wxWcY5V/9scqOMOVUFthatyTy8QyqwZ+kDURKoMWxNKr2EeqVKcTNOajqKoBgOE28U4tdQl5p5bwCw7BWquaZSzAPlwjlithJtp3pTImSqQRrb2Z8PHGigD4RZuNX6JYj6wj7O4TFLbCO/Mn/m8R+h6rYSUb3ekokRY6f/YukArN979jcW+V/S8g0eT/N3VN3kTqWbQ428m9/8k0P/1aIhF36PccEl6EhOcAUCrXKZXXWS3XKd2vc/TRBG9O5ELC17MmWubD2nKhUKZa26Ba2+D3P+4/MNCFwg59oWVeYhkzgN/JDR8deKBoD7Y+ljEjGZ0sosXVTvbc6RHirr2reNy1OXd6pJsQ+gqjk8VWFYmHrwBzW/n+uMPFiRwHB2I7ih8ciHFxIkd/3Omk5tCDV1t+2nNu5sxxpDFNx+huNhVT3/zMDz8usXC3ddaHBj1GHj/As08fwTS7Kt1HBTmyN29vdwAw+/wbwLVOJ3uAD1wi/dUH7Qei66PfyuRj4Ik9is+hglfbkbfR3cnZm7chlUWLdwmprtCohX4HUtlOcQjLYCu+fzGJH2QRKvP3UNz8bWk1qMxjGTOMThZ3kvgLI5AzFfo379UAAAAASUVORK5CYII=";
+//               // log('data: $image');
+
+// // print('isBase64${data.isBase64}');  // Should print true
+// // print('contentAsBytes${data.contentAsBytes()}');  
+
+//               // Uint8List image = base64Decode(data.contentAsBytes().toString());
+//   // String imagenJson = "iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAApgAAAKYB3X3/OAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAANCSURBVEiJtZZPbBtFFMZ/M7ubXdtdb1xSFyeilBapySVU8h8OoFaooFSqiihIVIpQBKci6KEg9Q6H9kovIHoCIVQJJCKE1ENFjnAgcaSGC6rEnxBwA04Tx43t2FnvDAfjkNibxgHxnWb2e/u992bee7tCa00YFsffekFY+nUzFtjW0LrvjRXrCDIAaPLlW0nHL0SsZtVoaF98mLrx3pdhOqLtYPHChahZcYYO7KvPFxvRl5XPp1sN3adWiD1ZAqD6XYK1b/dvE5IWryTt2udLFedwc1+9kLp+vbbpoDh+6TklxBeAi9TL0taeWpdmZzQDry0AcO+jQ12RyohqqoYoo8RDwJrU+qXkjWtfi8Xxt58BdQuwQs9qC/afLwCw8tnQbqYAPsgxE1S6F3EAIXux2oQFKm0ihMsOF71dHYx+f3NND68ghCu1YIoePPQN1pGRABkJ6Bus96CutRZMydTl+TvuiRW1m3n0eDl0vRPcEysqdXn+jsQPsrHMquGeXEaY4Yk4wxWcY5V/9scqOMOVUFthatyTy8QyqwZ+kDURKoMWxNKr2EeqVKcTNOajqKoBgOE28U4tdQl5p5bwCw7BWquaZSzAPlwjlithJtp3pTImSqQRrb2Z8PHGigD4RZuNX6JYj6wj7O4TFLbCO/Mn/m8R+h6rYSUb3ekokRY6f/YukArN979jcW+V/S8g0eT/N3VN3kTqWbQ428m9/8k0P/1aIhF36PccEl6EhOcAUCrXKZXXWS3XKd2vc/TRBG9O5ELC17MmWubD2nKhUKZa26Ba2+D3P+4/MNCFwg59oWVeYhkzgN/JDR8deKBoD7Y+ljEjGZ0sosXVTvbc6RHirr2reNy1OXd6pJsQ+gqjk8VWFYmHrwBzW/n+uMPFiRwHB2I7ih8ciHFxIkd/3Omk5tCDV1t+2nNu5sxxpDFNx+huNhVT3/zMDz8usXC3ddaHBj1GHj/As08fwTS7Kt1HBTmyN29vdwAw+/wbwLVOJ3uAD1wi/dUH7Qei66PfyuRj4Ik9is+hglfbkbfR3cnZm7chlUWLdwmprtCohX4HUtlOcQjLYCu+fzGJH2QRKvP3UNz8bWk1qMxjGTOMThZ3kvgLI5AzFfo379UAAAAASUVORK5CYII=";
+//   Uint8List _image = base64Decode(postcoverImage);
+print('postcoverImage$postcoverImage');
+
+    return Card(
+        child: ListTile(
+      title: Text(posttitle),
+      subtitle: Column(
+        children: <Widget>[
+          SizedBox(
+            height: 5,
+          ),
+         postcoverImage != null
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child:Image.network("https://today-api.moveforwardparty.org/api$postcoverImage/image",width: 250,height: 200,filterQuality: FilterQuality.medium,),
+                  //  Image.memory(_image)
+                  //     CachedNetworkImage(
+                  //   imageUrl:
+                  //       "https://today-api.moveforwardparty.org/api$postcoverImage}/image",
+                  //   placeholder: (context, url) =>
+                  //       new CupertinoActivityIndicator(),
+                  //   errorWidget: (context, url, error) =>
+                  //       new Image.asset('images/placeholder.png'),
+                  // ),
+
+                  // Image.network(
+                  //   "https://today-api.moveforwardparty.org/api${nDataList1.post.coverImage}/image",
+                  //   errorBuilder: (BuildContext context, Object exception,
+                  //       StackTrace stacktrace) {
+                  //     return Image.asset('images/placeholder.png');
+                  //   },
+                  //   headers: headers,
+                  // ),
+                )
+              : 
+              const SizedBox.shrink(),
+          postdetail == null
+              ? Text(
+                  "Lable",
+                  overflow: TextOverflow.clip,
+                  style: TextStyle(color: Colors.black),
+                  // maxLines: 2,
+                )
+              :  ExpandableText(
+            postdetail,
+            style: TextStyle(color: Colors.black),
+            expandText: 'show more',
+            collapseText: 'show less',
+            maxLines: 5,
+            linkColor: Colors.black,
+            onExpandedChanged: (value) => print(value),
+          ),
+              
+              // Text(
+              //     "$postdetail",
+              //     overflow: TextOverflow.clip,
+              //     style: TextStyle(color: Colors.black),
+              //     // maxLines: 2,
+              //   ),
+          // postdetail == null
+          //     ? Text(
+          //         "Lable",
+          //         overflow: TextOverflow.clip,
+          //         // style: TextStyle(color: Colors.black),
+          //         // maxLines: 2,
+          //       )
+          //     : Text(
+          //         "$postdetail",
+          //         overflow: TextOverflow.clip,
+          //         // style: TextStyle(color: Colors.black),
+          //         // maxLines: 2,
+          //       ),
+          SizedBox(
+            height: 10,
+          ),
+          Divider(
+            height: 2,
+          ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: <Widget>[
+          //     checktoken == ""
+          //         ? IconButton(
+          //             icon: Icon(Icons.comment),
+          //             onPressed: () {
+          //               showCupertinoModalBottomSheet(
+          //                 context: context,
+          //                 builder: (context) => Intro(),
+          //               );
+          //             })
+          //         : IconButton(
+          //             icon: Icon(Icons.comment),
+          //             onPressed: () {
+          //               // print("postid${post.id}");
+          //               showCupertinoModalBottomSheet(
+          //                 context: context,
+          //                 builder: (context) => CommentList(
+          //                   myuid: myuid,
+          //                   postid: postid,
+          //                 ),
+          //               );
+          //             }),
+          //                           Spacer(),
+
+          //     Icon(Icons.repeat),
+          //     Spacer(),
+          //  Text(postlikeCount.toString()),
+          //  IconButton(
+          //             icon: Icon(Icons.favorite_border),
+          //             onPressed: ()async {
+          //            await Api.islike(postid, myuid, checktoken);
+          //            print("กดlike");
+          //             }),
+          //   ],
+          // ),
+          // Divider(
+          //   height: 2,
+          // ),
+        ],
+      ),
+      // leading: CircleAvatar(
+      //   child: Container(
+      //     color: Colors.white,
+      //     child: Image.network(
+      //         "https://today-api.moveforwardparty.org/api$ownerimageUrl/image"),
+      //   ),
+      // ),
+
+      // backgroundImage: NetworkImage(
+      //     "https://today-api.moveforwardparty.org/api${nDataList1.owner.imageUrl}/image")),
+      // trailing: Icon(icons[index])
+    ));
+  }
+  
 }
