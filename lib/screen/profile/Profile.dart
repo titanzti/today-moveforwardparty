@@ -232,6 +232,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                       Center(
                         child: Stack(
                           children: [
+                            Text('data'),
                            Container(
                       padding: EdgeInsets.only(left: 15, top: 10, right: 15),
                       width: 100,

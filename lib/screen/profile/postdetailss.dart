@@ -172,7 +172,7 @@ class _PostDetailSSScreenState extends State<PostDetailSSScreen> {
       body: SingleChildScrollView(
         child: storytestreplaceAll == null
             ? Center(
-                child: CupertinoActivityIndicator(),
+                child: Center(child: Text("No Detail")),
               )
             : Container(
                 padding: EdgeInsets.all(10),

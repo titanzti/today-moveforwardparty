@@ -13,7 +13,6 @@ import 'package:http/http.dart' as http;
 import 'package:appmove/screen/profile/Profiless.dart';
 
 class Searchbar extends StatefulWidget {
-  
   @override
   _SearchbarState createState() => _SearchbarState();
 }
@@ -23,7 +22,6 @@ class _SearchbarState extends State<Searchbar> {
   List<SearchHastag> listSearchHastag = [];
   List<PageModel> _listPageModel = [];
   List<PageModel> _listPageModelResult = [];
-
 
   List<SearchHastag> _searchResult = [];
 
@@ -37,7 +35,7 @@ class _SearchbarState extends State<Searchbar> {
   List _allResults = [];
   List _resultsList = [];
   List distinctIds = [];
-  var keyword,isType,isvalue;
+  var keyword, isType, isvalue;
   @override
   void dispose() {
     controller.dispose();
@@ -96,43 +94,39 @@ class _SearchbarState extends State<Searchbar> {
       loading = false;
     }
   }
-    getpage(String pageid) async {
+
+  getpage(String pageid) async {
     print('getPageisvalue$pageid');
     final headers = {
       // "limit": 1,
       // "count": false,
       // "whereConditions": {"isHideStory": false},
-      "content-type":"application/json"
+      "content-type": "application/json"
     };
     // print('getData');
 
     final responseData = await http.get(
-        "https://today-api.moveforwardparty.org/api/page/$pageid",headers: headers);
+        "https://today-api.moveforwardparty.org/api/page/$pageid",
+        headers: headers);
     if (responseData.statusCode == 200) {
       setState(() {
         loading = true;
       });
-     if (responseData.statusCode == 200)
-     {
-   var dataht1 = jsonDecode(responseData.body);
-     print('listPageModel${dataht1["data"]}');
-     if(isType=="PAGE"){
-_listPageModel
-       .add(PageModel.fromJson(dataht1["data"]));
+      if (responseData.statusCode == 200) {
+        var dataht1 = jsonDecode(responseData.body);
+        print('listPageModel${dataht1["data"]}');
+        if (isType == "PAGE") {
+          _listPageModel.add(PageModel.fromJson(dataht1["data"]));
           print('listPageModellength${_listPageModel.length}');
+        }
 
-     }
-
-   
-
-   loading = false;
-   print('body$dataht1');
-   print('responseDatagetpage${responseData.body}');
-     }
+        loading = false;
+        print('body$dataht1');
+        print('responseDatagetpage${responseData.body}');
+      }
     } else if (responseData.statusCode == 404) {
       throw Exception('Not Found');
     }
-
   }
 
   @override
@@ -150,11 +144,8 @@ _listPageModel
           value == true
               ? () {
                   setState(() {
-
                     scrollController = ScrollController();
                     // getdate(controller.text.toLowerCase());
-
-
 
                     // Api.mantsearch("ท");
 
@@ -249,16 +240,13 @@ _listPageModel
         // scrollDirection: Axis.vertical,
         child: Column(
           children: [
-
             new Container(
               color: Color(0xffF47932),
               child: new Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: new Card(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(50.0))),
-
+                      borderRadius: BorderRadius.all(Radius.circular(50.0))),
                   child: new ListTile(
                     leading: new Icon(Icons.search),
                     title: new TextField(
@@ -277,20 +265,17 @@ _listPageModel
                               return htlable
                                   .contains(controller.text.toLowerCase());
                             }).toList();
-
                           });
                           setState(() {
                             listSearchHastag.clear();
                           });
 
                           getdate(controller.text.toLowerCase());
- setState(() {
+                          setState(() {
                             _listPageModel.clear();
                           });
-                          
+
                           getpage(isvalue);
-
-
                         }
                         if (controller.text.isEmpty) {
                           print("controllerวางจริง");
@@ -311,13 +296,16 @@ _listPageModel
                         }
                       },
                       onSubmitted: (text) {
-                        keyword=text;
+                        keyword = text;
                         print("กดSubmitted");
                         text = text.toLowerCase();
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => SearchList(type:"Null" ,label: keyword,)),
+                              builder: (context) => SearchList(
+                                    type: "Null",
+                                    label: keyword,
+                                  )),
                         );
                         // if (controller.text != "") {
                         //   setState(() {
@@ -349,7 +337,6 @@ _listPageModel
                           listSearchHastag.clear();
                           _searchResult.clear();
                           _listPageModel.clear();
-
                         });
 
                         // onSearchTextChanged('');
@@ -359,14 +346,20 @@ _listPageModel
                 ),
               ),
             ),
-          controller.text == ""?  new Align(
-              alignment: Alignment.bottomLeft,
-              child: new Container(
-                padding: EdgeInsets.all(10),
-              color: Colors.white,
-              child: Text("เทรนสำหรับคุณ",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
-            ),
-            ):Container(),
+            controller.text == ""
+                ? new Align(
+                    alignment: Alignment.bottomLeft,
+                    child: new Container(
+                      padding: EdgeInsets.all(10),
+                      color: Colors.white,
+                      child: Text(
+                        "เทรนสำหรับคุณ",
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  )
+                : Container(),
             controller.text == ""
                 ? Builder(builder: (BuildContext context) {
                     return ListView.builder(
@@ -375,34 +368,40 @@ _listPageModel
                       scrollDirection: Axis.vertical,
                       itemCount: 5,
                       itemBuilder: (context, index) {
-                       if(_searchinitiResult.length==0) {
-                         return CupertinoActivityIndicator();
-                       }
+                        if (_searchinitiResult.length == 0) {
+                          return CupertinoActivityIndicator();
+                        }
                         var data = _searchinitiResult[index];
-                           var istype = data.type;
+                        var istype = data.type;
                         var islabel = data.label;
-                        return new  InkWell(
-                          onTap: (){
-                             Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SearchList(type:istype ,label: islabel,)),
-                              );
+                        return new InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SearchList(
+                                        type: istype,
+                                        label: islabel,
+                                      )),
+                            );
                           },
-                          
-                          child: Column(children: [
-                          
-                            ListTile(
-                            // leading: new CircleAvatar(
-                            //   backgroundImage: new NetworkImage(
-                            //     _userDetails[index].profileUrl,
-                            //   ),
-                            // ),
-                            title: new Text(data.label),
-                            // subtitle: new Text(data.type.toString()),
+                          child: Column(
+                            children: [
+                              ListTile(
+                                // leading: new CircleAvatar(
+                                //   backgroundImage: new NetworkImage(
+                                //     _userDetails[index].profileUrl,
+                                //   ),
+                                // ),
+                                title: new Text(data.label),
+                                // subtitle: new Text(data.type.toString()),
+                              ),
+                              Divider(
+                                height: 2,
+                              ),
+                            ],
                           ),
-                          Divider(height: 2,),
-                          ],),);
+                        );
                       },
                     );
                   })
@@ -418,9 +417,9 @@ _listPageModel
                         var data = listSearchHastag[i];
                         var istype = data.type;
                         var islabel = data.label;
-                        isType=data.type;
-                        if(isType=="PAGE"){
-                        isvalue= data.value;
+                        isType = data.type;
+                        if (isType == "PAGE") {
+                          isvalue = data.value;
                         }
                         print('isty$isType');
                         print("isva$isvalue");
@@ -430,22 +429,28 @@ _listPageModel
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => SearchList(type:istype ,label: islabel,)),
+                                    builder: (context) => SearchList(
+                                          type: istype,
+                                          label: islabel,
+                                        )),
                               );
                             }
                             if (istype == "PAGE") {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => SearchList(type:istype ,label: islabel,)),
+                                    builder: (context) => SearchList(
+                                          type: istype,
+                                          label: islabel,
+                                        )),
                               );
                             }
                           },
                           child: Card(
                             shape: RoundedRectangleBorder(
                                 borderRadius: const BorderRadius.all(
-                                  Radius.circular(15.0),
-                                )),
+                              Radius.circular(15.0),
+                            )),
                             child: new ListTile(
                               // leading: new CircleAvatar(
                               //   backgroundImage: new NetworkImage(
@@ -462,43 +467,48 @@ _listPageModel
                     );
                   })
                 : Container(),
-             listSearchHastag.length != 0 || controller.text != ""
-                ?  ListView.builder(
-              physics: ClampingScrollPhysics(),
-              shrinkWrap: true,
-              scrollDirection: Axis.vertical,
-              itemCount: _listPageModel.length,
-              itemBuilder: (BuildContext context, int index) {
-                var data =_listPageModel[index];
-                return new InkWell(
-                  onTap: () {
-                    Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ProfilessScreen(id: data.id,image: data.imageUrl,name: data.name,)),
-                              );
-                  },
-                  child: Card(
-                    child: new ListTile(
-                      leading: new CircleAvatar(
-        child: Container(
-          color: Colors.white,
-          child: Image.network(
-              "https://today-api.moveforwardparty.org/api${data.imageUrl}/image"),
-        ),
-      ),
-                      title: new Text('ค้นหา=>>>${data.name}'),
-                      subtitle: new Text('@${data.pageUsername}"${data.id}"'),
-                    ),
-                    margin: const EdgeInsets.all(0.0),
-                  ),
-                );
-              },
-            ): Container(),
+            listSearchHastag.length != 0 || controller.text != ""
+                ? ListView.builder(
+                    physics: ClampingScrollPhysics(),
+                    shrinkWrap: true,
+                    scrollDirection: Axis.vertical,
+                    itemCount: _listPageModel.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      var data = _listPageModel[index];
+                      return new InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ProfilessScreen(
+                                      id: data.id,
+                                      image: data.imageUrl,
+                                      name: data.name,
+                                    )),
+                          );
+                        },
+                        child: Card(
+                          child: new ListTile(
+                            leading: new CircleAvatar(
+                              child: Container(
+                                color: Colors.white,
+                                child: Image.network(
+                                    "https://today-api.moveforwardparty.org/api${data.imageUrl}/image"),
+                              ),
+                            ),
+                            title: new Text('ค้นหา=>>>${data.name}'),
+                            subtitle:
+                                new Text('@${data.pageUsername}"${data.id}"'),
+                          ),
+                          margin: const EdgeInsets.all(0.0),
+                        ),
+                      );
+                    },
+                  )
+                : Container(),
           ],
         ),
       ),
-     
     );
   }
 

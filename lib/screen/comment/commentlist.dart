@@ -119,18 +119,19 @@ class _CommentListState extends State<CommentList> {
       }
     }
   }
-   Future deletecomment(
+
+  Future deletecomment(
       String postid, String mytoken, String commentid, String myuid) async {
     print('sendcomment');
 
-    var url = "https://today-api.moveforwardparty.org/api/post/$postid/comment/$commentid";
+    var url =
+        "https://today-api.moveforwardparty.org/api/post/$postid/comment/$commentid";
     final headers = {
       "userid": myuid,
       "content-type": "application/json",
       "accept": "application/json",
       "authorization": "Bearer $mytoken",
     };
-  
 
     final responseData = await Http.delete(
       url,
@@ -149,7 +150,6 @@ class _CommentListState extends State<CommentList> {
     }
   }
 
-
   Widget _buildCommentList(Size size) {
     return StreamBuilder(
       stream: _postsController.stream,
@@ -164,192 +164,228 @@ class _CommentListState extends State<CommentList> {
             var commentid = data.id;
 
             return new InkWell(
-              onTap: () {
-                print("=>>>>>${data.id}");
-                showCupertinoModalPopup<void>(
-              context: context,
-              builder: (BuildContext context) => CupertinoActionSheet(
-                // title: const Text('Title'),
-                // message: const Text('Message'),
-                actions: <CupertinoActionSheetAction>[
-                  CupertinoActionSheetAction(
-                    child: const Text('Edit'),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  CupertinoActionSheetAction(
-                    child: const Text('Delete',style: TextStyle(color: Colors.red,)),
-                    onPressed: () {
-                       Navigator.pop(context);
-                     showDialog(
-      context: context,
-      builder: (BuildContext context) => new CupertinoAlertDialog(
-            title: new Text("Delete Comment",style: TextStyle(fontWeight: FontWeight.bold),),
-            content: new Text("My alert message"),
-            actions: [
-              CupertinoDialogAction(
-                  isDefaultAction: true,  child: new Text("Cancel"),onPressed: ()=> Navigator.pop(context),),
-                  CupertinoDialogAction(
-                  child: new Text("Delete",style: TextStyle(color: Colors.red),)
-                  ,onPressed:  ()async{
-deletecomment(widget.postid, mytoken, commentid, widget.myuid);
- Navigator.pop(context);
-                  }),
-            ],
-          ));
-                    },
-                  )
-                ],
-                cancelButton: CupertinoActionSheetAction(
-                    child: const Text('Cancel'),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-              ));
-              },
-              child: Padding(
-      padding: EdgeInsets.all(8.0),
-      // widget.data['toCommentID'] == null ? EdgeInsets.all(8.0) : EdgeInsets.fromLTRB(34.0,8.0,8.0,8.0),
-      child: Stack(
-        children: <Widget>[
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.fromLTRB(6.0,2.0,10.0,2.0),
-                child: Container(
-                    width: 48,
-                    // widget.data['toCommentID'] == null ? 48 : 40,
-                    height: 48,
-                    // widget.data['toCommentID'] == null ? 48 : 40,
-                    child: CachedNetworkImage(
-                    imageUrl:
-                        "https://today-api.moveforwardparty.org/api${data.user.imageUrl}/image",
-                    placeholder: (context, url) =>
-                        new CupertinoActivityIndicator(),
-                    errorWidget: (context, url, error) =>
-                        new Image.asset('images/persoud11.jpg'),
-                  ), 
-                    
-                    // Image.network(
-                    //         "https://today-api.moveforwardparty.org/api${data.user.imageUrl}/image"),
-                      
-                    
-                ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
+                onTap: () {
+                  print("=>>>>>${data.id}");
+                  showCupertinoModalPopup<void>(
+                      context: context,
+                      builder: (BuildContext context) => CupertinoActionSheet(
+                            // title: const Text('Title'),
+                            // message: const Text('Message'),
+                            actions: <CupertinoActionSheetAction>[
+                              CupertinoActionSheetAction(
+                                child: const Text('Edit'),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              CupertinoActionSheetAction(
+                                child: const Text('Delete',
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                    )),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          new CupertinoAlertDialog(
+                                            title: new Text(
+                                              "Delete Comment",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            content:
+                                                new Text("My alert message"),
+                                            actions: [
+                                              CupertinoDialogAction(
+                                                isDefaultAction: true,
+                                                child: new Text("Cancel"),
+                                                onPressed: () =>
+                                                    Navigator.pop(context),
+                                              ),
+                                              CupertinoDialogAction(
+                                                  child: new Text(
+                                                    "Delete",
+                                                    style: TextStyle(
+                                                        color: Colors.red),
+                                                  ),
+                                                  onPressed: () async {
+                                                    deletecomment(
+                                                        widget.postid,
+                                                        mytoken,
+                                                        commentid,
+                                                        widget.myuid);
+                                                    Navigator.pop(context);
+                                                  }),
+                                            ],
+                                          ));
+                                },
+                              )
+                            ],
+                            cancelButton: CupertinoActionSheetAction(
+                              child: const Text('Cancel'),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ));
+                },
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  // widget.data['toCommentID'] == null ? EdgeInsets.all(8.0) : EdgeInsets.fromLTRB(34.0,8.0,8.0,8.0),
+                  child: Stack(
+                    children: <Widget>[
+                      Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: Text(data.user.displayName,style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left:4.0),
-                            child: Text(data.comment,maxLines: null,),
-                            // widget.data['toCommentID'] == null ? Text(widget.data['commentContent'],maxLines: null,) :
-                            // RichText(
-                            //   text: TextSpan(
-                            //     children: <TextSpan>[
-                            //       TextSpan(text: widget.data['toUserID'], style: TextStyle(fontWeight: FontWeight.bold,color: Colors.blue[800])),
-                            //       TextSpan(text: Utils.commentWithoutReplyUser(widget.data['commentContent']), style: TextStyle(color:Colors.black)),
-                            //     ],
-                            //   ),
-                            // ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    width:size.width -90,
-                    // widget.size.width- (widget.data['toCommentID'] == null ? 90 : 110),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(15.0)
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left:8.0,top: 4.0),
-                    child: Container(
-                      width: size.width * 0.38,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          Text(Utils.readTimestamp(data.createdDate.millisecondsSinceEpoch)),
-                          GestureDetector(
-                              // onTap: () => _updateLikeCount(_currentMyData.myLikeCommnetList != null && _currentMyData.myLikeCommnetList.contains(widget.data['commentID']) ? true : false),
-                              child: Text('Like',
-                                                                style:TextStyle(fontWeight: FontWeight.bold,color: Colors.grey[700]),
+                            padding:
+                                const EdgeInsets.fromLTRB(6.0, 2.0, 10.0, 2.0),
+                            child: Container(
+                              width: 48,
+                              // widget.data['toCommentID'] == null ? 48 : 40,
+                              height: 48,
+                              // widget.data['toCommentID'] == null ? 48 : 40,
+                              child: CachedNetworkImage(
+                                imageUrl:
+                                    "https://today-api.moveforwardparty.org/api${data.user.imageUrl}/image",
+                                placeholder: (context, url) =>
+                                    new CupertinoActivityIndicator(),
+                                errorWidget: (context, url, error) =>
+                                    new Image.asset('images/persoud11.jpg'),
+                              ),
 
-                                  // style:TextStyle(fontWeight: FontWeight.bold,color:_currentMyData.myLikeCommnetList != null && _currentMyData.myLikeCommnetList.contains(widget.data['commentID']) ? Colors.blue[900] : Colors.grey[700])
+                              // Image.network(
+                              //         "https://today-api.moveforwardparty.org/api${data.user.imageUrl}/image"),
+                            ),
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: const EdgeInsets.all(4.0),
+                                        child: Text(
+                                          data.user.displayName,
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 4.0),
+                                        child: Text(
+                                          data.comment,
+                                          maxLines: null,
+                                        ),
+                                        // widget.data['toCommentID'] == null ? Text(widget.data['commentContent'],maxLines: null,) :
+                                        // RichText(
+                                        //   text: TextSpan(
+                                        //     children: <TextSpan>[
+                                        //       TextSpan(text: widget.data['toUserID'], style: TextStyle(fontWeight: FontWeight.bold,color: Colors.blue[800])),
+                                        //       TextSpan(text: Utils.commentWithoutReplyUser(widget.data['commentContent']), style: TextStyle(color:Colors.black)),
+                                        //     ],
+                                        //   ),
+                                        // ),
+                                      ),
+                                    ],
                                   ),
-                          ),
-                          GestureDetector(
-                              onTap: (){
-                                // widget.replyComment([widget.data['userName'],widget.data['commentID'],widget.data['FCMToken']]);
+                                ),
+                                width: size.width - 90,
+                                // widget.size.width- (widget.data['toCommentID'] == null ? 90 : 110),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15.0)),
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 8.0, top: 4.0),
+                                child: Container(
+                                  width: size.width * 0.38,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: <Widget>[
+                                      Text(Utils.readTimestamp(data
+                                          .createdDate.millisecondsSinceEpoch)),
+                                      GestureDetector(
+                                        // onTap: () => _updateLikeCount(_currentMyData.myLikeCommnetList != null && _currentMyData.myLikeCommnetList.contains(widget.data['commentID']) ? true : false),
+                                        child: Text(
+                                          'Like',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.grey[700]),
+
+                                          // style:TextStyle(fontWeight: FontWeight.bold,color:_currentMyData.myLikeCommnetList != null && _currentMyData.myLikeCommnetList.contains(widget.data['commentID']) ? Colors.blue[900] : Colors.grey[700])
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                          onTap: () {
+                                            // widget.replyComment([widget.data['userName'],widget.data['commentID'],widget.data['FCMToken']]);
 //                                _replyComment(widget.data['userName'],widget.data['commentID'],widget.data['FCMToken']);
-                                print('leave comment of commnet');
-                              },
-                              child: Text('Reply',style:TextStyle(fontWeight: FontWeight.bold,color:Colors.grey[700]))
+                                            print('leave comment of commnet');
+                                          },
+                                          child: Text('Reply',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.grey[700]))),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                    ),
+
+                      // widget.data['commentLikeCount'] > 0 ? Positioned(
+                      //   bottom: 10,
+                      //   right:0,
+                      //   child: Card(
+                      //       elevation:2.0,
+                      //       child: Padding(
+                      //         padding: const EdgeInsets.all(2.0),
+                      //         child: Row(
+                      //           children: <Widget>[
+                      //             Icon(Icons.thumb_up,size: 14,color: Colors.blue[900],),
+                      //             Text('${widget.data['commentLikeCount']}',style:TextStyle(fontSize: 14)),
+                      //           ],
+                      //         ),
+                      //       )
+                      //   ),
+                      // ) : Container(),
+                    ],
                   ),
-                ],
-              ),
-            ],
-          ),
+                )
+                // Container(
+                //   color: Colors.yellow,
+                //   child: new ListTile(
+                //                             contentPadding: EdgeInsets.all(12),
 
-          // widget.data['commentLikeCount'] > 0 ? Positioned(
-          //   bottom: 10,
-          //   right:0,
-          //   child: Card(
-          //       elevation:2.0,
-          //       child: Padding(
-          //         padding: const EdgeInsets.all(2.0),
-          //         child: Row(
-          //           children: <Widget>[
-          //             Icon(Icons.thumb_up,size: 14,color: Colors.blue[900],),
-          //             Text('${widget.data['commentLikeCount']}',style:TextStyle(fontSize: 14)),
-          //           ],
-          //         ),
-          //       )
-          //   ),
-          // ) : Container(),
-        ],
-      ),
-    )
-              // Container(
-              //   color: Colors.yellow,
-              //   child: new ListTile(
-              //                             contentPadding: EdgeInsets.all(12),
-
-                  
-              //       leading: new CircleAvatar(
-              //         child: Container(
-              //           color: Colors.white,
-              //           child: Image.network(
-              //               "https://today-api.moveforwardparty.org/api${data.user.imageUrl}/image"),
-              //         ),
-              //       ),
-              //       title: new Text('${data.user.displayName}""'),
-              //       subtitle: new Text(
-              //         '${data.comment}',
-              //         style: TextStyle(fontSize: 16, color: Colors.black),
-              //       ),
-              //     ),
-              // ),
-            );
+                //       leading: new CircleAvatar(
+                //         child: Container(
+                //           color: Colors.white,
+                //           child: Image.network(
+                //               "https://today-api.moveforwardparty.org/api${data.user.imageUrl}/image"),
+                //         ),
+                //       ),
+                //       title: new Text('${data.user.displayName}""'),
+                //       subtitle: new Text(
+                //         '${data.comment}',
+                //         style: TextStyle(fontSize: 16, color: Colors.black),
+                //       ),
+                //     ),
+                // ),
+                );
           },
         );
       },
@@ -395,7 +431,7 @@ deletecomment(widget.postid, mytoken, commentid, widget.myuid);
 
   @override
   Widget build(BuildContext context) {
-        final size = MediaQuery.of(context).size;
+    final size = MediaQuery.of(context).size;
 
     if (onref == true) {
       _handleRefresh();
@@ -420,7 +456,7 @@ deletecomment(widget.postid, mytoken, commentid, widget.myuid);
                 ),
               ),
               Expanded(
-                child:  _buildCommentList(size),
+                child: _buildCommentList(size),
               ),
               TextFormField(
                 controller: _commentController,

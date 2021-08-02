@@ -108,6 +108,14 @@ class Api {
 
     return responseData;
   }
+     static Future<Http.Response> getPostsectionModelsEventsList() async {
+   print('getHashtagList');
+      final responseData = await Http.get(
+        "https://today-api.moveforwardparty.org/api/main/content");
+        print(responseData.body);
+
+    return responseData;
+  }
 
   static List<PostListSS> parsePost(String responseBody) {
     var list = jsonDecode(responseBody) as List<dynamic>;
@@ -231,7 +239,7 @@ class Api {
     return responseData;
   }
 
-  static Future<Http.Response> apisearchlist(String keyword,String hashtag) async {
+  static Future<Http.Response> apisearchlist(String keyword,String hashtag,int offset) async {
     print('getHashtagList');
     var url = "https://today-api.moveforwardparty.org/api/main/content/search";
     final headers = {
@@ -246,7 +254,7 @@ class Api {
       "objective": "",
       "pageCategories": [],
       "sortBy": "LASTEST_DATE",
-      "filter": {"limit": 0, "offset": 0}
+      "filter": {"limit": 5, "offset": offset}
     };
     var body = jsonEncode(data);
 
@@ -342,6 +350,62 @@ class Api {
     );
     print('body$body');
     print('responseupdataimage${responseData.body}');
+
+    return responseData;
+  }
+
+  static Future<Http.Response> repost(String postid,String uid, String token) async {
+    print('repost');
+    var url = "https://today-api.moveforwardparty.org/api/post/$postid/repost";
+    final headers = {
+      "userid": uid,
+      "authorization": "Bearer $token",
+            "content-type":"application/json",
+            "accept":"application/json"
+      // "whereConditions": {"isHideStory": false},
+    };
+    Map data = {
+   "pageId":null
+     
+    };
+
+    var body = jsonEncode(data);
+
+    final responseData = await Http.post(
+      url,
+      headers: headers,
+      body: body,
+    );
+    print('body$body');
+    print('repost${responseData.body}');
+
+    return responseData;
+  }
+  static Future<Http.Response> repostwithdetail(String postid,String uid, String token,String detail) async {
+    print('repostwithdetail');
+    var url = "https://today-api.moveforwardparty.org/api/post/$postid/repost";
+    final headers = {
+      "userid": uid,
+      "authorization": "Bearer $token",
+            "content-type":"application/json",
+            "accept":"application/json"
+      // "whereConditions": {"isHideStory": false},
+    };
+    Map data = {
+   "pageId":null,
+   "detail":detail
+     
+    };
+
+    var body = jsonEncode(data);
+
+    final responseData = await Http.post(
+      url,
+      headers: headers,
+      body: body,
+    );
+    print('body$body');
+    print('repost${responseData.body}');
 
     return responseData;
   }

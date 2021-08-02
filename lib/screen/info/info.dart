@@ -313,6 +313,8 @@ class _InfoState extends State<Info> {
           body: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+
               children: <Widget>[
                 Container(
                   color: Color(0xffF47932),
@@ -365,8 +367,9 @@ class _InfoState extends State<Info> {
                 ),
 
                 Container(
+                                          padding: EdgeInsets.all(2),
+
                   // width: double.infinity,
-                  color: Colors.white,
                   child: categorySSname == null
                       ? Text('Lable',
                           style: TextStyle(
@@ -400,6 +403,7 @@ class _InfoState extends State<Info> {
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: listProfileSSModel.length,
+                        padding: EdgeInsets.all(2),
                         itemBuilder: ((
                           BuildContext context,
                           int index,
@@ -415,8 +419,9 @@ class _InfoState extends State<Info> {
                 ),
 
                 Container(
+                                          padding: EdgeInsets.all(2),
+
                   // width: double.infinity,
-                  color: Colors.white,
                   child: categorySSname1 == null
                       ? Text('Lable',
                           style: TextStyle(
@@ -450,6 +455,8 @@ class _InfoState extends State<Info> {
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: listProfileSSModel1.length,
+                                                padding: EdgeInsets.all(2),
+
                         itemBuilder: ((
                           BuildContext context,
                           int index,
@@ -464,8 +471,9 @@ class _InfoState extends State<Info> {
                   }),
                 ),
                 Container(
+                                          padding: EdgeInsets.all(2),
+
                   // width: double.infinity,
-                  color: Colors.white,
                   child: categorySSname2 == null
                       ? Text('Lable',
                           style: TextStyle(
@@ -499,6 +507,8 @@ class _InfoState extends State<Info> {
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: listProfileSSModel2.length,
+                                                padding: EdgeInsets.all(2),
+
                         itemBuilder: ((
                           BuildContext context,
                           int index,
@@ -513,8 +523,9 @@ class _InfoState extends State<Info> {
                   }),
                 ),
                  Container(
+                                           padding: EdgeInsets.all(2),
+
                   // width: double.infinity,
-                  color: Colors.white,
                   child: categorySSname3 == null
                       ? Text('Lable',
                           style: TextStyle(
@@ -548,6 +559,8 @@ class _InfoState extends State<Info> {
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: listProfileSSModel3.length,
+                                                padding: EdgeInsets.all(2),
+
                         itemBuilder: ((
                           BuildContext context,
                           int index,
@@ -562,8 +575,9 @@ class _InfoState extends State<Info> {
                   }),
                 ),
                  Container(
+                                           padding: EdgeInsets.all(2),
+
                   // width: double.infinity,
-                  color: Colors.white,
                   child: categorySSname4 == null
                       ? Text('Lable',
                           style: TextStyle(
@@ -597,6 +611,8 @@ class _InfoState extends State<Info> {
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: listProfileSSModel4.length,
+                                                padding: EdgeInsets.all(2),
+
                         itemBuilder: ((
                           BuildContext context,
                           int index,
@@ -611,8 +627,9 @@ class _InfoState extends State<Info> {
                   }),
                 ),
                  Container(
+                                           padding: EdgeInsets.all(2),
+
                   // width: double.infinity,
-                  color: Colors.white,
                   child: categorySSname5 == null
                       ? Text('Lable',
                           style: TextStyle(
@@ -646,6 +663,8 @@ class _InfoState extends State<Info> {
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: listProfileSSModel5.length,
+                                                padding: EdgeInsets.all(2),
+
                         itemBuilder: ((
                           BuildContext context,
                           int index,
@@ -660,8 +679,9 @@ class _InfoState extends State<Info> {
                   }),
                 ),
                  Container(
+                                           padding: EdgeInsets.all(2),
+
                   // width: double.infinity,
-                  color: Colors.white,
                   child: categorySSname6 == null
                       ? Text('Lable',
                           style: TextStyle(
@@ -695,6 +715,8 @@ class _InfoState extends State<Info> {
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: listProfileSSModel6.length,
+                                                padding: EdgeInsets.all(2),
+
                         itemBuilder: ((
                           BuildContext context,
                           int index,
@@ -709,8 +731,9 @@ class _InfoState extends State<Info> {
                   }),
                 ),
                  Container(
+                                           padding: EdgeInsets.all(2),
+
                   // width: double.infinity,
-                  color: Colors.white,
                   child: categorySSname7 == null
                       ? Text('Lable',
                           style: TextStyle(
@@ -744,6 +767,8 @@ class _InfoState extends State<Info> {
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: listProfileSSModel7.length,
+                                                padding: EdgeInsets.all(2),
+
                         itemBuilder: ((
                           BuildContext context,
                           int index,
@@ -758,8 +783,9 @@ class _InfoState extends State<Info> {
                   }),
                 ),
                  Container(
+                                           padding: EdgeInsets.all(2),
+
                   // width: double.infinity,
-                  color: Colors.white,
                   child: categorySSname8 == null
                       ? Text('Lable',
                           style: TextStyle(
@@ -793,6 +819,8 @@ class _InfoState extends State<Info> {
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: listProfileSSModel8.length,
+                                                padding: EdgeInsets.all(2),
+
                         itemBuilder: ((
                           BuildContext context,
                           int index,
@@ -807,8 +835,9 @@ class _InfoState extends State<Info> {
                   }),
                 ),
                  Container(
+                                           padding: EdgeInsets.all(2),
+
                   // width: double.infinity,
-                  color: Colors.white,
                   child: categorySSname9 == null
                       ? Text('Lable',
                           style: TextStyle(
@@ -842,6 +871,8 @@ class _InfoState extends State<Info> {
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: listProfileSSModel9.length,
+                                                padding: EdgeInsets.all(2),
+
                         itemBuilder: ((
                           BuildContext context,
                           int index,
@@ -856,8 +887,9 @@ class _InfoState extends State<Info> {
                   }),
                 ),
                  Container(
+                                           padding: EdgeInsets.all(2),
+
                   // width: double.infinity,
-                  color: Colors.white,
                   child: categorySSname10== null
                       ? Text('Lable',
                           style: TextStyle(
@@ -891,6 +923,8 @@ class _InfoState extends State<Info> {
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: listProfileSSModel10.length,
+                                                padding: EdgeInsets.all(2),
+
                         itemBuilder: ((
                           BuildContext context,
                           int index,
@@ -905,8 +939,9 @@ class _InfoState extends State<Info> {
                   }),
                 ),
                  Container(
+                                           padding: EdgeInsets.all(2),
+
                   // width: double.infinity,
-                  color: Colors.white,
                   child: categorySSname11 == null
                       ? Text('Lable',
                           style: TextStyle(
@@ -940,6 +975,8 @@ class _InfoState extends State<Info> {
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: listProfileSSModel11.length,
+                                                padding: EdgeInsets.all(2),
+
                         itemBuilder: ((
                           BuildContext context,
                           int index,
@@ -954,8 +991,9 @@ class _InfoState extends State<Info> {
                   }),
                 ),
                  Container(
+                                           padding: EdgeInsets.all(2),
+
                   // width: double.infinity,
-                  color: Colors.white,
                   child: categorySSname12 == null
                       ? Text('Lable',
                           style: TextStyle(
@@ -989,6 +1027,8 @@ class _InfoState extends State<Info> {
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: listProfileSSModel12.length,
+                                                padding: EdgeInsets.all(2),
+
                         itemBuilder: ((
                           BuildContext context,
                           int index,
@@ -1003,8 +1043,9 @@ class _InfoState extends State<Info> {
                   }),
                 ),
                  Container(
+                                           padding: EdgeInsets.all(2),
+
                   // width: double.infinity,
-                  color: Colors.white,
                   child: categorySSname13 == null
                       ? Text('Lable',
                           style: TextStyle(
@@ -1038,6 +1079,8 @@ class _InfoState extends State<Info> {
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: listProfileSSModel13.length,
+                                                padding: EdgeInsets.all(2),
+
                         itemBuilder: ((
                           BuildContext context,
                           int index,
@@ -1052,8 +1095,9 @@ class _InfoState extends State<Info> {
                   }),
                 ),
                  Container(
+                                           padding: EdgeInsets.all(2),
+
                   // width: double.infinity,
-                  color: Colors.white,
                   child: categorySSname14 == null
                       ? Text('Lable',
                           style: TextStyle(
@@ -1087,6 +1131,8 @@ class _InfoState extends State<Info> {
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: listProfileSSModel14.length,
+                                                padding: EdgeInsets.all(2),
+
                         itemBuilder: ((
                           BuildContext context,
                           int index,
@@ -1101,8 +1147,9 @@ class _InfoState extends State<Info> {
                   }),
                 ),
                  Container(
+                                           padding: EdgeInsets.all(2),
+
                   // width: double.infinity,
-                  color: Colors.white,
                   child: categorySSname15 == null
                       ? Text('Lable',
                           style: TextStyle(
@@ -1136,6 +1183,8 @@ class _InfoState extends State<Info> {
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: listProfileSSModel15.length,
+                                                padding: EdgeInsets.all(2),
+
                         itemBuilder: ((
                           BuildContext context,
                           int index,
