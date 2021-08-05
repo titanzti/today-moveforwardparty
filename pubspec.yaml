@@ -35,13 +35,8 @@ dependencies:
   google_fonts: ^1.1.1
   flutter_icons: ^1.1.0
   flutter_svg: ^0.19.1
-  animate_do: ^1.7.5
   flutter_staggered_grid_view: ^0.3.3
-  animated_widgets: ^1.0.6
-  simple_animations: ^2.4.2
   provider: ^4.3.2+3
-  animate_icons: ^1.0.0
-  dio: ^3.0.10
   json_annotation: ^3.0.1
   cached_network_image: ^2.5.0
   shared_preferences: ^0.5.12+4
@@ -59,7 +54,8 @@ dependencies:
   rflutter_alert: ^1.1.0
   settings_ui: ^0.6.0
   image_picker: ^0.6.6+5
-  flutter_native_splash: ^0.3.2
+  url_launcher: ^5.7.10
+
 
 
 

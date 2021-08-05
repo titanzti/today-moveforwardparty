@@ -6,7 +6,6 @@ import 'package:appmove/model/searchhastag.dart';
 import 'package:appmove/screen/home/searchList.dart';
 import 'package:appmove/utils/internetConnectivity.dart';
 import 'package:appmove/widgets/allWidgets.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -36,6 +35,8 @@ class _SearchbarState extends State<Searchbar> {
   List _resultsList = [];
   List distinctIds = [];
   var keyword, isType, isvalue;
+
+  var myuid;
   @override
   void dispose() {
     controller.dispose();
@@ -150,7 +151,13 @@ class _SearchbarState extends State<Searchbar> {
                     // Api.mantsearch("ท");
 
                     // getHashtagList =
-                    Api.mantinitisearch().then((responseData) => ({
+                      Api.getmyuid().then((value) => ({
+                          setState(() {
+                            myuid = value;
+                          }),
+                          print('myuidhome$myuid'),
+                        }));
+                    Api.mantinitisearch(myuid).then((responseData) => ({
                           setState(() {
                             loading = true;
                           }),

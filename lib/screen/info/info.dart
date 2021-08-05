@@ -18,7 +18,6 @@ class Info extends StatefulWidget {
   _InfoState createState() => _InfoState();
 }
 
-
 var cardAspectRatio = 12.0 / 16.0;
 var widgetAspectRatio = cardAspectRatio * 1.2;
 
@@ -123,7 +122,6 @@ class _InfoState extends State<Info> {
         print("Response status :${jsonResponse.statusCode}");
         // print("Response status :${jsonResponse.body}");
       }
-
     } catch (e) {}
   }
 
@@ -168,56 +166,54 @@ class _InfoState extends State<Info> {
               listProfileSSModel3.add(ProfileSS.fromJson(i));
               print(listProfileSSModel1.length);
             }
-             if (category == "6030af866aae4b0a2c5e9d07") {
+            if (category == "6030af866aae4b0a2c5e9d07") {
               listProfileSSModel4.add(ProfileSS.fromJson(i));
               print(listProfileSSModel1.length);
             }
-             if (category == "6030b0436aae4b0a2c5e9d09") {
+            if (category == "6030b0436aae4b0a2c5e9d09") {
               listProfileSSModel5.add(ProfileSS.fromJson(i));
               print(listProfileSSModel1.length);
             }
-              if (category == "6030b06e6aae4b0a2c5e9d0b") {
+            if (category == "6030b06e6aae4b0a2c5e9d0b") {
               listProfileSSModel6.add(ProfileSS.fromJson(i));
               print(listProfileSSModel1.length);
             }
-               if (category == "6030b07c6aae4b0a2c5e9d0d") {
+            if (category == "6030b07c6aae4b0a2c5e9d0d") {
               listProfileSSModel7.add(ProfileSS.fromJson(i));
               print(listProfileSSModel1.length);
             }
-               if (category == "60347e1fe1e737658b221284") {
+            if (category == "60347e1fe1e737658b221284") {
               listProfileSSModel8.add(ProfileSS.fromJson(i));
               print(listProfileSSModel1.length);
             }
-               if (category == "60d97dc0bee307079d19faf5") {
+            if (category == "60d97dc0bee307079d19faf5") {
               listProfileSSModel9.add(ProfileSS.fromJson(i));
               print(listProfileSSModel1.length);
             }
-                if (category == "60d97e13bee307079d19faf8") {
+            if (category == "60d97e13bee307079d19faf8") {
               listProfileSSModel10.add(ProfileSS.fromJson(i));
               print(listProfileSSModel1.length);
             }
-                if (category == "60d97e95bee307079d19fb05") {
+            if (category == "60d97e95bee307079d19fb05") {
               listProfileSSModel11.add(ProfileSS.fromJson(i));
               print(listProfileSSModel1.length);
             }
-                if (category == "60d97f1abee307079d19fb12") {
+            if (category == "60d97f1abee307079d19fb12") {
               listProfileSSModel12.add(ProfileSS.fromJson(i));
               print(listProfileSSModel1.length);
             }
-              if (category == "60d97f61bee307079d19fb15") {
+            if (category == "60d97f61bee307079d19fb15") {
               listProfileSSModel13.add(ProfileSS.fromJson(i));
               print(listProfileSSModel1.length);
             }
-              if (category == "60d97ff0d9b235079c055102") {
+            if (category == "60d97ff0d9b235079c055102") {
               listProfileSSModel14.add(ProfileSS.fromJson(i));
               print(listProfileSSModel1.length);
             }
-              if (category == "60d9802dbee307079d19fb18") {
+            if (category == "60d9802dbee307079d19fb18") {
               listProfileSSModel15.add(ProfileSS.fromJson(i));
               print(listProfileSSModel1.length);
             }
-
-
           }
         });
 
@@ -314,7 +310,6 @@ class _InfoState extends State<Info> {
             scrollDirection: Axis.vertical,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-
               children: <Widget>[
                 Container(
                   color: Color(0xffF47932),
@@ -331,33 +326,24 @@ class _InfoState extends State<Info> {
                               fontWeight: FontWeight.bold,
                               letterSpacing: 1.0,
                             )),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => InfoDeltil()),
-                            );
-                          },
-                          child: Container(
-                            // width: 60,
-                            // height: 25,
-                            // decoration: BoxDecoration(
-                            //   color: Colors.white.withOpacity(0.5),
-                            //   borderRadius:
-                            //       BorderRadius.all(Radius.circular(8)),
-                            // ),
-                            // width: double.infinity,
-
-                            child: Text('ดูเพิ่มเติม',
-                                style: TextStyle(
-                                  color: Color(0xff0C3455),
-                                  fontSize: 14.0,
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 1.0,
-                                )),
-                          ),
-                        ),
+                        // InkWell(
+                        //   onTap: () {
+                        //     Navigator.push(
+                        //       context,
+                        //       MaterialPageRoute(
+                        //           builder: (context) => InfoDeltil()),
+                        //     );
+                        //   },
+                        //   child: Container(
+                        //     child: Text('ดูเพิ่มเติม',
+                        //         style: TextStyle(
+                        //           color: Color(0xff0C3455),
+                        //           fontSize: 14.0,
+                        //           fontWeight: FontWeight.bold,
+                        //           letterSpacing: 1.0,
+                        //         )),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),
@@ -365,9 +351,8 @@ class _InfoState extends State<Info> {
                 SizedBox(
                   height: 10,
                 ),
-
                 Container(
-                                          padding: EdgeInsets.all(2),
+                  padding: EdgeInsets.all(2),
 
                   // width: double.infinity,
                   child: categorySSname == null
@@ -417,9 +402,8 @@ class _InfoState extends State<Info> {
                     );
                   }),
                 ),
-
                 Container(
-                                          padding: EdgeInsets.all(2),
+                  padding: EdgeInsets.all(2),
 
                   // width: double.infinity,
                   child: categorySSname1 == null
@@ -455,8 +439,7 @@ class _InfoState extends State<Info> {
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: listProfileSSModel1.length,
-                                                padding: EdgeInsets.all(2),
-
+                        padding: EdgeInsets.all(2),
                         itemBuilder: ((
                           BuildContext context,
                           int index,
@@ -471,7 +454,7 @@ class _InfoState extends State<Info> {
                   }),
                 ),
                 Container(
-                                          padding: EdgeInsets.all(2),
+                  padding: EdgeInsets.all(2),
 
                   // width: double.infinity,
                   child: categorySSname2 == null
@@ -507,8 +490,7 @@ class _InfoState extends State<Info> {
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: listProfileSSModel2.length,
-                                                padding: EdgeInsets.all(2),
-
+                        padding: EdgeInsets.all(2),
                         itemBuilder: ((
                           BuildContext context,
                           int index,
@@ -522,8 +504,8 @@ class _InfoState extends State<Info> {
                     );
                   }),
                 ),
-                 Container(
-                                           padding: EdgeInsets.all(2),
+                Container(
+                  padding: EdgeInsets.all(2),
 
                   // width: double.infinity,
                   child: categorySSname3 == null
@@ -559,8 +541,7 @@ class _InfoState extends State<Info> {
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: listProfileSSModel3.length,
-                                                padding: EdgeInsets.all(2),
-
+                        padding: EdgeInsets.all(2),
                         itemBuilder: ((
                           BuildContext context,
                           int index,
@@ -574,8 +555,8 @@ class _InfoState extends State<Info> {
                     );
                   }),
                 ),
-                 Container(
-                                           padding: EdgeInsets.all(2),
+                Container(
+                  padding: EdgeInsets.all(2),
 
                   // width: double.infinity,
                   child: categorySSname4 == null
@@ -611,8 +592,7 @@ class _InfoState extends State<Info> {
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: listProfileSSModel4.length,
-                                                padding: EdgeInsets.all(2),
-
+                        padding: EdgeInsets.all(2),
                         itemBuilder: ((
                           BuildContext context,
                           int index,
@@ -626,8 +606,8 @@ class _InfoState extends State<Info> {
                     );
                   }),
                 ),
-                 Container(
-                                           padding: EdgeInsets.all(2),
+                Container(
+                  padding: EdgeInsets.all(2),
 
                   // width: double.infinity,
                   child: categorySSname5 == null
@@ -663,8 +643,7 @@ class _InfoState extends State<Info> {
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: listProfileSSModel5.length,
-                                                padding: EdgeInsets.all(2),
-
+                        padding: EdgeInsets.all(2),
                         itemBuilder: ((
                           BuildContext context,
                           int index,
@@ -678,8 +657,8 @@ class _InfoState extends State<Info> {
                     );
                   }),
                 ),
-                 Container(
-                                           padding: EdgeInsets.all(2),
+                Container(
+                  padding: EdgeInsets.all(2),
 
                   // width: double.infinity,
                   child: categorySSname6 == null
@@ -715,8 +694,7 @@ class _InfoState extends State<Info> {
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: listProfileSSModel6.length,
-                                                padding: EdgeInsets.all(2),
-
+                        padding: EdgeInsets.all(2),
                         itemBuilder: ((
                           BuildContext context,
                           int index,
@@ -730,8 +708,8 @@ class _InfoState extends State<Info> {
                     );
                   }),
                 ),
-                 Container(
-                                           padding: EdgeInsets.all(2),
+                Container(
+                  padding: EdgeInsets.all(2),
 
                   // width: double.infinity,
                   child: categorySSname7 == null
@@ -767,8 +745,7 @@ class _InfoState extends State<Info> {
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: listProfileSSModel7.length,
-                                                padding: EdgeInsets.all(2),
-
+                        padding: EdgeInsets.all(2),
                         itemBuilder: ((
                           BuildContext context,
                           int index,
@@ -782,8 +759,8 @@ class _InfoState extends State<Info> {
                     );
                   }),
                 ),
-                 Container(
-                                           padding: EdgeInsets.all(2),
+                Container(
+                  padding: EdgeInsets.all(2),
 
                   // width: double.infinity,
                   child: categorySSname8 == null
@@ -819,8 +796,7 @@ class _InfoState extends State<Info> {
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: listProfileSSModel8.length,
-                                                padding: EdgeInsets.all(2),
-
+                        padding: EdgeInsets.all(2),
                         itemBuilder: ((
                           BuildContext context,
                           int index,
@@ -834,8 +810,8 @@ class _InfoState extends State<Info> {
                     );
                   }),
                 ),
-                 Container(
-                                           padding: EdgeInsets.all(2),
+                Container(
+                  padding: EdgeInsets.all(2),
 
                   // width: double.infinity,
                   child: categorySSname9 == null
@@ -871,8 +847,7 @@ class _InfoState extends State<Info> {
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: listProfileSSModel9.length,
-                                                padding: EdgeInsets.all(2),
-
+                        padding: EdgeInsets.all(2),
                         itemBuilder: ((
                           BuildContext context,
                           int index,
@@ -886,11 +861,11 @@ class _InfoState extends State<Info> {
                     );
                   }),
                 ),
-                 Container(
-                                           padding: EdgeInsets.all(2),
+                Container(
+                  padding: EdgeInsets.all(2),
 
                   // width: double.infinity,
-                  child: categorySSname10== null
+                  child: categorySSname10 == null
                       ? Text('Lable',
                           style: TextStyle(
                             color: Color(0xff0C3455),
@@ -923,8 +898,7 @@ class _InfoState extends State<Info> {
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: listProfileSSModel10.length,
-                                                padding: EdgeInsets.all(2),
-
+                        padding: EdgeInsets.all(2),
                         itemBuilder: ((
                           BuildContext context,
                           int index,
@@ -938,8 +912,8 @@ class _InfoState extends State<Info> {
                     );
                   }),
                 ),
-                 Container(
-                                           padding: EdgeInsets.all(2),
+                Container(
+                  padding: EdgeInsets.all(2),
 
                   // width: double.infinity,
                   child: categorySSname11 == null
@@ -975,8 +949,7 @@ class _InfoState extends State<Info> {
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: listProfileSSModel11.length,
-                                                padding: EdgeInsets.all(2),
-
+                        padding: EdgeInsets.all(2),
                         itemBuilder: ((
                           BuildContext context,
                           int index,
@@ -990,8 +963,8 @@ class _InfoState extends State<Info> {
                     );
                   }),
                 ),
-                 Container(
-                                           padding: EdgeInsets.all(2),
+                Container(
+                  padding: EdgeInsets.all(2),
 
                   // width: double.infinity,
                   child: categorySSname12 == null
@@ -1027,8 +1000,7 @@ class _InfoState extends State<Info> {
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: listProfileSSModel12.length,
-                                                padding: EdgeInsets.all(2),
-
+                        padding: EdgeInsets.all(2),
                         itemBuilder: ((
                           BuildContext context,
                           int index,
@@ -1042,8 +1014,8 @@ class _InfoState extends State<Info> {
                     );
                   }),
                 ),
-                 Container(
-                                           padding: EdgeInsets.all(2),
+                Container(
+                  padding: EdgeInsets.all(2),
 
                   // width: double.infinity,
                   child: categorySSname13 == null
@@ -1079,8 +1051,7 @@ class _InfoState extends State<Info> {
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: listProfileSSModel13.length,
-                                                padding: EdgeInsets.all(2),
-
+                        padding: EdgeInsets.all(2),
                         itemBuilder: ((
                           BuildContext context,
                           int index,
@@ -1094,8 +1065,8 @@ class _InfoState extends State<Info> {
                     );
                   }),
                 ),
-                 Container(
-                                           padding: EdgeInsets.all(2),
+                Container(
+                  padding: EdgeInsets.all(2),
 
                   // width: double.infinity,
                   child: categorySSname14 == null
@@ -1131,8 +1102,7 @@ class _InfoState extends State<Info> {
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: listProfileSSModel14.length,
-                                                padding: EdgeInsets.all(2),
-
+                        padding: EdgeInsets.all(2),
                         itemBuilder: ((
                           BuildContext context,
                           int index,
@@ -1146,8 +1116,8 @@ class _InfoState extends State<Info> {
                     );
                   }),
                 ),
-                 Container(
-                                           padding: EdgeInsets.all(2),
+                Container(
+                  padding: EdgeInsets.all(2),
 
                   // width: double.infinity,
                   child: categorySSname15 == null
@@ -1183,8 +1153,7 @@ class _InfoState extends State<Info> {
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: listProfileSSModel15.length,
-                                                padding: EdgeInsets.all(2),
-
+                        padding: EdgeInsets.all(2),
                         itemBuilder: ((
                           BuildContext context,
                           int index,
@@ -1198,11 +1167,9 @@ class _InfoState extends State<Info> {
                     );
                   }),
                 ),
-              
               ],
             ),
           ),
-  
         ),
       ),
     );

@@ -74,7 +74,7 @@ class _LoginState extends State<Login> {
           Navigator.of(context).pushAndRemoveUntil(
               CupertinoPageRoute(
                   builder: (BuildContext context) => Appbar(
-                        istoken: mytoken,
+                        istoken: mytoken,myuid: myuid,
                       )),
               (Route<dynamic> route) => false);
           

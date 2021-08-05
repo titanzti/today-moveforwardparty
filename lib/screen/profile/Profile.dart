@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:appmove/api/Api.dart';
 import 'package:appmove/main.dart';
 import 'package:appmove/model/postModel.dart';
+import 'package:appmove/model/profilepost.dart';
 import 'package:appmove/screen/home/NavigationBar.dart';
 import 'package:appmove/screen/profile/Editprofile.dart';
 import 'package:appmove/screen/settings/settingsSc.dart';
@@ -13,12 +16,15 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'dart:convert';
 
+import 'package:url_launcher/url_launcher.dart';
+
 class Profile extends StatefulWidget {
   final String istoken;
+  final String myuid;
 
   const Profile({
     Key key,
-    this.istoken,
+    this.istoken, this.myuid,
   }) : super(key: key);
 
   @override
@@ -47,99 +53,89 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
 
   var datagetuserprofile;
 
-  // Future getuser() async {
-  //   print('getuser');
-  //   setState(() {
-  //     loading = true;
-  //   });
-  //   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  //   final storage = new FlutterSecureStorage();
+  var myuid;
 
-  //   final responseData = await http.get(
-  //       "https://today-api.moveforwardparty.org/api/check_status?token=${widget.istoken}");
-  //   if (responseData.statusCode == 200) {
-  //     final data = jsonDecode(responseData.body);
+  var dataht;
 
-  //     loading = false;
+  List<ProfilePostModel> listModel = [];
 
-  //     // print(data["data"]["postSectionModel"]["contents"]);
+  var postid;
 
-  //     // print("Response status :${data.statusCode}");
-  //     // print("Response status :${responseData.body}");
-  //     setState(() {
-  //       displayName1 = data["data"]["user"]["displayName"];
-  //       gender = data["data"]["user"]["gender"];
-  //       firstName = data["data"]["user"]["firstName"];
-  //       lastName = data["data"]["user"]["lastName"];
-  //       id = data["data"]["user"]["id"];
-  //       email = data["data"]["user"]["email"];
-  //               image = data["data"]["user"]["imageURL"];
 
-  //     });
+  var titletest;
+  
+  StreamController _postsController;
 
-  //     print('displayName1$displayName1');
-  //     print('gender$gender');
-  //     print('firstName$firstName');
-  //     print('lastName$lastName');
-  //     print('id$id');
-  //     print('email$email');
-
-  //     print('${data["data"]["user"]["username"]}');
-  //   }
-  // }
 
   @override
   void initState() {
-        print('initState');
+    print('initState');
 
     setState(() {
-      
-    Future.delayed(Duration(seconds: 1), () {
-      setState(() {
-        loading = false;
+      Future.delayed(Duration(seconds: 1), () {
+        setState(() {
+          loading = false;
+        });
       });
     });
-    // Api.gettoke().then((value) => value({
-    //       mytoken = value,
-    //     }));
-    // getuser();
+    Api.getmyuid().then((value) => ({
+          setState(() {
+            myuid = value;
+          }),
+          print('myuidhome$myuid'),
+        }));
+
+    Api.gettoke().then((value) => value({
+          mytoken = value,
+          print('mytoken$mytoken'),
+        }));
+
     Api.getuserprofile(widget.istoken).then((responseData) => ({
-      if (responseData.statusCode == 200) {
-       datagetuserprofile = jsonDecode(responseData.body),
-
-      loading = false,
-
-      // print(data["data"]["postSectionModel"]["contents"]);
-
-      // print("Response status :${data.statusCode}");
-      // print("Response status :${responseData.body}");
-      setState(() {
-        displayName1 = datagetuserprofile["data"]["user"]["displayName"];
-        gender = datagetuserprofile["data"]["user"]["gender"];
-        firstName = datagetuserprofile["data"]["user"]["firstName"];
-        lastName = datagetuserprofile["data"]["user"]["lastName"];
-        id = datagetuserprofile["data"]["user"]["id"];
-        email = datagetuserprofile["data"]["user"]["email"];
+          if (responseData.statusCode == 200)
+            {
+              datagetuserprofile = jsonDecode(responseData.body),
+              loading = false,
+              setState(() {
+                displayName1 =
+                    datagetuserprofile["data"]["user"]["displayName"];
+                gender = datagetuserprofile["data"]["user"]["gender"];
+                firstName = datagetuserprofile["data"]["user"]["firstName"];
+                lastName = datagetuserprofile["data"]["user"]["lastName"];
+                id = datagetuserprofile["data"]["user"]["id"];
+                email = datagetuserprofile["data"]["user"]["email"];
                 image = datagetuserprofile["data"]["user"]["imageURL"];
+              }),
+              print('displayName1$displayName1'),
+              print('gender$gender'),
+              print('firstName$firstName'),
+              print('lastName$lastName'),
+              print('id$id'),
+              print('email$email'),
+              print('${datagetuserprofile["data"]["user"]["username"]}'),
+            }
+        }));
 
-      }),
-
-      print('displayName1$displayName1'),
-      print('gender$gender'),
-      print('firstName$firstName'),
-      print('lastName$lastName'),
-      print('id$id'),
-      print('email$email'),
-
-      print('${datagetuserprofile["data"]["user"]["username"]}'),
-    }
-
-    }));
- 
     print('mytoken${widget.istoken}');
     scrollController = ScrollController();
-    });
+    Api.getprofilepost(widget.myuid, mytoken)
+        .then((responseData) => ({
+              print('getprofilepost'),
+              if (responseData.statusCode == 200)
+                {
+                  dataht = jsonDecode(responseData.body),
+                  for (Map i in dataht["data"]["posts"])
+                    {
+                      // postid = i["_id"],
+                      // print('postid$postid'),
+                      listModel.add(ProfilePostModel.fromJson(i)),
+                     _postsController.add(responseData),
 
+                    },
+                  loading = false,
+                }
+            }));
+               
+      _postsController = new StreamController();
 
     super.initState();
   }
@@ -222,7 +218,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
             body: SingleChildScrollView(
               controller: scrollController,
               physics: BouncingScrollPhysics(),
-              child: Stack(children: <Widget>[
+              child: Column(children: <Widget>[
                 Container(
                   color: Colors.white,
                   padding: EdgeInsets.only(left: 15, top: 10, right: 15),
@@ -233,27 +229,29 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                         child: Stack(
                           children: [
                             Text('data'),
-                           Container(
-                      padding: EdgeInsets.only(left: 15, top: 10, right: 15),
-                      width: 100,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        border: Border.all(width: 4, color: Colors.white),
-                        boxShadow: [
-                          BoxShadow(
-                            spreadRadius: 2,
-                            blurRadius: 10,
-                            color: Colors.black.withOpacity(0.1),
-                          ),
-                        ],
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                           image: new NetworkImage("https://today-api.moveforwardparty.org/api$image/image"),
-
-                        ),
-                      ),
-                    ),
+                            Container(
+                              padding:
+                                  EdgeInsets.only(left: 15, top: 10, right: 15),
+                              width: 100,
+                              height: 100,
+                              decoration: BoxDecoration(
+                                border:
+                                    Border.all(width: 4, color: Colors.white),
+                                boxShadow: [
+                                  BoxShadow(
+                                    spreadRadius: 2,
+                                    blurRadius: 10,
+                                    color: Colors.black.withOpacity(0.1),
+                                  ),
+                                ],
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: new NetworkImage(
+                                      "https://today-api.moveforwardparty.org/api$image/image"),
+                                ),
+                              ),
+                            ),
                             Positioned(
                               bottom: 0,
                               right: 0,
@@ -453,6 +451,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                                 ),
                             // color: Colors.white,
                             child: InkWell(
+                              onTap: ()=> launch("tel://21213123123"),
                               child: Image.asset('images/logophone.png'),
                             ),
                           ),
@@ -473,9 +472,92 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            SizedBox(
-                              height: 300,
-                            ),
+                           StreamBuilder(
+                         stream: _postsController.stream,
+                             builder: (BuildContext context, AsyncSnapshot snapshot) {
+                               return ListView.builder(
+                                    physics: ClampingScrollPhysics(),
+                                    shrinkWrap: true,
+                                    padding: const EdgeInsets.all(8.0),
+                                    scrollDirection: Axis.vertical,
+                                    itemCount: listModel.length,
+                                    itemBuilder: (
+                                      BuildContext context,
+                                      int index,
+                                    ) {
+                                      var data = listModel[index];
+                                      if (listModel.length == 0) {
+                                        return CupertinoActivityIndicator();
+                                      }
+                                      var mypostid = data.referencePost;
+                                      print('mypostid$mypostid');
+                                      Api.getpostsearch(widget.myuid, mytoken,mypostid)
+                               .then((responseData) => ({
+                                 print('getpostsearch'),
+                              if (responseData.statusCode == 200)
+                             {
+                                dataht = jsonDecode(responseData.body),
+                                    print('getpostsearch2${responseData.body}'),
+
+                                  for (Map i in dataht["data"])
+                                 {
+                                  titletest= i["detail"],
+                                   print('titlegetpostsearch$titletest'),
+                                     // listModel.add(ProfilePostModel.fromJson(i)),
+                                 },
+                               }
+                                  }));
+
+                                      return ListTile(
+                                          title: Text('data${data.detail}'),
+                                          subtitle: Text('data$titletest'),
+                                          );
+                                    });
+                             },
+                           ),
+                           
+                            // Builder(
+                            //   builder: (BuildContext context) {
+                            //     return ListView.builder(
+                            //         physics: ClampingScrollPhysics(),
+                            //         shrinkWrap: true,
+                            //         padding: const EdgeInsets.all(8.0),
+                            //         scrollDirection: Axis.vertical,
+                            //         itemCount: listModel.length,
+                            //         itemBuilder: (
+                            //           BuildContext context,
+                            //           int index,
+                            //         ) {
+                            //           var data = listModel[index];
+                            //           if (listModel.length == 0) {
+                            //             return CupertinoActivityIndicator();
+                            //           }
+                            //           var mypostid = data.referencePost;
+                            //           print('mypostid$mypostid');
+                            //           Api.getpostsearch(widget.myuid, mytoken,mypostid)
+                            //    .then((responseData) => ({
+                            //      print('getpostsearch'),
+                            //   if (responseData.statusCode == 200)
+                            //  {
+                            //     dataht = jsonDecode(responseData.body),
+                            //         print('getpostsearch2${responseData.body}'),
+
+                            //       for (Map i in dataht["data"])
+                            //      {
+                            //       titletest= i["detail"],
+                            //        print('titlegetpostsearch$titletest'),
+                            //          // listModel.add(ProfilePostModel.fromJson(i)),
+                            //      },
+                            //    }
+                            //       }));
+
+                            //           return ListTile(
+                            //               title: Text('data${data.detail}'),
+                            //               subtitle: Text('data$titletest'),
+                            //               );
+                            //         });
+                            //   },
+                            // ),
                           ],
                         ),
                       ),

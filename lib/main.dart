@@ -27,19 +27,19 @@ class MyApp extends StatelessWidget {
           var isloggedIn = prefs.data;
           // final bool isloginn = isloggedIn.getBool('isLoggedIn');
           final String istoken = isloggedIn.getString("token");
+                    final String mytoken = isloggedIn.getString("myuid");
+
 
           if (prefs.hasData) {
             // if (x.getString('type') == 'doctor') {
             if (istoken == null || istoken == "") {
               return MaterialApp(
                   debugShowCheckedModeBanner: false,
-                  home: Appbar(istoken: istoken));
+                  home: Appbar(istoken: istoken,myuid: mytoken,));
             } else {
               return MaterialApp(
                   debugShowCheckedModeBanner: false,
-                  home: Appbar(
-                    istoken: istoken,
-                  ));
+                  home: Appbar(istoken: istoken,myuid: mytoken,));
             }
           }
 

@@ -13,13 +13,15 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as Http;
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfilessScreen extends StatefulWidget {
   final String id;
   final String image;
   final String name;
+  final String phonenumber;
 
-  const ProfilessScreen({Key key, this.id, this.image, this.name})
+  const ProfilessScreen({Key key, this.id, this.image, this.name, this.phonenumber})
       : super(key: key);
 
   @override
@@ -33,15 +35,18 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController _scrollController = ScrollController();
   int _currentMax = 5;
-  var checktoken,myuid;
+  var checktoken, myuid;
 
   bool isLoading = false;
   var story;
+  TextEditingController _detailController = TextEditingController();
 
   int page = 5;
   List<PostListSS> data = List();
   GlobalKey _contentKey = GlobalKey();
   GlobalKey _refresherKey = GlobalKey();
+
+  var phonenumber;
 
   @override
   void initState() {
@@ -49,17 +54,30 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
           value == true
               ? () {
                   setState(() {
-                     Api.gettoke().then((value) => value({
+                    Api.gettoke().then((value) => value({
                           checktoken = value,
+                          print('checktoken$checktoken'),
+                          
                         }));
-                          Api.getmyuid().then((value) => ({
-                         setState(() {
-                        myuid = value;
-                              }),
-                        print('myuidhome$myuid'),
-
-                     }));
+                    Api.getmyuid().then((value) => ({
+                          setState(() {
+                            myuid = value;
+                          }),
+                          print('myuidhome$myuid'),
+                        }));
                     // scrollController = ScrollController();
+                    Api.getpagess(myuid,checktoken,widget.id).then((responseData) => ({
+                     
+                          print('getpagess${responseData.body}'),
+                          if (responseData.statusCode == 200)
+                            {
+                              dataht = jsonDecode(responseData.body),
+                              phonenumber =dataht["data"]["mobileNo"],
+                              print('phonenumber$phonenumber'),
+                          
+                            }
+
+                    }));
                     _scrollController.addListener(() {
                       if (_scrollController.position.pixels ==
                           _scrollController.position.maxScrollExtent) {
@@ -72,7 +90,7 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
                     });
 
                     getPostss = _getMoreData(widget.id, _currentMax);
-                    
+
                     // Api.getPostListSS(widget.id).then((responseData) => ({
                     //       // setState(() {
                     //       //   loading = true;
@@ -147,7 +165,6 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -424,6 +441,8 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
                           ),
                       // color: Colors.white,
                       child: InkWell(
+                       onTap: ()=> launch("tel://21213123123"),
+
                         child: Image.asset('images/logophone.png'),
                       ),
                     ),
@@ -464,8 +483,8 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
                                     if (index == listpostss.length) {
                                       return CupertinoActivityIndicator();
                                     }
-                                    
-                                    if(listpostss.length==0){
+
+                                    if (listpostss.length == 0) {
                                       return Center(child: Text("ไม่มีข้อมูล"));
                                     }
                                     final nDataList1 = listpostss[index];
@@ -489,6 +508,162 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
         ]),
       ),
     );
+  }
+
+  void _showSettingsPanel(String postid) {
+    showModalBottomSheet<dynamic>(
+        isScrollControlled: false,
+        backgroundColor: Colors.transparent,
+        context: context,
+        builder: (context) {
+          return DraggableScrollableSheet(
+            initialChildSize: 0.8,
+            minChildSize: 0.1,
+            maxChildSize: 0.9,
+            expand: false,
+            builder: (BuildContext context, ScrollController scrollController) {
+              return Container(
+                color: Colors.white,
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 5,
+                          height: 5,
+                        ),
+                        // Container(
+                        //   width: 50,
+                        //   height: 50,
+                        //   decoration: BoxDecoration(
+                        //     // border: Border.all(width: 4, color: Colors.white),
+
+                        //     shape: BoxShape.circle,
+                        //     image: DecorationImage(
+                        //       fit: BoxFit.cover,
+                        //       image: new NetworkImage(
+                        //           "https://today-api.moveforwardparty.org/api${image}/image"),
+                        //     ),
+                        //   ),
+                        // ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        // Text(
+                        //   '$displayName1',
+                        //   style: TextStyle(
+                        //       fontWeight: FontWeight.bold, fontSize: 16),
+                        // ),
+                      ],
+                    ),
+                    Container(
+                        width: double.infinity,
+                        height: 100,
+                        child: TextFormField(
+                          controller: _detailController,
+                        )),
+                    RaisedButton(
+                      child: Text(
+                        "Share",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      onPressed: () async {
+                        var jsonResponse;
+                        var status;
+                        bool isshow = false;
+
+                        _detailController.text == ""
+                            ? await Api.repost(postid, myuid, checktoken)
+                                .then((response) => ({
+                                      jsonResponse = jsonDecode(response.body),
+                                      if (response.statusCode == 200)
+                                        {
+                                          status = jsonResponse["status"],
+                                          print(status),
+                                          if (status == 1)
+                                            {
+                                              setState(() {
+                                                isshow = true;
+                                              }),
+                                            }
+                                        }
+                                    }))
+                            : await Api.repostwithdetail(postid, myuid,
+                                    checktoken, _detailController.text)
+                                .then((response) => ({
+                                      jsonResponse = jsonDecode(response.body),
+                                      if (response.statusCode == 200)
+                                        {
+                                          status = jsonResponse["status"],
+                                          print(status),
+                                          if (status == 1)
+                                            {
+                                              setState(() {
+                                                isshow = true;
+                                                _detailController.clear();
+                                              }),
+                                            }
+                                        }
+                                    }));
+                        Navigator.pop(context);
+                        isshow == true
+                            ? WidgetsBinding.instance.addPostFrameCallback(
+                                (_) => _scaffoldKey.currentState
+                                        .showSnackBar(SnackBar(
+                                      content: Text('Posted!'),
+                                      backgroundColor: Color(0xffF47932),
+                                      behavior: SnackBarBehavior.floating,
+                                      duration:
+                                          new Duration(milliseconds: 3000),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                        side: BorderSide(
+                                          color: Colors.white,
+                                          width: 2,
+                                        ),
+                                      ),
+                                    )))
+                            : WidgetsBinding.instance.addPostFrameCallback(
+                                (_) => _scaffoldKey.currentState
+                                        .showSnackBar(SnackBar(
+                                      content: Text('Error!'),
+                                      backgroundColor: Color(0xffF47932),
+                                      behavior: SnackBarBehavior.floating,
+                                      duration:
+                                          new Duration(milliseconds: 3000),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                        side: BorderSide(
+                                          color: Colors.white,
+                                          width: 2,
+                                        ),
+                                      ),
+                                    )));
+                      },
+                      color: Colors.red,
+                      textColor: Colors.white,
+                      padding: EdgeInsets.all(8.0),
+                      splashColor: Colors.grey,
+                    )
+                  ],
+                ),
+                // ListView(
+                //   controller: scrollController,
+                //   children: const <Widget>[
+                //     Card(child: ListTile(title: Text('One-line ListTile'))),
+                //     Card(
+                //       child: ListTile(
+                //         leading: FlutterLogo(),
+                //         title: Text('One-line with leading widget'),
+                //       ),
+                //     ),
+
+                //   ],
+                // ),
+              );
+            },
+          );
+        });
   }
 
   Widget PostList(nDataList1, story) {
@@ -533,22 +708,19 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: Container(
                       decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(8)),
-                              ),
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                      ),
                       child: CachedNetworkImage(
-                        
                         imageUrl:
                             "https://today-api.moveforwardparty.org/api${nDataList1.coverImage}/image",
                         placeholder: (context, url) =>
                             new CupertinoActivityIndicator(),
-                        errorWidget: (context, url, error) =>
-                            Container(
-                                decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(8)),
-                              ),
-                              child: new Image.asset('images/placeholder.png')),
+                        errorWidget: (context, url, error) => Container(
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8)),
+                            ),
+                            child: new Image.asset('images/placeholder.png')),
                       ),
                     ),
 
@@ -580,28 +752,71 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                checktoken  ==""?IconButton(icon: Icon(Icons.comment), 
-              onPressed: (){
-                   showCupertinoModalBottomSheet(
+                Text(nDataList1.commentCount.toString()),
+                checktoken == ""
+                    ? IconButton(
+                        icon: Icon(Icons.comment),
+                        onPressed: () {
+                          showCupertinoModalBottomSheet(
                             context: context,
                             builder: (context) => Intro(),
                           );
-
- 
-              }):  IconButton(icon: Icon(Icons.comment), 
-              onPressed: (){
-                print("กด");
-                var postid =nDataList1.id;
-                print("postid${nDataList1.id}");
-                 showCupertinoModalBottomSheet(
+                        })
+                    : IconButton(
+                        icon: Icon(Icons.comment),
+                        onPressed: () {
+                          print("กด");
+                          var postid = nDataList1.id;
+                          print("postid${nDataList1.id}");
+                          showCupertinoModalBottomSheet(
                             context: context,
-                            builder: (context) => CommentList(myuid: myuid,postid: postid,),
+                            builder: (context) => CommentList(
+                              myuid: myuid,
+                              postid: postid,
+                            ),
                           );
+                        }),
+                Spacer(),
+                IconButton(
+                    icon: Icon(Icons.repeat),
+                    onPressed: () async {
+                      var postid = nDataList1.id;
 
- 
-              }),
-                Icon(Icons.repeat),
-                Icon(Icons.favorite_border),
+                      _showSettingsPanel(postid);
+
+                      print("กดlike");
+                    }),
+                Spacer(),
+                Text(nDataList1.likeCount.toString()),
+                IconButton(
+                    icon: Icon(Icons.favorite_border),
+                    onPressed: () async {
+                      var postid = nDataList1.id;
+                      var jsonResponse;
+                      await Api.islike(postid, myuid, checktoken)
+                          .then((value) => ({
+                                jsonResponse = jsonDecode(value.body),
+                                print('message${jsonResponse['message']}'),
+                                if (value.statusCode == 200)
+                                  {
+                                    if (jsonResponse['message'] ==
+                                        "Like Post Success")
+                                      {
+                                        setState(() {
+                                          nDataList1.likeCount++;
+                                        }),
+                                      }
+                                    else if (jsonResponse['message'] ==
+                                        "UnLike Post Success")
+                                      {
+                                        setState(() {
+                                          nDataList1.likeCount--;
+                                        }),
+                                      }
+                                  }
+                              }));
+                      print("กดlike");
+                    }),
               ],
             )
           ],
@@ -616,112 +831,5 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
         // trailing: Icon(icons[index])
       )),
     );
-    // Container(
-    //   child: Expanded(
-    //       child: Padding(
-    //     padding: EdgeInsets.all(8),
-    //     child: Container(
-    //       decoration: BoxDecoration(
-    //           color: Colors.grey[200],
-    //           borderRadius: BorderRadius.all(
-    //             Radius.circular(10),
-    //           )),
-    //       child: Expanded(
-    //         child: Column(
-    //           children: [
-    //             //============TitleList===============
-    //             Container(
-    //               child: ListTile(
-    //                 title: Text(
-    //                   "${nDataList1.title}",
-    //                   // maxLines:
-    //                   //     1,
-    //                   overflow: TextOverflow
-    //                       .ellipsis, // TextOverflow.clip // TextOverflow.fade
-    //                   // softWrap:
-    //                   //     false,
-    //                   style: TextStyle(
-    //                     fontSize: 18,
-    //                     fontWeight: FontWeight.bold,
-    //                     color: Color(0xffF47932),
-    //                   ),
-    //                 ),
-    //                 trailing: Wrap(
-    //                   spacing: 2, // space between two icons
-    //                   children: <Widget>[
-    //                     Container(
-    //                       padding: EdgeInsets.fromLTRB(1, 6, 1, 1),
-    //                       child: InkWell(
-    //                         child: Text(
-    //                           "${format.format(nDataList1.startDateTime)}",
-    //                           style: TextStyle(
-    //                               fontWeight: FontWeight.bold,
-    //                               color: Colors.red[500]),
-    //                         ),
-    //                       ),
-    //                     ),
-    //                   ],
-    //                 ),
-    //               ),
-    //             ),
-    //             //============TitleList===============
-    //             //============SubTitleList===============
-
-    //             Padding(
-    //               padding: const EdgeInsets.symmetric(vertical: 8.0),
-    //               child: Image.network(
-    //                 'today-api.moveforwardparty.org/api${nDataList1.coverImage}/image',
-    //               ),
-    //               // imageUrl:'https://today-api.moveforwardparty.org/api${nDataList1.coverImage}/image'),
-    //               // "https://today-api.moveforwardparty.org/api/${nDataList1.coverImage}/image"),
-    //             ),
-    //             // : const SizedBox.shrink(),
-    //             Container(
-    //               padding: EdgeInsets.all(10),
-    //               child: Expanded(
-    //                 child: Text(
-    //                   "${nDataList1.detail}",
-    //                   maxLines: 4,
-    //                   softWrap: true,
-    //                   style: TextStyle(
-    //                     fontSize: 18,
-    //                     fontWeight: FontWeight.bold,
-    //                     color: Colors.black,
-    //                   ),
-    //                 ),
-    //               ),
-    //             ),
-    //             Row(
-    //               children: <Widget>[
-    //                 Spacer(),
-    //                 Align(
-    //                   alignment: Alignment.topRight,
-    //                   child: Text('0ความคิดเห็น'),
-    //                 ),
-    //                 SizedBox(
-    //                   width: 2,
-    //                 ),
-    //                 Align(
-    //                   alignment: Alignment.topRight,
-    //                   child: Text('0ถูกใจ'),
-    //                 ),
-    //                 SizedBox(
-    //                   width: 2,
-    //                 ),
-    //                 Align(
-    //                   alignment: Alignment.topRight,
-    //                   child: Text('0แชร์'),
-    //                 ),
-    //                 SizedBox(
-    //                   width: 9,
-    //                 ),
-    //               ],
-    //             ),
-    //           ],
-    //         ),
-    //       ),
-    //     ),
-    //   )),
-    // );
   }
 }

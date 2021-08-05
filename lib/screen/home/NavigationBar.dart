@@ -14,8 +14,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Appbar extends StatefulWidget {
   // final bool islogin;
   final String istoken;
+  final String myuid;
 
-  const Appbar({Key key, this.istoken}) : super(key: key);
+  const Appbar({Key key, this.istoken, this.myuid}) : super(key: key);
   @override
   _AppbarState createState() => _AppbarState();
 }
@@ -201,7 +202,7 @@ class _AppbarState extends State<Appbar> {
                         // currentScreen = Profile();
 
                         currentScreen = Profile(
-                          istoken: widget.istoken,
+                          istoken: widget.istoken,myuid: widget.myuid,
                         );
                         if (widget.istoken == null || widget.istoken == "") {
                           showCupertinoModalBottomSheet(
