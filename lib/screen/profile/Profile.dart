@@ -24,7 +24,8 @@ class Profile extends StatefulWidget {
 
   const Profile({
     Key key,
-    this.istoken, this.myuid,
+    this.istoken,
+    this.myuid,
   }) : super(key: key);
 
   @override
@@ -40,6 +41,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
   int gender;
   bool loading = true;
   List<User> listUser = [];
+  Future getpost;
 
   var firstName;
 
@@ -61,11 +63,14 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
 
   var postid;
 
-
   var titletest;
-  
-  StreamController _postsController;
 
+  StreamController _postsController;
+  List<ProfilePostModel> lists =[];
+
+  var postshareid;
+
+  
 
   @override
   void initState() {
@@ -94,7 +99,6 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
           if (responseData.statusCode == 200)
             {
               datagetuserprofile = jsonDecode(responseData.body),
-              loading = false,
               setState(() {
                 displayName1 =
                     datagetuserprofile["data"]["user"]["displayName"];
@@ -117,27 +121,63 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
 
     print('mytoken${widget.istoken}');
     scrollController = ScrollController();
-    Api.getprofilepost(widget.myuid, mytoken)
-        .then((responseData) => ({
-              print('getprofilepost'),
-              if (responseData.statusCode == 200)
+    Api.getprofilepost(widget.myuid, mytoken).then((responseData)  async=> ({
+          print('getprofilepost'),
+          if (responseData.statusCode == 200)
+            {
+              dataht = jsonDecode(responseData.body),
+              for (Map i in dataht["data"]["posts"])
                 {
-                  dataht = jsonDecode(responseData.body),
-                  for (Map i in dataht["data"]["posts"])
-                    {
-                      // postid = i["_id"],
-                      // print('postid$postid'),
-                      listModel.add(ProfilePostModel.fromJson(i)),
-                     _postsController.add(responseData),
+                  postshareid = i["_id"],
+                  print('postid$postid'),
+              getpost=  await  getpostsearch(widget.myuid, mytoken,postshareid),
+                },
+            }
+        }));
 
-                    },
-                  loading = false,
-                }
-            }));
-               
-      _postsController = new StreamController();
+    _postsController = new StreamController();
 
     super.initState();
+  }
+
+  Future getpostsearch(String uid, String token, String postid) async {
+    print('getpostsearch$postid');
+    var url = "https://today-api.moveforwardparty.org/api/post/search";
+    final headers = {
+      "authorization": "Bearer $token",
+      "userid": uid,
+      "content-type": "application/json",
+      "accept": "application/json"
+      // "whereConditions": {"isHideStory": false},
+    };
+    Map data = {
+      "limit": 5,
+      "count": false,
+      "whereConditions": {"_id": postid}
+    };
+    var body = jsonEncode(data);
+    final responseData = await http.post(
+      url,
+      headers: headers,
+      body: body,
+    );
+    print('body$body');
+    print('responseDatagetpostsearch${responseData.body}');
+    if (responseData.statusCode == 200) {
+      dataht = jsonDecode(responseData.body);
+      // print('getpostsearch2${responseData.body}');
+
+      for (Map i in dataht["data"]) {
+        // titletest = i["detail"];
+       listModel.add(ProfilePostModel.fromJson(i));
+        // _postsController.add(responseData);
+
+
+        // print('titlegetpostsearch$titletest');
+        // listModel.add(ProfilePostModel.fromJson(i));
+        print('listModel.length${listModel.length}');
+      }
+    }
   }
 
   @override
@@ -451,7 +491,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                                 ),
                             // color: Colors.white,
                             child: InkWell(
-                              onTap: ()=> launch("tel://21213123123"),
+                              onTap: () => launch("tel://21213123123"),
                               child: Image.asset('images/logophone.png'),
                             ),
                           ),
@@ -472,10 +512,13 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                           StreamBuilder(
-                         stream: _postsController.stream,
-                             builder: (BuildContext context, AsyncSnapshot snapshot) {
-                               return ListView.builder(
+                            FutureBuilder(
+                              future: Future.wait([
+getpost,
+                              ]),
+                              // initialData: InitialData,
+                              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                return ListView.builder(
                                     physics: ClampingScrollPhysics(),
                                     shrinkWrap: true,
                                     padding: const EdgeInsets.all(8.0),
@@ -489,33 +532,50 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                                       if (listModel.length == 0) {
                                         return CupertinoActivityIndicator();
                                       }
-                                      var mypostid = data.referencePost;
-                                      print('mypostid$mypostid');
-                                      Api.getpostsearch(widget.myuid, mytoken,mypostid)
-                               .then((responseData) => ({
-                                 print('getpostsearch'),
-                              if (responseData.statusCode == 200)
-                             {
-                                dataht = jsonDecode(responseData.body),
-                                    print('getpostsearch2${responseData.body}'),
-
-                                  for (Map i in dataht["data"])
-                                 {
-                                  titletest= i["detail"],
-                                   print('titlegetpostsearch$titletest'),
-                                     // listModel.add(ProfilePostModel.fromJson(i)),
-                                 },
-                               }
-                                  }));
+                                      // var mypostid = data.referencePost;
+                                      // print('mypostid$mypostid');
+                                      
 
                                       return ListTile(
-                                          title: Text('data${data.detail}'),
-                                          subtitle: Text('data$titletest'),
-                                          );
+                                        title: Text('data${data.id}'),
+                                        subtitle: Text('data'),
+                                      );
                                     });
-                             },
-                           ),
-                           
+                              },
+                            ),
+
+                            
+                            
+                            // StreamBuilder(
+                            //   stream: _postsController.stream,
+                            //   builder: (BuildContext context,
+                            //       AsyncSnapshot snapshot) {
+                            //     return ListView.builder(
+                            //         physics: ClampingScrollPhysics(),
+                            //         shrinkWrap: true,
+                            //         padding: const EdgeInsets.all(8.0),
+                            //         scrollDirection: Axis.vertical,
+                            //         itemCount: listModel.length,
+                            //         itemBuilder: (
+                            //           BuildContext context,
+                            //           int index,
+                            //         ) {
+                            //           var data = listModel[index];
+                            //           if (listModel.length == 0) {
+                            //             return CupertinoActivityIndicator();
+                            //           }
+                            //           // var mypostid = data.referencePost;
+                            //           // print('mypostid$mypostid');
+                                      
+
+                            //           return ListTile(
+                            //             title: Text('data${data.title}'),
+                            //             subtitle: Text('data'),
+                            //           );
+                            //         });
+                            //   },
+                            // ),
+
                             // Builder(
                             //   builder: (BuildContext context) {
                             //     return ListView.builder(

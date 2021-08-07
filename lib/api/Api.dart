@@ -470,32 +470,32 @@ class Api {
     return responseData;
   }
 
-  static Future<Http.Response> getpostsearch(
-      String uid, String token, String postid) async {
-    // print('getpostsearch$postid');
-    var url = "https://today-api.moveforwardparty.org/api/post/search";
-    final headers = {
-      "authorization": "Bearer $token",
-      "userid": uid,
-      "content-type": "application/json",
-      "accept": "application/json"
-      // "whereConditions": {"isHideStory": false},
-    };
-    Map data = {
-      "limit": 5,
-      "count": false,
-      "whereConditions": {"_id": postid}
-    };
-    var body = jsonEncode(data);
-    final responseData = await Http.post(
-      url,
-      headers: headers,
-      body: body,
-    );
-    print('body$body');
-    print('getpostsearch1${responseData.body}');
-    return responseData;
-  }
+  // static Future<Http.Response> getpostsearch(
+  //     String uid, String token, String postid) async {
+  //   // print('getpostsearch$postid');
+  //   var url = "https://today-api.moveforwardparty.org/api/post/search";
+  //   final headers = {
+  //     "authorization": "Bearer $token",
+  //     "userid": uid,
+  //     "content-type": "application/json",
+  //     "accept": "application/json"
+  //     // "whereConditions": {"isHideStory": false},
+  //   };
+  //   Map data = {
+  //     "limit": 5,
+  //     "count": false,
+  //     "whereConditions": {"_id": postid}
+  //   };
+  //   var body = jsonEncode(data);
+  //   final responseData = await Http.post(
+  //     url,
+  //     headers: headers,
+  //     body: body,
+  //   );
+  //   print('body$body');
+  //   print('getpostsearch1${responseData.body}');
+  //   return responseData;
+  // }
   
   static Future<Http.Response> getpagess(
       String uid, String token, String pageid) async {

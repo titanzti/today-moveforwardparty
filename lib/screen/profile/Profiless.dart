@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:appmove/api/Api.dart';
 import 'package:appmove/model/postlistSSmodel.dart';
@@ -10,6 +11,7 @@ import 'package:appmove/widgets/allWidgets.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:http/http.dart' as Http;
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
@@ -20,8 +22,19 @@ class ProfilessScreen extends StatefulWidget {
   final String image;
   final String name;
   final String phonenumber;
+  final lineId;
+  final facebookUrl;
+  final twitterUrl;
 
-  const ProfilessScreen({Key key, this.id, this.image, this.name, this.phonenumber})
+  const ProfilessScreen(
+      {Key key,
+      this.id,
+      this.image,
+      this.name,
+      this.phonenumber,
+      this.lineId,
+      this.facebookUrl,
+      this.twitterUrl})
       : super(key: key);
 
   @override
@@ -45,11 +58,14 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
   List<PostListSS> data = List();
   GlobalKey _contentKey = GlobalKey();
   GlobalKey _refresherKey = GlobalKey();
+  EasyRefreshController _controller;
 
   var phonenumber;
 
   @override
   void initState() {
+    _controller = EasyRefreshController();
+
     checkInternetConnectivity().then((value) => {
           value == true
               ? () {
@@ -57,7 +73,6 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
                     Api.gettoke().then((value) => value({
                           checktoken = value,
                           print('checktoken$checktoken'),
-                          
                         }));
                     Api.getmyuid().then((value) => ({
                           setState(() {
@@ -66,18 +81,16 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
                           print('myuidhome$myuid'),
                         }));
                     // scrollController = ScrollController();
-                    Api.getpagess(myuid,checktoken,widget.id).then((responseData) => ({
-                     
-                          print('getpagess${responseData.body}'),
-                          if (responseData.statusCode == 200)
-                            {
-                              dataht = jsonDecode(responseData.body),
-                              phonenumber =dataht["data"]["mobileNo"],
-                              print('phonenumber$phonenumber'),
-                          
-                            }
-
-                    }));
+                    Api.getpagess(myuid, checktoken, widget.id)
+                        .then((responseData) => ({
+                              print('getpagess${responseData.body}'),
+                              if (responseData.statusCode == 200)
+                                {
+                                  dataht = jsonDecode(responseData.body),
+                                  phonenumber = dataht["data"]["mobileNo"],
+                                  print('phonenumber$phonenumber'),
+                                }
+                            }));
                     _scrollController.addListener(() {
                       if (_scrollController.position.pixels ==
                           _scrollController.position.maxScrollExtent) {
@@ -416,6 +429,25 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
                           ),
                       // color: Colors.white,
                       child: InkWell(
+                        onTap: () async {
+                          print('กด');
+                          if (Platform.isAndroid) {
+                            String uri = 'line://oaMessage/@lineteamjp/123';
+                            if (await canLaunch(uri)) {
+                              await launch(uri);
+                            }else {
+                              throw 'Could not launch $uri';
+                            }
+                          } else if (Platform.isIOS) {
+                            // iOS
+                            String uri = 'line://oaMessage/@lineteamjp/123';
+                            if (await canLaunch(uri)) {
+                              await launch(uri);
+                            } else {
+                              throw 'Could not launch $uri';
+                            }
+                          }
+                        },
                         child: Image.asset('images/logoline.png'),
                       ),
                     ),
@@ -441,8 +473,7 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
                           ),
                       // color: Colors.white,
                       child: InkWell(
-                       onTap: ()=> launch("tel://21213123123"),
-
+                        onTap: () => launch("tel://21213123123"),
                         child: Image.asset('images/logophone.png'),
                       ),
                     ),
@@ -451,6 +482,68 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
               ]),
             ),
           ),
+          //    Container(
+          //     width: double.infinity,
+          //     height: 300,
+          //     child: FutureBuilder(
+          //       future: Future.wait([
+          //        getPostss,
+          //       ]),
+          //       builder: (BuildContext context, AsyncSnapshot snapshot) {
+          //         return EasyRefresh.custom(
+          //     enableControlFinishRefresh: false,
+          //     enableControlFinishLoad: true,
+          //     controller: _controller,
+          //     header: ClassicalHeader(),
+          //     footer: ClassicalFooter(),
+          //     shrinkWrap : true,
+
+          //     onRefresh: () async {
+          //       _getMoreData(widget.id, _currentMax);
+          //                       print('onRefresh');
+
+          //       // await Future.delayed(Duration(seconds: 2), () {
+          //       //   print('onRefresh');
+          //       //   setState(() {
+          //       //     _count = 20;
+          //       //   });
+          //         _controller.resetLoadState();
+          //       // });
+          //     },
+          //     onLoad: () async {
+          //                    await _getMoreData(widget.id, _currentMax);
+          //         print('onLoad');
+
+          //         // _controller.finishLoad(
+          //         //   // noMore: _currentMax <= listpostss.length
+          //         //   );
+
+          //       // await Future.delayed(Duration(seconds: 2), () {
+          //       //   print('onLoad');
+          //       //   setState(() {
+          //       //     _count += 10;
+          //       //   });
+          //       //   _controller.finishLoad(noMore: _count >= 40);
+          //       // });
+          //     },
+          //     slivers: <Widget>[
+          //        SliverList(
+          //         delegate: SliverChildBuilderDelegate(
+          //           (context, index) {
+          //           final nDataList1 = listpostss[index];
+
+          //             return PostList(nDataList1, story);
+          //           },
+          //           childCount: listpostss.length,
+          //         ),
+          //       ),
+
+          //     ],
+          // );
+          //       },
+          //     ),
+
+          //   ),
           Column(
             // crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[

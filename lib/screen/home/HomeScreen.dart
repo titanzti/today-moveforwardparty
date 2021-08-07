@@ -1213,7 +1213,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 ? Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: Image.network(
-                      "https://today-api.moveforwardparty.org/api$postcoverImage/image",
+                      "https://today-api.moveforwardparty.org/api$postcoverImage/",
                       width: 250,
                       height: 200,
                       filterQuality: FilterQuality.medium,

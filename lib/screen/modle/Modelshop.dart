@@ -1,5 +1,6 @@
+import 'package:appmove/utils/testref1.dart';
 import 'package:flutter/material.dart';
-
+import 'package:appmove/utils/testref.dart';
 class Modelshop extends StatefulWidget {
   @override
   _ModelshopState createState() => _ModelshopState();
@@ -120,10 +121,22 @@ class _ModelshopState extends State<Modelshop> {
                             child: SizedBox(
                               height: 30,
                               width: 30,
-                              child: Image.asset(
+                              child: InkWell(
+                                onTap: (){
+                                    Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => testref1()),
+                        );
+                                },
+                                
+                               child:  Image.asset(
                                 'images/logoline.png',
                                 fit: BoxFit.cover,
                               ),
+                              ),
+                              
+                              
                             ), // child: SvgPicture.asset("assets/icons/Lock.svg"),
                           ),
                         ],

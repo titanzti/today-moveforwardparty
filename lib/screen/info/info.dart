@@ -265,6 +265,7 @@ class _InfoState extends State<Info> {
                     id: nDataList.id,
                     image: nDataList.imageUrl,
                     name: nDataList.name,
+                    lineId: nDataList.lineId,
                   )),
         );
       },

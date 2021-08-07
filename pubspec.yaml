@@ -55,6 +55,7 @@ dependencies:
   settings_ui: ^0.6.0
   image_picker: ^0.6.6+5
   url_launcher: ^5.7.10
+  flutter_easyrefresh: ^2.1.8
 
 
 
