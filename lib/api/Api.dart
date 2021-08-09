@@ -334,7 +334,7 @@ class Api {
 
   static Future<Http.Response> updataimage(
       String id, String base64image, String fileName, String token) async {
-    print('sendcomment');
+    print('updataimage');
     var url = "https://today-api.moveforwardparty.org/api/profile/$id/image";
     final headers = {
       "userid": id,
@@ -514,4 +514,39 @@ class Api {
 
     return responseData;
   }
+
+    static Future<Http.Response> setimagecover(
+      String uid, String base64image, String fileName, String token)async {
+    print('updataimage');
+    var url = "https://today-api.moveforwardparty.org/api/profile/$uid/cover";
+    final headers = {
+      "userid": uid,
+      "authorization": "Bearer $token",
+      "content-type": "application/json",
+      "accept": "application/json"
+      // "whereConditions": {"isHideStory": false},
+    };
+    Map data = {
+      "asset": {
+        "mimeType": "image/png",
+        "data": base64image,
+        "fileName": fileName,
+        "size": 193148
+      }
+    };
+
+    var body = jsonEncode(data);
+
+    final responseData = await Http.post(
+      url,
+      headers: headers,
+      body: body,
+    );
+    print('body$body');
+    print('responseupdataimage${responseData.body}');
+
+    return responseData;
+  }
+
+  
 }

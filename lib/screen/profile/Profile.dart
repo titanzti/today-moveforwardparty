@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:appmove/api/Api.dart';
 import 'package:appmove/main.dart';
@@ -11,6 +12,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -67,10 +69,16 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
 
   StreamController _postsController;
   List<ProfilePostModel> lists =[];
+  bool iscover =false;
 
   var postshareid;
 
-  
+    File _image;
+
+var msg;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  var cover;
 
   @override
   void initState() {
@@ -108,6 +116,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                 id = datagetuserprofile["data"]["user"]["id"];
                 email = datagetuserprofile["data"]["user"]["email"];
                 image = datagetuserprofile["data"]["user"]["imageURL"];
+                cover = datagetuserprofile["data"]["user"]["coverURL"];
               }),
               print('displayName1$displayName1'),
               print('gender$gender'),
@@ -138,6 +147,12 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
     _postsController = new StreamController();
 
     super.initState();
+  }
+  @override
+  void dispose() { 
+    _clear();
+    
+    super.dispose();
   }
 
   Future getpostsearch(String uid, String token, String postid) async {
@@ -180,6 +195,142 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
     }
   }
 
+   _imgFromCamera() async {
+    File image = await ImagePicker.pickImage(
+        source: ImageSource.camera, imageQuality: 50);
+
+    setState(() {
+      _image = image;
+    });
+  }
+
+  _imgFromGallery() async {
+    File image = await ImagePicker.pickImage(
+        source: ImageSource.gallery, imageQuality: 50);
+
+    setState(() {
+      _image = image;
+    });
+  }
+
+  Future getImage() async {
+    print("getImage");
+
+    PickedFile image = await ImagePicker()
+        .getImage(source: ImageSource.gallery, imageQuality: 50);
+
+    if (image != null) {
+      setState(() {
+        _image = File(image.path);
+      });
+
+      final bytes = File(image.path).readAsBytesSync();
+
+      String img64 = base64Encode(bytes);
+      print(img64);
+      var responseProfileImage = await Api.setimagecover(
+          widget.myuid, img64, "basic-ios.png", widget.istoken);
+
+      if (responseProfileImage != null &&
+          responseProfileImage.statusCode == 200) {
+        final jsonResponse = jsonDecode(responseProfileImage.body);
+
+        if (jsonResponse['status'] == 1) {
+          // _clear();
+
+          // print(jsonResponse['message']);
+          setState(() {
+            msg = jsonResponse['message'];
+
+            print('msg$msg');
+            iscover=true;
+           
+          
+            WidgetsBinding.instance.addPostFrameCallback(
+                (_) => _scaffoldKey.currentState.showSnackBar(SnackBar(
+                      content: Text('Updata succeed'),
+                      backgroundColor: Colors.green,
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        side: BorderSide(
+                          color: Colors.green,
+                          width: 2,
+                        ),
+                      ),
+                    )));
+            // iserror = true;
+          });
+        }
+      }
+      // showMessage('Profile Image not uploaded', false);
+    }
+  }
+
+  /// Remove image
+  void _clear() {
+    setState(() => _image = null);
+  }
+
+  void _showPicker(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Container(
+              child: new Wrap(
+                children: <Widget>[
+                  new ListTile(
+                      leading: new Icon(Icons.photo_library),
+                      title: new Text('Photo Library'),
+                      onTap: () {
+                        getImage();
+
+                        Navigator.of(context).pop();
+                      }),
+                  new ListTile(
+                    leading: new Icon(Icons.photo_camera),
+                    title: new Text('Camera'),
+                    onTap: () {
+                      _imgFromCamera();
+                      Navigator.of(context).pop();
+
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+    Future<Null> _handleRefresh() async {
+      print('_handleRefresh');
+    new Future.delayed(const Duration(seconds: 2));
+    // setState(() {
+    //   listModel.clear();
+    // });
+     Api.getuserprofile(widget.istoken).then((responseData) => ({
+          if (responseData.statusCode == 200)
+            {
+              datagetuserprofile = jsonDecode(responseData.body),
+              setState(() {
+                displayName1 =
+                    datagetuserprofile["data"]["user"]["displayName"];
+                gender = datagetuserprofile["data"]["user"]["gender"];
+                firstName = datagetuserprofile["data"]["user"]["firstName"];
+                lastName = datagetuserprofile["data"]["user"]["lastName"];
+                id = datagetuserprofile["data"]["user"]["id"];
+                email = datagetuserprofile["data"]["user"]["email"];
+                image = datagetuserprofile["data"]["user"]["imageURL"];
+                cover = datagetuserprofile["data"]["user"]["coverURL"];
+              }),
+            
+            }
+        }));
+
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return loading
@@ -187,6 +338,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
             color: Colors.white,
             child: Center(child: CupertinoActivityIndicator()))
         : Scaffold(
+          key: _scaffoldKey,
             appBar: AppBar(
               backgroundColor: Color(0xffF47932),
               elevation: 0,
@@ -268,27 +420,32 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                       Center(
                         child: Stack(
                           children: [
-                            Text('data'),
-                            Container(
-                              padding:
-                                  EdgeInsets.only(left: 15, top: 10, right: 15),
-                              width: 100,
-                              height: 100,
-                              decoration: BoxDecoration(
-                                border:
-                                    Border.all(width: 4, color: Colors.white),
-                                boxShadow: [
-                                  BoxShadow(
-                                    spreadRadius: 2,
-                                    blurRadius: 10,
-                                    color: Colors.black.withOpacity(0.1),
+                            // Text('data'),
+                            Container(width: double.infinity,height: 200,
+                            child: Image.network('${iscover==true?Image.file(_image): 'https://today-api.moveforwardparty.org/api$cover/image'}'),),
+                            Align(
+                              alignment: Alignment.bottomCenter,
+                              child: Container(
+                                padding:
+                                    EdgeInsets.only(left: 15, top: 10, right: 15),
+                                width: 100,
+                                height: 100,
+                                decoration: BoxDecoration(
+                                  border:
+                                      Border.all(width: 4, color: Colors.white),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      spreadRadius: 2,
+                                      blurRadius: 10,
+                                      color: Colors.black.withOpacity(0.1),
+                                    ),
+                                  ],
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: new NetworkImage(
+                                        "https://today-api.moveforwardparty.org/api$image/image"),
                                   ),
-                                ],
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: new NetworkImage(
-                                      "https://today-api.moveforwardparty.org/api$image/image"),
                                 ),
                               ),
                             ),
@@ -306,11 +463,14 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                                   ),
                                   color: Colors.blue,
                                 ),
-                                child: Icon(
-                                  Icons.edit,
+                                child: InkWell(
+                                   onTap: () => _showPicker(context),
+                                  child: Icon(
+                                  Icons.camera_enhance,
                                   color: Colors.white,
                                   size: 18,
-                                ),
+                                ),),
+                                
                               ),
                             ),
                           ],

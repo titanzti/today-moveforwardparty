@@ -7,11 +7,13 @@ import 'package:appmove/model/postModel.dart';
 import 'package:appmove/model/searchpostlistModel.dart';
 import 'package:appmove/screen/home/EventList.dart';
 import 'package:appmove/screen/home/NavigationBar.dart';
+import 'package:appmove/screen/home/repostwithcomment.dart';
 import 'package:appmove/screen/home/search.dart';
 import 'package:appmove/screen/home/searchList.dart';
 import 'package:appmove/screen/home/searchbar.dart';
 import 'package:appmove/screen/home/shareSc.dart';
 import 'package:appmove/screen/loginandregister/Intro.dart';
+import 'package:appmove/screen/modle/Modelshop.dart';
 import 'package:appmove/screen/profile/Profile.dart';
 import 'package:appmove/screen/profile/postdetailss.dart';
 import 'package:appmove/utils/internetConnectivity.dart';
@@ -23,6 +25,7 @@ import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -915,7 +918,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                 nDataList1.post.createdDate,
                                                 nDataList1.post.commentCount
                                                     .toString(),
-                                                    nDataList1
+                                                    nDataList1,
+                                                    nDataList1.page.pageUsername
                                               );
                                             });
                                       },
@@ -991,57 +995,131 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         context: context,
         builder: (context) {
           return DraggableScrollableSheet(
-            initialChildSize: 0.8,
-            minChildSize: 0.1,
-            maxChildSize: 0.9,
+            initialChildSize: 0.5,
+            minChildSize: 0.3,
+            maxChildSize: 0.7,
             expand: false,
             builder: (BuildContext context, ScrollController scrollController) {
               return Container(
-                color: Colors.white,
+                          //  color: Colors.white,
+
+               decoration: BoxDecoration(
+                  color: Colors.white,
+                                borderRadius:
+                                    BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10)),
+                              ),
                 child: Column(
                   children: [
+                     Container(
+                       
+                       width: 50,
+                      //  height: 50,
+                       child: Divider(
+                         
+        thickness: 5,
+        color: Colors.black,
+      ),
+                     ),
+                     Expanded(
+                          child: InkWell(
+                              onTap: ()async{
+                                var jsonResponse;
+                        var status;
+                        bool isshow = false;
+
+                                await Api.repost(postid, myuid, checktoken)
+                                .then((response) => ({
+                                      jsonResponse = jsonDecode(response.body),
+                                      if (response.statusCode == 200)
+                                        {
+                                          status = jsonResponse["status"],
+                                          print(status),
+                                          if (status == 1)
+                                            {
+                                              setState(() {
+                                                isshow = true;
+                                              }),
+                                            }
+                                        }
+                                    }));
+                                        Navigator.pop(context);
+                        WidgetsBinding.instance.addPostFrameCallback(
+                                (_) => _scaffoldKey.currentState
+                                        .showSnackBar(SnackBar(
+                                      content: Text('Posted!'),
+                                      backgroundColor: Color(0xffF47932),
+                                      behavior: SnackBarBehavior.floating,
+                                      duration:
+                                          new Duration(milliseconds: 3000),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                        side: BorderSide(
+                                          color: Colors.white,
+                                          width: 2,
+                                        ),
+                                      ),
+                                    )));
+                              },
+                            child: ListTile(
+                              title: Text('บอกต่อเรื่องราว'),
+                              leading:  Icon(FontAwesome.retweet),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: InkWell(
+                              onTap: (){
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=>RepostWithComSc()));
+                              },
+                            child: ListTile(
+                              title: Text('บอกต่อเรื่องราวพร้อมความคิดเห็น'),
+                              leading:  Icon(FontAwesome.pencil),
+                            ),
+                          ),
+                        ),
                     Row(
                       children: [
                         SizedBox(
                           width: 5,
                           height: 5,
                         ),
-                        Container(
-                          width: 50,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            // border: Border.all(width: 4, color: Colors.white),
-                            boxShadow: [
-                              BoxShadow(
-                                spreadRadius: 2,
-                                blurRadius: 10,
-                                color: Colors.black.withOpacity(0.1),
-                              ),
-                            ],
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: new NetworkImage(
-                                  "https://today-api.moveforwardparty.org/api${image}/image"),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Text(
-                          '$displayName1',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
-                        ),
+                        
+                        // Container(
+                        //   width: 50,
+                        //   height: 50,
+                        //   decoration: BoxDecoration(
+                        //     // border: Border.all(width: 4, color: Colors.white),
+                        //     boxShadow: [
+                        //       BoxShadow(
+                        //         spreadRadius: 2,
+                        //         blurRadius: 10,
+                        //         color: Colors.black.withOpacity(0.1),
+                        //       ),
+                        //     ],
+                        //     shape: BoxShape.circle,
+                        //     image: DecorationImage(
+                        //       fit: BoxFit.cover,
+                        //       image: new NetworkImage(
+                        //           "https://today-api.moveforwardparty.org/api${image}/image"),
+                        //     ),
+                        //   ),
+                        // ),
+                        // SizedBox(
+                        //   width: 5,
+                        // ),
+                        // Text(
+                        //   '$displayName1',
+                        //   style: TextStyle(
+                        //       fontWeight: FontWeight.bold, fontSize: 16),
+                        // ),
                       ],
                     ),
-                    Container(
-                        width: double.infinity,
-                        height: 100,
-                        child: TextFormField(
-                          controller: _detailController,
-                        )),
+                    // Container(
+                    //     width: double.infinity,
+                    //     height: 100,
+                    //     child: TextFormField(
+                    //       controller: _detailController,
+                    //     )),
                     RaisedButton(
                       child: Text(
                         "Share",
@@ -1156,7 +1234,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       int postlikeCount,
       String ownerimageUrl,
       DateTime createdDate,
-      String postcommentCount,nDataList1) {
+      String postcommentCount,nDataList1,String postpagepageUsername) {
     String imageUri = base;
     // final UriData imageUri = Uri.parse("https://today-api.moveforwardparty.org/api/file/60d29d10d9b235079c054f9a/").data;
     print('imageUri$imageUri');
@@ -1194,13 +1272,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(height: 10,),
             Text(postpagename,
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            Text(Utils.readTimestamp(createdDate.millisecondsSinceEpoch),
+                Row(children: [
+                  Text('$postpagepageUsername',style:TextStyle(fontSize: 14,)),  
+                  SizedBox(width: 10,),
+                   Text(Utils.readTimestamp(createdDate.millisecondsSinceEpoch),
                 style: TextStyle(
                   fontSize: 14,
                   color: Colors.grey,
                 )),
+                ],),
+            
           ],
         ),
 
@@ -1212,7 +1296,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             postcoverImage != null
                 ? Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Image.network(
+                    child:  Image.network(
                       "https://today-api.moveforwardparty.org/api$postcoverImage/",
                       width: 250,
                       height: 200,
@@ -1278,6 +1362,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     ? IconButton(
                         icon: Icon(Icons.comment),
                         onPressed: () {
+                          HapticFeedback.lightImpact();
                           showCupertinoModalBottomSheet(
                             context: context,
                             builder: (context) => Intro(),
@@ -1286,6 +1371,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     : IconButton(
                         icon: Icon(Icons.comment),
                         onPressed: () {
+                                                    HapticFeedback.lightImpact();
+
                           // print("postid${post.id}");
                           showCupertinoModalBottomSheet(
                             context: context,
@@ -1299,6 +1386,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 IconButton(
                     icon: Icon(Icons.repeat),
                     onPressed: () async {
+                                                HapticFeedback.lightImpact();
+
                       _showSettingsPanel(postid);
 
                       print("กดlike");
@@ -1308,6 +1397,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 IconButton(
                     icon: Icon(Icons.favorite_border),
                     onPressed: () async {
+                                                HapticFeedback.lightImpact();
+
                     var jsonResponse;
                       await Api.islike(postid, myuid, checktoken)
                           .then((value) => ({
@@ -1341,12 +1432,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           ],
         ),
         leading: CircleAvatar(
-          child: Container(
-            color: Colors.white,
-            child: Image.network(
-                "https://today-api.moveforwardparty.org/api$ownerimageUrl/image"),
-          ),
-        ),
+        backgroundImage: NetworkImage("https://today-api.moveforwardparty.org/api$ownerimageUrl/image"),
+            radius: 25,
+
+      ),
+        
+        // CircleAvatar(
+        //   child: Container(
+        //     color: Colors.white,
+        //     child: Image.network(
+        //         "https://today-api.moveforwardparty.org/api$ownerimageUrl/image"),
+        //   ),
+        // ),
 
         // backgroundImage: NetworkImage(
         //     "https://today-api.moveforwardparty.org/api${nDataList1.owner.imageUrl}/image")),
@@ -1411,8 +1508,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: Image.network(
                       "https://today-api.moveforwardparty.org/api$postcoverImage/image",
-                      width: 250,
-                      height: 200,
+                      width: 300,
+                      height: 300,
                       filterQuality: FilterQuality.medium,
                     ),
                     //  Image.memory(_image)
