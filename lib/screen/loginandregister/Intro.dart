@@ -27,15 +27,15 @@ class _IntroState extends State<Intro> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: Colors.white,
-        width: double.infinity,
+      body: SingleChildScrollView(
+physics: NeverScrollableScrollPhysics(),
+
         child: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               SizedBox(
-                height: 80,
+                height: 70,
               ),
               Padding(
                 padding: EdgeInsets.all(20),
@@ -56,8 +56,7 @@ class _IntroState extends State<Intro> {
                 ),
               ),
               SizedBox(height: 30),
-              Expanded(
-                child: Container(
+            Container(
                   decoration: BoxDecoration(
                       color: Color(0xffF47932),
                       borderRadius: BorderRadius.only(
@@ -136,7 +135,6 @@ class _IntroState extends State<Intro> {
                           SizedBox(
                             height: 10,
                           ),
-                          Text('V1.0'),
                           Text(
                             "ลืมรหัสผ่าน?",
                             style: TextStyle(color: Colors.white),
@@ -144,11 +142,12 @@ class _IntroState extends State<Intro> {
                         ],
                       )),
                 ),
-              ),
+         
             ],
           ),
         ),
       ),
+     
     );
   }
 }

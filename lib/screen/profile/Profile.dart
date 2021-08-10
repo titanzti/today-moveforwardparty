@@ -68,14 +68,14 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
   var titletest;
 
   StreamController _postsController;
-  List<ProfilePostModel> lists =[];
-  bool iscover =false;
+  List<ProfilePostModel> lists = [];
+  bool iscover = false;
 
   var postshareid;
 
-    File _image;
+  File _image;
 
-var msg;
+  var msg;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   var cover;
@@ -130,7 +130,7 @@ var msg;
 
     print('mytoken${widget.istoken}');
     scrollController = ScrollController();
-    Api.getprofilepost(widget.myuid, mytoken).then((responseData)  async=> ({
+    Api.getprofilepost(widget.myuid, mytoken).then((responseData) async => ({
           print('getprofilepost'),
           if (responseData.statusCode == 200)
             {
@@ -139,7 +139,8 @@ var msg;
                 {
                   postshareid = i["_id"],
                   print('postid$postid'),
-              getpost=  await  getpostsearch(widget.myuid, mytoken,postshareid),
+                  getpost =
+                      await getpostsearch(widget.myuid, mytoken, postshareid),
                 },
             }
         }));
@@ -148,10 +149,11 @@ var msg;
 
     super.initState();
   }
+
   @override
-  void dispose() { 
+  void dispose() {
     _clear();
-    
+
     super.dispose();
   }
 
@@ -184,9 +186,8 @@ var msg;
 
       for (Map i in dataht["data"]) {
         // titletest = i["detail"];
-       listModel.add(ProfilePostModel.fromJson(i));
+        listModel.add(ProfilePostModel.fromJson(i));
         // _postsController.add(responseData);
-
 
         // print('titlegetpostsearch$titletest');
         // listModel.add(ProfilePostModel.fromJson(i));
@@ -195,7 +196,7 @@ var msg;
     }
   }
 
-   _imgFromCamera() async {
+  _imgFromCamera() async {
     File image = await ImagePicker.pickImage(
         source: ImageSource.camera, imageQuality: 50);
 
@@ -243,9 +244,8 @@ var msg;
             msg = jsonResponse['message'];
 
             print('msg$msg');
-            iscover=true;
-           
-          
+            iscover = true;
+
             WidgetsBinding.instance.addPostFrameCallback(
                 (_) => _scaffoldKey.currentState.showSnackBar(SnackBar(
                       content: Text('Updata succeed'),
@@ -294,7 +294,6 @@ var msg;
                     onTap: () {
                       _imgFromCamera();
                       Navigator.of(context).pop();
-
                     },
                   ),
                 ],
@@ -303,13 +302,14 @@ var msg;
           );
         });
   }
-    Future<Null> _handleRefresh() async {
-      print('_handleRefresh');
+
+  Future<Null> _handleRefresh() async {
+    print('_handleRefresh');
     new Future.delayed(const Duration(seconds: 2));
     // setState(() {
     //   listModel.clear();
     // });
-     Api.getuserprofile(widget.istoken).then((responseData) => ({
+    Api.getuserprofile(widget.istoken).then((responseData) => ({
           if (responseData.statusCode == 200)
             {
               datagetuserprofile = jsonDecode(responseData.body),
@@ -324,12 +324,9 @@ var msg;
                 image = datagetuserprofile["data"]["user"]["imageURL"];
                 cover = datagetuserprofile["data"]["user"]["coverURL"];
               }),
-            
             }
         }));
-
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -338,7 +335,7 @@ var msg;
             color: Colors.white,
             child: Center(child: CupertinoActivityIndicator()))
         : Scaffold(
-          key: _scaffoldKey,
+            key: _scaffoldKey,
             appBar: AppBar(
               backgroundColor: Color(0xffF47932),
               elevation: 0,
@@ -394,7 +391,8 @@ var msg;
                         child: Icon(
                           Icons.logout,
                         )),
-                InkWell(
+             widget.istoken == ""
+                    ? Container():    InkWell(
                   child: IconButton(
                     icon: Icon(Icons.settings),
                     onPressed: () {
@@ -421,13 +419,17 @@ var msg;
                         child: Stack(
                           children: [
                             // Text('data'),
-                            Container(width: double.infinity,height: 200,
-                            child: Image.network('${iscover==true?Image.file(_image): 'https://today-api.moveforwardparty.org/api$cover/image'}'),),
+                            Container(
+                              width: double.infinity,
+                              height: 200,
+                              child: Image.network(
+                                  '${iscover == true ? Image.file(_image) : 'https://today-api.moveforwardparty.org/api$cover/image'}'),
+                            ),
                             Align(
                               alignment: Alignment.bottomCenter,
                               child: Container(
-                                padding:
-                                    EdgeInsets.only(left: 15, top: 10, right: 15),
+                                padding: EdgeInsets.only(
+                                    left: 15, top: 10, right: 15),
                                 width: 100,
                                 height: 100,
                                 decoration: BoxDecoration(
@@ -449,7 +451,7 @@ var msg;
                                 ),
                               ),
                             ),
-                            Positioned(
+                      widget.istoken==""?Container():      Positioned(
                               bottom: 0,
                               right: 0,
                               child: Container(
@@ -464,13 +466,13 @@ var msg;
                                   color: Colors.blue,
                                 ),
                                 child: InkWell(
-                                   onTap: () => _showPicker(context),
+                                  onTap: () => _showPicker(context),
                                   child: Icon(
-                                  Icons.camera_enhance,
-                                  color: Colors.white,
-                                  size: 18,
-                                ),),
-                                
+                                    Icons.camera_enhance,
+                                    color: Colors.white,
+                                    size: 18,
+                                  ),
+                                ),
                               ),
                             ),
                           ],
@@ -674,10 +676,11 @@ var msg;
                           children: <Widget>[
                             FutureBuilder(
                               future: Future.wait([
-getpost,
+                                getpost,
                               ]),
                               // initialData: InitialData,
-                              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                              builder: (BuildContext context,
+                                  AsyncSnapshot snapshot) {
                                 return ListView.builder(
                                     physics: ClampingScrollPhysics(),
                                     shrinkWrap: true,
@@ -694,7 +697,6 @@ getpost,
                                       }
                                       // var mypostid = data.referencePost;
                                       // print('mypostid$mypostid');
-                                      
 
                                       return ListTile(
                                         title: Text('data${data.id}'),
@@ -704,8 +706,6 @@ getpost,
                               },
                             ),
 
-                            
-                            
                             // StreamBuilder(
                             //   stream: _postsController.stream,
                             //   builder: (BuildContext context,
@@ -726,7 +726,6 @@ getpost,
                             //           }
                             //           // var mypostid = data.referencePost;
                             //           // print('mypostid$mypostid');
-                                      
 
                             //           return ListTile(
                             //             title: Text('data${data.title}'),

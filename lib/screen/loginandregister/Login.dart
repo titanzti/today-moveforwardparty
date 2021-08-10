@@ -60,6 +60,9 @@ class _LoginState extends State<Login> {
               "token", '${jsonResponse["data"]["token"]}');
                sharedPreferences.setString(
               "myuid", '${jsonResponse["data"]["user"]["id"]}');
+                sharedPreferences.setString(
+              "imageURL", '${jsonResponse["data"]["user"]["imageURL"]}');
+              
           sharedPreferences?.setBool("isLoggedIn", true);
           mytoken = jsonResponse["data"]["token"];
             myuid =  jsonResponse["data"]["user"]["id"];
@@ -109,10 +112,14 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      body: Center(
+      body: SingleChildScrollView(
+        child:  Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            SizedBox(
+              height: 40.0,
+            ),
             Container(
               // color: Colors.black,
               padding: const EdgeInsets.all(20.0),
@@ -351,6 +358,9 @@ class _LoginState extends State<Login> {
           ],
         ),
       ),
+
+      ),
+     
     );
   }
 

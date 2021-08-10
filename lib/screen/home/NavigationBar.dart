@@ -7,6 +7,7 @@ import 'package:appmove/screen/profile/Profile.dart';
 import 'package:appmove/screen/profile/Profiless.dart';
 import 'package:appmove/screen/support/Support.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -86,6 +87,8 @@ class _AppbarState extends State<Appbar> {
                 ),
           onPressed: () {
             setState(() {
+                            HapticFeedback.lightImpact();
+
               isClick = false;
               _enabled = !_enabled;
               currentScreen = HomeScreen();
@@ -110,6 +113,8 @@ class _AppbarState extends State<Appbar> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
+                                                    HapticFeedback.lightImpact();
+
                         currentScreen = Info();
                         currentTab = 1;
                       });
@@ -137,6 +142,8 @@ class _AppbarState extends State<Appbar> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
+                                                    HapticFeedback.lightImpact();
+
                         currentScreen = Support();
                         currentTab = 2;
                       });
@@ -172,6 +179,8 @@ class _AppbarState extends State<Appbar> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
+                                                    HapticFeedback.lightImpact();
+
                         currentScreen = Modelshop();
                         currentTab = 3;
                       });
@@ -200,6 +209,7 @@ class _AppbarState extends State<Appbar> {
                     onPressed: () {
                       setState(() {
                         // currentScreen = Profile();
+                            HapticFeedback.lightImpact();
 
                         currentScreen = Profile(
                           istoken: widget.istoken,myuid: widget.myuid,

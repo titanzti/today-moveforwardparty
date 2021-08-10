@@ -254,7 +254,7 @@ class _SearchListState extends State<SearchList> {
         child: Scaffold(
           appBar: AppBar(
             backgroundColor: Color(0xffF47932),
-            title: Text('${widget.type}'),
+            title: Text('${widget.label}'),
           ),
           body: SingleChildScrollView(
                 controller: _scrollController,

@@ -39,6 +39,12 @@ class Api {
     return myuid;
   }
 
+  static Future getimageURL() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var imageURL = prefs.getString('imageURL');
+    return imageURL;
+  }
+
   static Future<Http.Response> getHashtagData() async {
     // print('getData');
 
@@ -502,7 +508,7 @@ class Api {
     print('getpagess');
     final headers = {
       "authorization": "Bearer $token",
-      "userid": "60c9cc216923656607919f06",
+      "userid":uid,
       "content-type": "application/json",
       // "accept": "application/json"
       // "whereConditions": {"isHideStory": false},

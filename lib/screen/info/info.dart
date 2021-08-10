@@ -22,7 +22,7 @@ var cardAspectRatio = 12.0 / 16.0;
 var widgetAspectRatio = cardAspectRatio * 1.2;
 
 class _InfoState extends State<Info> {
-  var loading = false;
+  var loading = true;
   var dataht;
   Future getDataProfile;
   List<ProfileSS> listProfileSSModel = [];
@@ -118,6 +118,7 @@ class _InfoState extends State<Info> {
           print('categoryid1$categoryid1');
           print('categorySSname10$categorySSname10');
         });
+      loading=false;
 
         print("Response status :${jsonResponse.statusCode}");
         // print("Response status :${jsonResponse.body}");
@@ -138,6 +139,9 @@ class _InfoState extends State<Info> {
       var body = jsonEncode(data);
 
       var responseRequest = await http.post(url, headers: headers, body: body);
+      // setState(() {
+      //   loading=true;
+      // });
 
       if (responseRequest.statusCode == 200) {
         final jsonResponse = jsonDecode(responseRequest.body);
@@ -215,11 +219,16 @@ class _InfoState extends State<Info> {
               print(listProfileSSModel1.length);
             }
           }
+          print('โหลดเสร็จ');
+     
+   
         });
 
         print("Response status :${jsonResponse.statusCode}");
+        
         // print("Response status :${jsonResponse.body}");
       }
+      
 
       // return responsepostRequest;
     } catch (e) {}
@@ -265,7 +274,10 @@ class _InfoState extends State<Info> {
                     id: nDataList.id,
                     image: nDataList.imageUrl,
                     name: nDataList.name,
+                    phonenumber: nDataList.mobileNo,
                     lineId: nDataList.lineId,
+                    facebookUrl: nDataList.facebookUrl,
+                    twitterUrl: nDataList.twitterUrl,
                   )),
         );
       },
@@ -302,7 +314,12 @@ class _InfoState extends State<Info> {
   }
 
   Widget build(BuildContext context) {
-    return Container(
+    return loading
+        ? Container(
+            color: Colors.white,
+            child: Center(child: Row(    mainAxisAlignment: MainAxisAlignment.center,
+children: [CupertinoActivityIndicator(),Text('โหลดแปปนะจ๊ะ')],)))
+        :  Container(
       color: Color(0xffF47932),
       child: SafeArea(
         child: Scaffold(
@@ -379,9 +396,9 @@ class _InfoState extends State<Info> {
                   builder:
                       ((BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                     print('snapshot${snapshot.data}');
-                    if (!snapshot.hasData) {
-                      return CupertinoActivityIndicator();
-                    }
+                    // if (!snapshot.hasData) {
+                    //   return CupertinoActivityIndicator();
+                    // }
                     return Container(
                       // margin: EdgeInsets.symmetric(vertical: 20.0),
                       height: 250,
@@ -430,9 +447,9 @@ class _InfoState extends State<Info> {
                   builder:
                       ((BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                     print('snapshot${snapshot.data}');
-                    if (!snapshot.hasData) {
-                      return CupertinoActivityIndicator();
-                    }
+                    // if (!snapshot.hasData) {
+                    //   return CupertinoActivityIndicator();
+                    // }
                     return Container(
                       // margin: EdgeInsets.symmetric(vertical: 20.0),
                       height: 250,
@@ -481,9 +498,9 @@ class _InfoState extends State<Info> {
                   builder:
                       ((BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                     print('snapshot${snapshot.data}');
-                    if (!snapshot.hasData) {
-                      return CupertinoActivityIndicator();
-                    }
+                    // if (!snapshot.hasData) {
+                    //   return CupertinoActivityIndicator();
+                    // }
                     return Container(
                       // margin: EdgeInsets.symmetric(vertical: 20.0),
                       height: 250,
@@ -532,9 +549,9 @@ class _InfoState extends State<Info> {
                   builder:
                       ((BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                     print('snapshot${snapshot.data}');
-                    if (!snapshot.hasData) {
-                      return CupertinoActivityIndicator();
-                    }
+                    // if (!snapshot.hasData) {
+                    //   return CupertinoActivityIndicator();
+                    // }
                     return Container(
                       // margin: EdgeInsets.symmetric(vertical: 20.0),
                       height: 250,
@@ -583,9 +600,9 @@ class _InfoState extends State<Info> {
                   builder:
                       ((BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                     print('snapshot${snapshot.data}');
-                    if (!snapshot.hasData) {
-                      return CupertinoActivityIndicator();
-                    }
+                    // if (!snapshot.hasData) {
+                    //   return CupertinoActivityIndicator();
+                    // }
                     return Container(
                       // margin: EdgeInsets.symmetric(vertical: 20.0),
                       height: 250,
@@ -634,9 +651,9 @@ class _InfoState extends State<Info> {
                   builder:
                       ((BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                     print('snapshot${snapshot.data}');
-                    if (!snapshot.hasData) {
-                      return CupertinoActivityIndicator();
-                    }
+                    // if (!snapshot.hasData) {
+                    //   return CupertinoActivityIndicator();
+                    // }
                     return Container(
                       // margin: EdgeInsets.symmetric(vertical: 20.0),
                       height: 250,
@@ -685,9 +702,9 @@ class _InfoState extends State<Info> {
                   builder:
                       ((BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                     print('snapshot${snapshot.data}');
-                    if (!snapshot.hasData) {
-                      return CupertinoActivityIndicator();
-                    }
+                    // if (!snapshot.hasData) {
+                    //   return CupertinoActivityIndicator();
+                    // }
                     return Container(
                       // margin: EdgeInsets.symmetric(vertical: 20.0),
                       height: 250,
@@ -736,9 +753,9 @@ class _InfoState extends State<Info> {
                   builder:
                       ((BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                     print('snapshot${snapshot.data}');
-                    if (!snapshot.hasData) {
-                      return CupertinoActivityIndicator();
-                    }
+                    // if (!snapshot.hasData) {
+                    //   return CupertinoActivityIndicator();
+                    // }
                     return Container(
                       // margin: EdgeInsets.symmetric(vertical: 20.0),
                       height: 250,
@@ -787,9 +804,9 @@ class _InfoState extends State<Info> {
                   builder:
                       ((BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                     print('snapshot${snapshot.data}');
-                    if (!snapshot.hasData) {
-                      return CupertinoActivityIndicator();
-                    }
+                    // if (!snapshot.hasData) {
+                    //   return CupertinoActivityIndicator();
+                    // }
                     return Container(
                       // margin: EdgeInsets.symmetric(vertical: 20.0),
                       height: 250,
@@ -838,9 +855,9 @@ class _InfoState extends State<Info> {
                   builder:
                       ((BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                     print('snapshot${snapshot.data}');
-                    if (!snapshot.hasData) {
-                      return CupertinoActivityIndicator();
-                    }
+                    // if (!snapshot.hasData) {
+                    //   return CupertinoActivityIndicator();
+                    // }
                     return Container(
                       // margin: EdgeInsets.symmetric(vertical: 20.0),
                       height: 250,
@@ -889,9 +906,9 @@ class _InfoState extends State<Info> {
                   builder:
                       ((BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                     print('snapshot${snapshot.data}');
-                    if (!snapshot.hasData) {
-                      return CupertinoActivityIndicator();
-                    }
+                    // if (!snapshot.hasData) {
+                    //   return CupertinoActivityIndicator();
+                    // }
                     return Container(
                       // margin: EdgeInsets.symmetric(vertical: 20.0),
                       height: 250,
@@ -940,9 +957,9 @@ class _InfoState extends State<Info> {
                   builder:
                       ((BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                     print('snapshot${snapshot.data}');
-                    if (!snapshot.hasData) {
-                      return CupertinoActivityIndicator();
-                    }
+                    // if (!snapshot.hasData) {
+                    //   return CupertinoActivityIndicator();
+                    // }
                     return Container(
                       // margin: EdgeInsets.symmetric(vertical: 20.0),
                       height: 250,
@@ -991,9 +1008,9 @@ class _InfoState extends State<Info> {
                   builder:
                       ((BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                     print('snapshot${snapshot.data}');
-                    if (!snapshot.hasData) {
-                      return CupertinoActivityIndicator();
-                    }
+                    // if (!snapshot.hasData) {
+                    //   return CupertinoActivityIndicator();
+                    // }
                     return Container(
                       // margin: EdgeInsets.symmetric(vertical: 20.0),
                       height: 250,
@@ -1042,9 +1059,9 @@ class _InfoState extends State<Info> {
                   builder:
                       ((BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                     print('snapshot${snapshot.data}');
-                    if (!snapshot.hasData) {
-                      return CupertinoActivityIndicator();
-                    }
+                    // if (!snapshot.hasData) {
+                    //   return CupertinoActivityIndicator();
+                    // }
                     return Container(
                       // margin: EdgeInsets.symmetric(vertical: 20.0),
                       height: 250,
@@ -1093,9 +1110,9 @@ class _InfoState extends State<Info> {
                   builder:
                       ((BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                     print('snapshot${snapshot.data}');
-                    if (!snapshot.hasData) {
-                      return CupertinoActivityIndicator();
-                    }
+                    // if (!snapshot.hasData) {
+                    //   return CupertinoActivityIndicator();
+                    // }
                     return Container(
                       // margin: EdgeInsets.symmetric(vertical: 20.0),
                       height: 250,
@@ -1144,9 +1161,9 @@ class _InfoState extends State<Info> {
                   builder:
                       ((BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                     print('snapshot${snapshot.data}');
-                    if (!snapshot.hasData) {
-                      return CupertinoActivityIndicator();
-                    }
+                    // if (!snapshot.hasData) {
+                    //   return CupertinoActivityIndicator();
+                    // }
                     return Container(
                       // margin: EdgeInsets.symmetric(vertical: 20.0),
                       height: 250,

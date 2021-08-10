@@ -11,6 +11,7 @@ import 'package:appmove/widgets/allWidgets.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:http/http.dart' as Http;
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -22,9 +23,9 @@ class ProfilessScreen extends StatefulWidget {
   final String image;
   final String name;
   final String phonenumber;
-  final lineId;
-  final facebookUrl;
-  final twitterUrl;
+  final String lineId;
+  final String facebookUrl;
+  final String twitterUrl;
 
   const ProfilessScreen(
       {Key key,
@@ -176,8 +177,40 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
   //   listpostss.addAll(list);
   // }
 
+  void _launchSocial(String url, String fallbackUrl) async {
+    print('_launchSocial');
+    // Don't use canLaunch because of fbProtocolUrl (fb://)
+    if (Platform.isAndroid) {
+      try {
+        bool launched =
+            await launch(url, forceSafariVC: false, forceWebView: false);
+        if (!launched) {
+          await launch(fallbackUrl, forceSafariVC: false, forceWebView: false);
+        }
+      } catch (e) {
+        await launch(fallbackUrl, forceSafariVC: false, forceWebView: false);
+      }
+    } else if (Platform.isIOS) {
+      // iOS
+      try {
+        bool launched =
+            await launch(url, forceSafariVC: false, forceWebView: false);
+        if (!launched) {
+          await launch(fallbackUrl, forceSafariVC: false, forceWebView: false);
+        }
+      } catch (e) {
+        await launch(fallbackUrl, forceSafariVC: false, forceWebView: false);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    print('facebookUrl${widget.facebookUrl}');
+    print('twitterUrl${widget.twitterUrl}');
+
+    widget.facebookUrl != "" ? print('มีค่า') : print('ไม่มีค่า');
+
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -360,53 +393,193 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(
-                              color: Colors.white, // Set border color
-                              width: 3.0), // Set border width
-                          borderRadius: BorderRadius.all(Radius.circular(
-                              10.0)), // Set rounded corner radius
-                          boxShadow: [
-                            BoxShadow(
-                                blurRadius: 10,
-                                color: Colors.grey[200],
-                                offset: Offset(1, 3))
-                          ] // Make rounded corner of border
-                          ),
-                      // color: Colors.white,
-                      child: InkWell(
-                        child: Image.asset('images/logofb.png'),
-                      ),
-                    ),
+                    widget.facebookUrl != null
+                        ? Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(
+                                    color: Colors.white, // Set border color
+                                    width: 3.0), // Set border width
+                                borderRadius: BorderRadius.all(Radius.circular(
+                                    10.0)), // Set rounded corner radius
+                                boxShadow: [
+                                  BoxShadow(
+                                      blurRadius: 10,
+                                      color: Colors.grey[200],
+                                      offset: Offset(1, 3))
+                                ] // Make rounded corner of border
+                                ),
+                            // color: Colors.white,
+                            child: InkWell(
+                              onTap: () async {
+                                HapticFeedback.lightImpact();
+
+                                var storytestreplaceAll;
+                                storytestreplaceAll = widget.facebookUrl
+                                    .replaceAll("www.facebook.com/", "");
+                                print(
+                                    'storytestreplaceAll$storytestreplaceAll');
+
+                                print('กด');
+                                if (Platform.isAndroid) {
+                                  String uri =
+                                      'fb://profile/AllMoveForwardPartyThailand';
+                                  if (await canLaunch(uri)) {
+                                    await launch(uri);
+                                  } else {
+                                    throw 'Could not launch $uri';
+                                  }
+                                } else if (Platform.isIOS) {
+                                  // iOS
+                                  try {
+                                    bool launched = await launch(
+                                        'fb://page/AllMoveForwardPartyThailand',
+                                        forceSafariVC: false,
+                                        forceWebView: false);
+                                    if (!launched) {
+                                      await launch(
+                                          'fb://page/AllMoveForwardPartyThailand',
+                                          forceSafariVC: false,
+                                          forceWebView: false);
+                                    }
+                                  } catch (e) {
+                                    await launch(
+                                        'fb://page/AllMoveForwardPartyThailand',
+                                        forceSafariVC: false,
+                                        forceWebView: false);
+                                  }
+                                }
+                              },
+                              child: Image.asset('images/logofb.png'),
+                            ),
+                          )
+                        : Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                                color: Colors.grey[800].withOpacity(0.3),
+                                border: Border.all(
+                                    color: Colors.white, // Set border color
+                                    width: 3.0), // Set border width
+                                borderRadius: BorderRadius.all(Radius.circular(
+                                    10.0)), // Set rounded corner radius
+                                boxShadow: [
+                                  BoxShadow(
+                                      blurRadius: 10,
+                                      color: Colors.grey[200],
+                                      offset: Offset(1, 3))
+                                ] // Make rounded corner of border
+                                ),
+                            // color: Colors.white,
+                            child: InkWell(
+                              onTap: () {
+                                print('กด');
+                                // CupertinoAlertDialog(
+                                //   title: new Text("Dialog Title"),
+                                //   content: new Text("This is my content"),
+                                //   actions: <Widget>[
+                                //     CupertinoDialogAction(
+                                //       isDefaultAction: true,
+                                //       child: Text("Yes"),
+                                //     ),
+                                //     CupertinoDialogAction(
+                                //       child: Text("No"),
+                                //     )
+                                //   ],
+                                // );
+                              },
+                              child: Image.asset(
+                                'images/logofb.png',
+                                color: Colors.grey.withOpacity(1.0),
+                                colorBlendMode: BlendMode.softLight,
+                              ),
+                            )),
                     SizedBox(
                       width: 25,
                     ),
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(
-                              color: Colors.white, // Set border color
-                              width: 3.0), // Set border width
-                          borderRadius: BorderRadius.all(Radius.circular(
-                              10.0)), // Set rounded corner radius
-                          boxShadow: [
-                            BoxShadow(
-                                blurRadius: 10,
-                                color: Colors.grey[200],
-                                offset: Offset(1, 3))
-                          ] // Make rounded corner of border
+                    //============================================
+                    widget.twitterUrl != null
+                        ? Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(
+                                    color: Colors.white, // Set border color
+                                    width: 3.0), // Set border width
+                                borderRadius: BorderRadius.all(Radius.circular(
+                                    10.0)), // Set rounded corner radius
+                                boxShadow: [
+                                  BoxShadow(
+                                      blurRadius: 10,
+                                      color: Colors.grey[200],
+                                      offset: Offset(1, 3))
+                                ] // Make rounded corner of border
+                                ),
+                            // color: Colors.white,
+                            child: InkWell(
+                              onTap: () async {
+                                HapticFeedback.lightImpact();
+
+                                print('กด');
+                                var twitterurlreplaceAll;
+                                twitterurlreplaceAll = widget.twitterUrl
+                                    .replaceAll("twitter.com/", "");
+                                print(
+                                    'storytestreplaceAll$twitterurlreplaceAll');
+                                if (Platform.isAndroid) {
+                                  String uri =
+                                      'twitter://user?screen_name=$twitterurlreplaceAll';
+                                  if (await canLaunch(uri)) {
+                                    await launch(uri);
+                                  } else {
+                                    throw 'Could not launch $uri';
+                                  }
+                                } else if (Platform.isIOS) {
+                                  // iOS
+                                  String uri =
+                                      'twitter://user?screen_name=$twitterurlreplaceAll';
+                                  if (await canLaunch(uri)) {
+                                    await launch(uri);
+                                  } else {
+                                    throw 'Could not launch $uri';
+                                  }
+                                }
+                              },
+                              child: Image.asset('images/logotw.png'),
+                            ),
+                          )
+                        : Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                                color: Colors.grey[800].withOpacity(0.3),
+                                border: Border.all(
+                                    color: Colors.white, // Set border color
+                                    width: 3.0), // Set border width
+                                borderRadius: BorderRadius.all(Radius.circular(
+                                    10.0)), // Set rounded corner radius
+                                boxShadow: [
+                                  BoxShadow(
+                                      blurRadius: 10,
+                                      color: Colors.grey[200],
+                                      offset: Offset(1, 3))
+                                ] // Make rounded corner of border
+                                ),
+                            // color: Colors.white,
+                            child: InkWell(
+                              child: Container(
+                                color: Colors.yellow,
+                              ),
+                              //     Image.asset(
+                              //   'images/logotw.png',
+                              //   color: Colors.grey[800].withOpacity(0.3),
+                              //   colorBlendMode: BlendMode.softLight,
+                              // ),
+                            ),
                           ),
-                      // color: Colors.white,
-                      child: InkWell(
-                        child: Image.asset('images/logotw.png'),
-                      ),
-                    ),
                     SizedBox(
                       width: 25,
                     ),
@@ -430,17 +603,20 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
                       // color: Colors.white,
                       child: InkWell(
                         onTap: () async {
+                          HapticFeedback.lightImpact();
                           print('กด');
                           if (Platform.isAndroid) {
-                            String uri = 'line://oaMessage/@lineteamjp/123';
+                            String uri =
+                                'line://oaMessage/@${widget.lineId}/123';
                             if (await canLaunch(uri)) {
                               await launch(uri);
-                            }else {
+                            } else {
                               throw 'Could not launch $uri';
                             }
                           } else if (Platform.isIOS) {
                             // iOS
-                            String uri = 'line://oaMessage/@lineteamjp/123';
+                            String uri =
+                                'line://oaMessage/@${widget.lineId}/123';
                             if (await canLaunch(uri)) {
                               await launch(uri);
                             } else {
@@ -473,7 +649,11 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
                           ),
                       // color: Colors.white,
                       child: InkWell(
-                        onTap: () => launch("tel://21213123123"),
+                        onTap: () {
+                          HapticFeedback.lightImpact();
+
+                          launch("tel://${widget.phonenumber}");
+                        },
                         child: Image.asset('images/logophone.png'),
                       ),
                     ),

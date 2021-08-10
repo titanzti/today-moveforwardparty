@@ -29,6 +29,7 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:like_button/like_button.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:appmove/screen/comment/commentlist.dart';
@@ -50,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   List<SectionModelContent> listsectionModels = [];
   TextEditingController _detailController = TextEditingController();
 
-  var loading = false;
+  var loading = true;
   var islikes = false;
 
   final format = new DateFormat(' h:mm');
@@ -142,6 +143,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   var postid;
 
+  String idpost;
+
   fetchAlbum(String urlimage) async {
     print('fetchAlbum');
     String url = urlimage;
@@ -195,7 +198,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   // listModel.add(ProfilePostModel.fromJson(i)),
                                 },
                               print(listModel.length),
-                              loading = false,
                             }
                         }));
 
@@ -205,7 +207,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               datagetuserprofile =
                                   jsonDecode(responseData.body),
 
-                              loading = false,
 
                               // print(data["data"]["postSectionModel"]["contents"]);
 
@@ -240,9 +241,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         }));
                     getDataFuture =
                         Api.getHashtagData().then((responseData) => ({
-                              setState(() {
-                                loading = true;
-                              }),
+                            
                               print('getHashtagData'),
                               if (responseData.statusCode == 200)
                                 {
@@ -253,7 +252,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                       listModel.add(
                                           EmergencyEventsContent.fromJson(i)),
                                     },
-                                  loading = false,
                                 }
                             }));
 
@@ -295,9 +293,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     getDataemergencyEvents = Api.getPostemergencyEventsList()
                         .then((responseData) => ({
                               print('getPostList'),
-                              setState(() {
-                                loading = true;
-                              }),
+                            
                               if (responseData.statusCode == 200)
                                 {
                                   datapostlist = jsonDecode(responseData.body),
@@ -309,7 +305,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                             EmergencyEventsContent.fromJson(i));
                                       }),
                                     },
-                                  loading = false,
                                 }
                               else if (responseData.statusCode == 400)
                                 {}
@@ -318,9 +313,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             .getPostsectionModelsEventsList()
                         .then((responseData) => ({
                               print('getPostsectionModelsEventsList'),
-                              setState(() {
-                                loading = true;
-                              }),
+                             
                               if (responseData.statusCode == 200)
                                 {
                                   datapostlist = jsonDecode(responseData.body),
@@ -332,7 +325,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                             SectionModelContent.fromJson(i));
                                       }),
                                     },
-                                  loading = false,
                                 }
                               else if (responseData.statusCode == 400)
                                 {}
@@ -379,6 +371,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     );
     print('body$body');
     print('responseData${responseData.body}');
+    setState(() {
+      loading=true;
+    });
 
     if (responseData.statusCode == 200) {
       datapostlist = jsonDecode(responseData.body);
@@ -390,7 +385,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           print(listModelPostClass.length);
         });
       }
-      loading = false;
+    setState(() {
+      loading=false;
+    });
     } else if (responseData.statusCode == 400) {}
   }
 
@@ -401,7 +398,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     Api.gettoke().then((value) => value({
           checktoken = value,
         }));
-    return Container(
+    return loading
+        ? Container(
+            color: Colors.white,
+            child: Center(child: Row(    mainAxisAlignment: MainAxisAlignment.center,
+children: [CupertinoActivityIndicator(),Text('โหลดแปปนะจ๊ะ')],)))
+        : Container(
       color: Color(0xffF47932),
       child: SafeArea(
         child: Scaffold(
@@ -537,7 +539,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 child: Container(
                                     width: 38,
                                     height: 38,
-                                    color: Colors.grey[50].withOpacity(0.5),
+                                    color: Colors.white,
                                     // decoration: BoxDecoration(
                                     // border: Border.all(color: Colors.white)),
                                     child: Center(
@@ -756,9 +758,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   ]),
                                   builder: (BuildContext context,
                                       AsyncSnapshot<dynamic> snapshot) {
-                                    if (!snapshot.hasData) {
-                                      return CupertinoActivityIndicator();
-                                    }
+                                    // if (!snapshot.hasData) {
+                                    //   return CupertinoActivityIndicator();
+                                    // }
                                     return loading
                                         ? Center(
                                             child: CupertinoActivityIndicator())
@@ -830,9 +832,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   ]),
                                   builder: (BuildContext context,
                                       AsyncSnapshot<dynamic> snapshot) {
-                                    if (!snapshot.hasData) {
-                                      return CupertinoActivityIndicator();
-                                    }
+                                    // if (!snapshot.hasData) {
+                                    //   return CupertinoActivityIndicator();
+                                    // }
                                     return new Builder(
                                       builder: (BuildContext context) {
                                         return ListView.builder(
@@ -880,9 +882,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   ]),
                                   builder: (BuildContext context,
                                       AsyncSnapshot<dynamic> snapshot) {
-                                    if (!snapshot.hasData) {
-                                      return CupertinoActivityIndicator();
-                                    }
+                                    // if (!snapshot.hasData) {
+                                    //   return CupertinoActivityIndicator();
+                                    // }
                                     return new Builder(
                                       builder: (BuildContext context) {
                                         return ListView.builder(
@@ -899,13 +901,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                               //             if (index == listModelPostClass.length) {
                                               //   return CupertinoActivityIndicator();
                                               // }
-
                                               // if(listModelPostClass.length==0){
                                               //   return Center(child: Text("ไม่มีข้อมูล"));
                                               // }
                                               final nDataList1 =
                                                   listModelPostClass[index];
-
+                                              idpost = nDataList1.post.id;
                                               return PostList(
                                                 base,
                                                 nDataList1.page.name,
@@ -918,8 +919,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                 nDataList1.post.createdDate,
                                                 nDataList1.post.commentCount
                                                     .toString(),
-                                                    nDataList1,
-                                                    nDataList1.page.pageUsername
+                                                nDataList1,
+                                                nDataList1.page.pageUsername,
+                                                nDataList1.post.shareCount
+                                                    .toString(),
                                               );
                                             });
                                       },
@@ -988,7 +991,16 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     );
   }
 
-  void _showSettingsPanel(String postid) {
+  void _showSettingsPanel(
+    String postid,
+    String postpagename,
+    String postcoverImage,
+    String posttitle,
+    String postdetail,
+    String ownerimageUrl,
+    DateTime createdDate,
+    String postpagepageUsername,
+  ) {
     showModalBottomSheet<dynamic>(
         isScrollControlled: false,
         backgroundColor: Colors.transparent,
@@ -1001,89 +1013,107 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             expand: false,
             builder: (BuildContext context, ScrollController scrollController) {
               return Container(
-                          //  color: Colors.white,
+                //  color: Colors.white,
 
-               decoration: BoxDecoration(
+                decoration: BoxDecoration(
                   color: Colors.white,
-                                borderRadius:
-                                    BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10)),
-                              ),
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10)),
+                ),
                 child: Column(
                   children: [
-                     Container(
-                       
-                       width: 50,
+                    Container(
+                      width: 50,
                       //  height: 50,
-                       child: Divider(
-                         
-        thickness: 5,
-        color: Colors.black,
-      ),
-                     ),
-                     Expanded(
-                          child: InkWell(
-                              onTap: ()async{
-                                var jsonResponse;
-                        var status;
-                        bool isshow = false;
+                      child: Divider(
+                        thickness: 5,
+                        color: Colors.black,
+                      ),
+                    ),
+                    Expanded(
+                      child: InkWell(
+                        onTap: () async {
+                          var jsonResponse;
+                          var status;
+                          bool isshow = false;
 
-                                await Api.repost(postid, myuid, checktoken)
-                                .then((response) => ({
-                                      jsonResponse = jsonDecode(response.body),
-                                      if (response.statusCode == 200)
-                                        {
-                                          status = jsonResponse["status"],
-                                          print(status),
-                                          if (status == 1)
-                                            {
-                                              setState(() {
-                                                isshow = true;
-                                              }),
-                                            }
-                                        }
-                                    }));
-                                        Navigator.pop(context);
-                        WidgetsBinding.instance.addPostFrameCallback(
-                                (_) => _scaffoldKey.currentState
-                                        .showSnackBar(SnackBar(
-                                      content: Text('Posted!'),
-                                      backgroundColor: Color(0xffF47932),
-                                      behavior: SnackBarBehavior.floating,
-                                      duration:
-                                          new Duration(milliseconds: 3000),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(20),
-                                        side: BorderSide(
-                                          color: Colors.white,
-                                          width: 2,
-                                        ),
-                                      ),
-                                    )));
-                              },
-                            child: ListTile(
-                              title: Text('บอกต่อเรื่องราว'),
-                              leading:  Icon(FontAwesome.retweet),
-                            ),
-                          ),
+                          await Api.repost(postid, myuid, checktoken)
+                              .then((response) => ({
+                                    jsonResponse = jsonDecode(response.body),
+                                    if (response.statusCode == 200)
+                                      {
+                                        status = jsonResponse["status"],
+                                        print(status),
+                                        if (status == 1)
+                                          {
+                                            setState(() {
+                                              isshow = true;
+                                            }),
+                                          }
+                                      }
+                                  }));
+                          Navigator.pop(context);
+                          WidgetsBinding.instance.addPostFrameCallback((_) =>
+                              _scaffoldKey.currentState.showSnackBar(SnackBar(
+                                content: Text('Posted!'),
+                                backgroundColor: Color(0xffF47932),
+                                behavior: SnackBarBehavior.floating,
+                                duration: new Duration(milliseconds: 3000),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                  side: BorderSide(
+                                    color: Colors.white,
+                                    width: 2,
+                                  ),
+                                ),
+                              )));
+                        },
+                        child: ListTile(
+                          title: Text('บอกต่อเรื่องราว'),
+                          leading: Icon(FontAwesome.retweet),
                         ),
-                        Expanded(
-                          child: InkWell(
-                              onTap: (){
-                                Navigator.push(context, MaterialPageRoute(builder: (context)=>RepostWithComSc()));
-                              },
-                            child: ListTile(
-                              title: Text('บอกต่อเรื่องราวพร้อมความคิดเห็น'),
-                              leading:  Icon(FontAwesome.pencil),
-                            ),
-                          ),
+                      ),
+                    ),
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                           setState(() {
+                                         Navigator.of(context).pop();
+
+                                      });
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => RepostWithComSc(
+                                        postid: postid,
+                                        postpagename: postpagename,
+                                        postcoverImage: postcoverImage,
+                                        posttitle: posttitle,
+                                        postdetail: postdetail,
+                                        ownerimageUrl: ownerimageUrl,
+                                        createdDate: createdDate,
+                                        postpagepageUsername:
+                                            postpagepageUsername,
+                                        token: checktoken,
+                                        myuid: myuid,
+                                      )));
+                                     
+
+                        },
+                        child: ListTile(
+                          title: Text('บอกต่อเรื่องราวพร้อมความคิดเห็น'),
+                          leading: Icon(FontAwesome.pencil),
                         ),
+                      ),
+                    ),
                     Row(
                       children: [
                         SizedBox(
                           width: 5,
                           height: 5,
                         ),
-                        
+
                         // Container(
                         //   width: 50,
                         //   height: 50,
@@ -1129,7 +1159,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         var jsonResponse;
                         var status;
                         bool isshow = false;
-
                         _detailController.text == ""
                             ? await Api.repost(postid, myuid, checktoken)
                                 .then((response) => ({
@@ -1224,6 +1253,43 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         });
   }
 
+  Future<bool> onLikeButtonTapped(bool isLiked) async {
+    /// send your request here
+    // final bool success= await sendRequest();
+
+    /// if failed, you can do nothing
+    // return success? !isLiked:isLiked;
+    isLiked = false;
+    HapticFeedback.lightImpact();
+
+    var jsonResponse;
+    await Api.islike(idpost, myuid, checktoken).then((value) => ({
+          jsonResponse = jsonDecode(value.body),
+          print('messageonLikeButtonTapped${jsonResponse['message']}'),
+          if (value.statusCode == 200)
+            {
+              if (jsonResponse['message'] == "Like Post Success")
+                {
+                  setState(() {
+                    isLiked = true;
+                    // nDataList1.post.likeCount++;
+                  }),
+                }
+              else if (jsonResponse['message'] == "UnLike Post Success")
+                {
+                  setState(() {
+                    isLiked = false;
+                    // nDataList1.post.likeCount--;
+                  }),
+                }
+            }
+        }));
+    print("กดlike");
+    print('isLiked$isLiked');
+
+    return isLiked;
+  }
+
   Widget PostList(
       base,
       String postpagename,
@@ -1234,7 +1300,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       int postlikeCount,
       String ownerimageUrl,
       DateTime createdDate,
-      String postcommentCount,nDataList1,String postpagepageUsername) {
+      String postcommentCount,
+      nDataList1,
+      String postpagepageUsername,
+      String postshareCount) {
     String imageUri = base;
     // final UriData imageUri = Uri.parse("https://today-api.moveforwardparty.org/api/file/60d29d10d9b235079c054f9a/").data;
     print('imageUri$imageUri');
@@ -1272,22 +1341,29 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             Text(postpagename,
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                Row(children: [
-                  Text('$postpagepageUsername',style:TextStyle(fontSize: 14,)),  
-                  SizedBox(width: 10,),
-                   Text(Utils.readTimestamp(createdDate.millisecondsSinceEpoch),
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey,
-                )),
-                ],),
-            
+            Row(
+              children: [
+                Text('$postpagepageUsername',
+                    style: TextStyle(
+                      fontSize: 14,
+                    )),
+                SizedBox(
+                  width: 10,
+                ),
+                Text(Utils.readTimestamp(createdDate.millisecondsSinceEpoch),
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey,
+                    )),
+              ],
+            ),
           ],
         ),
-
         subtitle: Column(
           children: <Widget>[
             SizedBox(
@@ -1296,7 +1372,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             postcoverImage != null
                 ? Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child:  Image.network(
+                    child: Image.network(
                       "https://today-api.moveforwardparty.org/api$postcoverImage/",
                       width: 250,
                       height: 200,
@@ -1360,7 +1436,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 Text(postcommentCount.toString()),
                 checktoken == ""
                     ? IconButton(
-                        icon: Icon(Icons.comment),
+                        icon: Icon(FontAwesome.comment_o),
                         onPressed: () {
                           HapticFeedback.lightImpact();
                           showCupertinoModalBottomSheet(
@@ -1369,9 +1445,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           );
                         })
                     : IconButton(
-                        icon: Icon(Icons.comment),
+                        icon: Icon(FontAwesome.comment),
                         onPressed: () {
-                                                    HapticFeedback.lightImpact();
+                          HapticFeedback.lightImpact();
 
                           // print("postid${post.id}");
                           showCupertinoModalBottomSheet(
@@ -1383,23 +1459,33 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           );
                         }),
                 Spacer(),
+                Text(postshareCount),
                 IconButton(
                     icon: Icon(Icons.repeat),
                     onPressed: () async {
-                                                HapticFeedback.lightImpact();
+                      HapticFeedback.lightImpact();
 
-                      _showSettingsPanel(postid);
+                      _showSettingsPanel(
+                        postid,
+                        postpagename,
+                        postcoverImage,
+                        posttitle,
+                        postdetail,
+                        ownerimageUrl,
+                        createdDate,
+                        postpagepageUsername,
+                      );
 
                       print("กดlike");
                     }),
                 Spacer(),
-                Text( nDataList1.post.likeCount.toString()),
+                Text(nDataList1.post.likeCount.toString()),
                 IconButton(
-                    icon: Icon(Icons.favorite_border),
+                    icon: Icon(FontAwesome.heart_o),
                     onPressed: () async {
-                                                HapticFeedback.lightImpact();
+                      HapticFeedback.lightImpact();
 
-                    var jsonResponse;
+                      var jsonResponse;
                       await Api.islike(postid, myuid, checktoken)
                           .then((value) => ({
                                 jsonResponse = jsonDecode(value.body),
@@ -1410,20 +1496,55 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                         "Like Post Success")
                                       {
                                         setState(() {
-                                           nDataList1.post.likeCount++;
+                                          nDataList1.post.likeCount++;
                                         }),
                                       }
                                     else if (jsonResponse['message'] ==
                                         "UnLike Post Success")
                                       {
                                         setState(() {
-                                           nDataList1.post.likeCount--;
+                                          nDataList1.post.likeCount--;
                                         }),
                                       }
                                   }
                               }));
                       print("กดlike");
                     }),
+                //         LikeButton(
+                //   size: 25,
+                //   circleColor:
+                //       CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
+                //   bubblesColor: BubblesColor(
+                //     dotPrimaryColor: Color(0xffF47932),
+                //     dotSecondaryColor: Color(0xffF47932),
+                //   ),
+                //   likeBuilder: (bool isLiked) {
+                //     print('isLiked$isLiked');
+                //     return Icon(
+                //    isLiked? FontAwesome.heart: FontAwesome.heart_o,
+                //       color: isLiked ? Color(0xffF47932) : Colors.grey,
+                //       size: 25,
+                //     );
+                //   },
+                //      onTap: onLikeButtonTapped,
+
+                //   likeCount: nDataList1.post.likeCount,
+                //   countBuilder: (int count, bool isLiked, String text) {
+                //     var color = isLiked ? Colors.deepPurpleAccent : Colors.grey;
+                //     Widget result;
+                //     if (count == 0) {
+                //       result = Text(
+                //         "love",
+                //         style: TextStyle(color: color),
+                //       );
+                //     } else
+                //       result = Text(
+                //         text,
+                //         style: TextStyle(color: color),
+                //       );
+                //     return result;
+                //   },
+                // ),
               ],
             ),
             // Divider(
@@ -1432,11 +1553,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           ],
         ),
         leading: CircleAvatar(
-        backgroundImage: NetworkImage("https://today-api.moveforwardparty.org/api$ownerimageUrl/image"),
-            radius: 25,
+          backgroundImage: NetworkImage(
+              "https://today-api.moveforwardparty.org/api$ownerimageUrl/image"),
+          radius: 25,
+        ),
 
-      ),
-        
         // CircleAvatar(
         //   child: Container(
         //     color: Colors.white,
