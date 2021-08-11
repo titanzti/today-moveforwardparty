@@ -8,7 +8,6 @@ import 'package:appmove/model/searchpostlistModel.dart';
 import 'package:appmove/screen/home/EventList.dart';
 import 'package:appmove/screen/home/NavigationBar.dart';
 import 'package:appmove/screen/home/repostwithcomment.dart';
-import 'package:appmove/screen/home/search.dart';
 import 'package:appmove/screen/home/searchList.dart';
 import 'package:appmove/screen/home/searchbar.dart';
 import 'package:appmove/screen/home/shareSc.dart';

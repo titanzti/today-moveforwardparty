@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:appmove/main.dart';
 import 'package:appmove/screen/home/NavigationBar.dart';
 import 'package:appmove/screen/loginandregister/Intro.dart';
 import 'package:expandable_text/expandable_text.dart';
@@ -43,10 +44,12 @@ class _RegisterState extends State<Register> {
   String _currText = '';
   Color bulbColor = Colors.black;
   bool _obscureText = true;
+  bool _obscureTextcon = true;
 
-  String genderselect;
+  int genderselect;
   bool genderother = false;
   String msg = "";
+  bool isregister =false;
 
   var mytoken;
   bool _autoValidate = false;
@@ -72,7 +75,7 @@ class _RegisterState extends State<Register> {
     String lastName,
     String uniqueId,
     // DateTime birthdate,
-    String gender,
+    int gender,
     String customGender,
   ) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -95,30 +98,39 @@ class _RegisterState extends State<Register> {
         "birthdate": "2021-06-01T17:00:00.000Z",
         "gender": gender,
         "customGender": customGender,
-        "isAdmin": false,
-        "isSubAdmin": false,
-        "imageURL": "",
-        "coverURL": "",
-        "coverPosition": 0,
-        "banned": false,
-        // "asset": {},
+        "asset": {},
       };
       //encode Map to JSON
       var body = jsonEncode(data);
+      print(body);
 
       var responsepostRequest =
           await http.post(url, headers: headers, body: body);
       print("${responsepostRequest.statusCode}");
       print("${responsepostRequest.body}");
       final jsonResponse = jsonDecode(responsepostRequest.body);
+      print('Registerbody${responsepostRequest.body}');
 
       if (responsepostRequest.statusCode == 200) {
+
         mybody = jsonResponse["data"];
-        print("Response status :${jsonResponse.statusCode}");
+          if (jsonResponse['status'] == 1) {
+
+          print(jsonResponse['message']);
+          setState(() {
+                    isregister=true;
+
+                                    msg = jsonResponse['message'];
+
+          print("Response status :${jsonResponse.statusCode}");
         print("Response status :${jsonResponse.body}");
         sharedPreferences.setString(
             "token", '${jsonResponse["data"]["token"]}');
         mytoken = jsonResponse["data"]["token"];
+          });
+        }
+       
+        
       }
       if (jsonResponse.statusCode == 400) {
         if (jsonResponse['status'] == 0) {
@@ -151,28 +163,28 @@ class _RegisterState extends State<Register> {
   bool isvalidator = false;
   bool _isButtonDisabled = false;
   var mybody;
-  Future register(
-      // email, password, displayName
-      ) async {
-    print('register');
+  // Future register(
+  //     // email, password, displayName
+  //     ) async {
+  //   print('register');
 
-    try {
-      final response = await http.post(
-        Uri.parse('https://today-api.moveforwardparty.org/api/register'),
-        headers: {"mode": "EMAIL"},
-        body: json.encode(<String, String>{
-          "email": "ffff@test.com",
-          "password": "12345678",
-          "displayName": "test123",
-        }),
-      );
-      print("${response.statusCode}");
-      print("${response.body}");
-      return response;
-    } catch (e) {
-      print(e);
-    }
-  }
+  //   try {
+  //     final response = await http.post(
+  //       Uri.parse('https://today-api.moveforwardparty.org/api/register'),
+  //       headers: {"mode": "EMAIL"},
+  //       body: json.encode(<String, String>{
+  //         "email": "ffff@test.com",
+  //         "password": "12345678",
+  //         "displayName": "test123",
+  //       }),
+  //     );
+  //     print("${response.statusCode}");
+  //     print("${response.body}");
+  //     return response;
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 
   Widget setupAlertDialoadContainer() {
     return Container(
@@ -443,6 +455,7 @@ class _RegisterState extends State<Register> {
                         margin: EdgeInsets.symmetric(horizontal: 16),
                         child: TextFormField(
                           controller: _passconfController,
+                          obscureText: _obscureTextcon,
                           keyboardType: TextInputType.visiblePassword,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
@@ -452,6 +465,15 @@ class _RegisterState extends State<Register> {
                             filled: true,
                             fillColor: Color(0xFFe7edeb),
                             hintText: 'คอนเฟิร์มรหัสผ่าน:',
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _obscureTextcon
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: Colors.black,
+                              ),
+                              onPressed: _togglecon,
+                            ),
                           ),
                           onSaved: (String value) {
                             conpasswd = value;
@@ -464,17 +486,12 @@ class _RegisterState extends State<Register> {
                             if (value.isEmpty) {
                               return 'Please enter a confirmpassword';
                             }
-                            if (value != _passController.text) {
-                              setState(() {
-                                isvalidator = true;
-                              });
-                              return null;
-                            }
 
                             return null;
                           },
                         ),
                       ),
+                     
                       isvalidator
                           ? Text(
                               'Error password not match',
@@ -496,7 +513,7 @@ class _RegisterState extends State<Register> {
                                     onChanged: (val) {
                                       bulbColor = val;
                                       setState(() {
-                                        String genderman = "0";
+                                        int genderman = 0;
                                         genderother = false;
 
                                         genderselect = genderman;
@@ -523,7 +540,7 @@ class _RegisterState extends State<Register> {
                                     onChanged: (val) {
                                       bulbColor = val;
                                       setState(() {
-                                        String genderlady = "1";
+                                        int genderlady = 1;
                                         genderother = false;
 
                                         genderselect = genderlady;
@@ -617,11 +634,13 @@ class _RegisterState extends State<Register> {
                                   _emaileController.text,
                                   _firstNameController.text,
                                   _lastNameController.text,
-                                  _customGenderController.text,
-                                  _uniqueIdController.text,
-                                  genderother == true
-                                      ? _customGenderController.text
-                                      : _customGenderController.text == "",
+                                   _uniqueIdController.text,
+                                 genderselect,
+                                 ""
+                                //  _customGenderController.text == "".toString()
+                                  // genderother == true
+                                  //     ? _customGenderController.text
+                                  //     : _customGenderController.text == "",
                                 );
                                 //                                 // if (mounted) {
                                 //                                 //   setState(() {
@@ -655,7 +674,11 @@ class _RegisterState extends State<Register> {
                                 //                                         ],
                                 //                                       );
                                 //                                     });
-                                //                                 Navigator.of(context).pop();
+                                print('isregister$isregister');
+                                isregister==true ?showAlertDialog(context):showAlertDialogNo(context);
+                          
+                                     
+                                
                               },
                               child: Container(
                                 height: 50,
@@ -697,10 +720,77 @@ class _RegisterState extends State<Register> {
       ),
     );
   }
+ showAlertDialog(BuildContext context) {
+  // set up the buttons
 
+  Widget continueButton = TextButton(
+    child: Text("Next"),
+    onPressed:  () {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => MyApp(
+                 
+                  )),
+        );
+    },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Register"),
+    content: Text('สำเร็จค้าบบบ'),
+    actions: [
+      
+      continueButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+showAlertDialogNo(BuildContext context ) {
+  // set up the button
+ 
+  Widget continueButton = TextButton(
+    child: Text("Next"),
+    onPressed:  () {
+      Navigator.pop(context);
+    },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Register"),
+    content: Text('ไม่สำเร็จค้าบบ'),
+    actions: [
+      continueButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
   void _toggle() {
     setState(() {
       _obscureText = !_obscureText;
+    });
+  }
+
+  
+  void _togglecon() {
+    setState(() {
+      _obscureTextcon = !_obscureTextcon;
     });
   }
 }
