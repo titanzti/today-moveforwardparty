@@ -199,7 +199,7 @@ class _RepostWithComScState extends State<RepostWithComSc> {
                           fontSize: 14,
                         )),
                     SizedBox(
-                      width: 10,
+                      width: 5,
                     ),
                     Text(
                         Utils.readTimestamp(createdDate.millisecondsSinceEpoch),

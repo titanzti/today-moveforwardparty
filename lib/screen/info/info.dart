@@ -135,6 +135,7 @@ class _InfoState extends State<Info> {
       };
       Map data = {
         "limit": 0,
+        "whereConditions":{"isOfficial":true}
       };
       var body = jsonEncode(data);
 
@@ -278,6 +279,7 @@ class _InfoState extends State<Info> {
                     lineId: nDataList.lineId,
                     facebookUrl: nDataList.facebookUrl,
                     twitterUrl: nDataList.twitterUrl,
+                    isOfficial:nDataList.isOfficial
                   )),
         );
       },
@@ -294,7 +296,7 @@ class _InfoState extends State<Info> {
                     "https://today-api.moveforwardparty.org/api${nDataList.imageUrl}/image",
                 // imageUrl: "${nDataList[index]}",
                 placeholder: (context, url) =>
-                    new Center(child: new CupertinoActivityIndicator()),
+                    new Image.asset('images/placeholder.png'),
                 errorWidget: (context, url, error) =>
                     new Image.asset('images/placeholder.png'),
               ),
@@ -318,7 +320,7 @@ class _InfoState extends State<Info> {
         ? Container(
             color: Colors.white,
             child: Center(child: Row(    mainAxisAlignment: MainAxisAlignment.center,
-children: [CupertinoActivityIndicator(),Text('โหลดแปปนะจ๊ะ')],)))
+children: [CupertinoActivityIndicator(),Text('โหลด...')],)))
         :  Container(
       color: Color(0xffF47932),
       child: SafeArea(
@@ -369,7 +371,7 @@ children: [CupertinoActivityIndicator(),Text('โหลดแปปนะจ๊�
                 SizedBox(
                   height: 10,
                 ),
-                Container(
+           listProfileSSModel.length!=0?     Container(
                   padding: EdgeInsets.all(2),
 
                   // width: double.infinity,
@@ -388,8 +390,8 @@ children: [CupertinoActivityIndicator(),Text('โหลดแปปนะจ๊�
                             fontWeight: FontWeight.bold,
                             letterSpacing: 1.0,
                           )),
-                ),
-                FutureBuilder(
+                ):Container(),
+            listProfileSSModel.length!=0?         FutureBuilder(
                   future: Future.wait([
                     getDataProfile,
                   ]),
@@ -419,8 +421,8 @@ children: [CupertinoActivityIndicator(),Text('โหลดแปปนะจ๊�
                       ),
                     );
                   }),
-                ),
-                Container(
+                ):Container(),
+             listProfileSSModel1.length!=0?   Container(
                   padding: EdgeInsets.all(2),
 
                   // width: double.infinity,
@@ -439,8 +441,8 @@ children: [CupertinoActivityIndicator(),Text('โหลดแปปนะจ๊�
                             fontWeight: FontWeight.bold,
                             letterSpacing: 1.0,
                           )),
-                ),
-                FutureBuilder(
+                ):Container(),
+           listProfileSSModel1.length!=0?         FutureBuilder(
                   future: Future.wait([
                     getDataProfile,
                   ]),
@@ -470,8 +472,8 @@ children: [CupertinoActivityIndicator(),Text('โหลดแปปนะจ๊�
                       ),
                     );
                   }),
-                ),
-                Container(
+                ):Container(),
+             listProfileSSModel2.length!=0?    Container(
                   padding: EdgeInsets.all(2),
 
                   // width: double.infinity,
@@ -490,8 +492,8 @@ children: [CupertinoActivityIndicator(),Text('โหลดแปปนะจ๊�
                             fontWeight: FontWeight.bold,
                             letterSpacing: 1.0,
                           )),
-                ),
-                FutureBuilder(
+                ):Container(),
+               listProfileSSModel2.length!=0?        FutureBuilder(
                   future: Future.wait([
                     getDataProfile,
                   ]),
@@ -521,8 +523,8 @@ children: [CupertinoActivityIndicator(),Text('โหลดแปปนะจ๊�
                       ),
                     );
                   }),
-                ),
-                Container(
+                ):Container(),
+              listProfileSSModel3.length!=0?         Container(
                   padding: EdgeInsets.all(2),
 
                   // width: double.infinity,
@@ -541,8 +543,8 @@ children: [CupertinoActivityIndicator(),Text('โหลดแปปนะจ๊�
                             fontWeight: FontWeight.bold,
                             letterSpacing: 1.0,
                           )),
-                ),
-                FutureBuilder(
+                ):Container(),
+                 listProfileSSModel3.length!=0?      FutureBuilder(
                   future: Future.wait([
                     getDataProfile,
                   ]),
@@ -572,8 +574,8 @@ children: [CupertinoActivityIndicator(),Text('โหลดแปปนะจ๊�
                       ),
                     );
                   }),
-                ),
-                Container(
+                ):Container(),
+                  listProfileSSModel4.length!=0?     Container(
                   padding: EdgeInsets.all(2),
 
                   // width: double.infinity,
@@ -592,8 +594,8 @@ children: [CupertinoActivityIndicator(),Text('โหลดแปปนะจ๊�
                             fontWeight: FontWeight.bold,
                             letterSpacing: 1.0,
                           )),
-                ),
-                FutureBuilder(
+                ):Container(),
+               listProfileSSModel4.length!=0?        FutureBuilder(
                   future: Future.wait([
                     getDataProfile,
                   ]),
@@ -623,8 +625,8 @@ children: [CupertinoActivityIndicator(),Text('โหลดแปปนะจ๊�
                       ),
                     );
                   }),
-                ),
-                Container(
+                ):Container(),
+                   listProfileSSModel5.length!=0?    Container(
                   padding: EdgeInsets.all(2),
 
                   // width: double.infinity,
@@ -643,8 +645,8 @@ children: [CupertinoActivityIndicator(),Text('โหลดแปปนะจ๊�
                             fontWeight: FontWeight.bold,
                             letterSpacing: 1.0,
                           )),
-                ),
-                FutureBuilder(
+                ):Container(),
+                  listProfileSSModel5.length!=0?     FutureBuilder(
                   future: Future.wait([
                     getDataProfile,
                   ]),
@@ -674,8 +676,8 @@ children: [CupertinoActivityIndicator(),Text('โหลดแปปนะจ๊�
                       ),
                     );
                   }),
-                ),
-                Container(
+                ):Container(),
+             listProfileSSModel6.length!=0?          Container(
                   padding: EdgeInsets.all(2),
 
                   // width: double.infinity,
@@ -694,8 +696,8 @@ children: [CupertinoActivityIndicator(),Text('โหลดแปปนะจ๊�
                             fontWeight: FontWeight.bold,
                             letterSpacing: 1.0,
                           )),
-                ),
-                FutureBuilder(
+                ):Container(),
+                  listProfileSSModel6.length!=0?     FutureBuilder(
                   future: Future.wait([
                     getDataProfile,
                   ]),
@@ -725,8 +727,8 @@ children: [CupertinoActivityIndicator(),Text('โหลดแปปนะจ๊�
                       ),
                     );
                   }),
-                ),
-                Container(
+                ):Container(),
+                listProfileSSModel7.length!=0?       Container(
                   padding: EdgeInsets.all(2),
 
                   // width: double.infinity,
@@ -745,8 +747,8 @@ children: [CupertinoActivityIndicator(),Text('โหลดแปปนะจ๊�
                             fontWeight: FontWeight.bold,
                             letterSpacing: 1.0,
                           )),
-                ),
-                FutureBuilder(
+                ):Container(),
+                listProfileSSModel7.length!=0?       FutureBuilder(
                   future: Future.wait([
                     getDataProfile,
                   ]),
@@ -776,8 +778,8 @@ children: [CupertinoActivityIndicator(),Text('โหลดแปปนะจ๊�
                       ),
                     );
                   }),
-                ),
-                Container(
+                ):Container(),
+                listProfileSSModel8.length!=0?       Container(
                   padding: EdgeInsets.all(2),
 
                   // width: double.infinity,
@@ -796,8 +798,8 @@ children: [CupertinoActivityIndicator(),Text('โหลดแปปนะจ๊�
                             fontWeight: FontWeight.bold,
                             letterSpacing: 1.0,
                           )),
-                ),
-                FutureBuilder(
+                ):Container(),
+                   listProfileSSModel8.length!=0?    FutureBuilder(
                   future: Future.wait([
                     getDataProfile,
                   ]),
@@ -827,8 +829,8 @@ children: [CupertinoActivityIndicator(),Text('โหลดแปปนะจ๊�
                       ),
                     );
                   }),
-                ),
-                Container(
+                ):Container(),
+                   listProfileSSModel9.length!=0?    Container(
                   padding: EdgeInsets.all(2),
 
                   // width: double.infinity,
@@ -847,8 +849,8 @@ children: [CupertinoActivityIndicator(),Text('โหลดแปปนะจ๊�
                             fontWeight: FontWeight.bold,
                             letterSpacing: 1.0,
                           )),
-                ),
-                FutureBuilder(
+                ):Container(),
+                  listProfileSSModel9.length!=0?     FutureBuilder(
                   future: Future.wait([
                     getDataProfile,
                   ]),
@@ -878,8 +880,8 @@ children: [CupertinoActivityIndicator(),Text('โหลดแปปนะจ๊�
                       ),
                     );
                   }),
-                ),
-                Container(
+                ):Container(),
+               listProfileSSModel10.length!=0?        Container(
                   padding: EdgeInsets.all(2),
 
                   // width: double.infinity,
@@ -898,8 +900,8 @@ children: [CupertinoActivityIndicator(),Text('โหลดแปปนะจ๊�
                             fontWeight: FontWeight.bold,
                             letterSpacing: 1.0,
                           )),
-                ),
-                FutureBuilder(
+                ):Container(),
+                  listProfileSSModel10.length!=0?     FutureBuilder(
                   future: Future.wait([
                     getDataProfile,
                   ]),
@@ -929,8 +931,8 @@ children: [CupertinoActivityIndicator(),Text('โหลดแปปนะจ๊�
                       ),
                     );
                   }),
-                ),
-                Container(
+                ):Container(),
+                 listProfileSSModel11.length!=0?      Container(
                   padding: EdgeInsets.all(2),
 
                   // width: double.infinity,
@@ -949,8 +951,8 @@ children: [CupertinoActivityIndicator(),Text('โหลดแปปนะจ๊�
                             fontWeight: FontWeight.bold,
                             letterSpacing: 1.0,
                           )),
-                ),
-                FutureBuilder(
+                ):Container(),
+                   listProfileSSModel11.length!=0?    FutureBuilder(
                   future: Future.wait([
                     getDataProfile,
                   ]),
@@ -980,8 +982,8 @@ children: [CupertinoActivityIndicator(),Text('โหลดแปปนะจ๊�
                       ),
                     );
                   }),
-                ),
-                Container(
+                ):Container(),
+              listProfileSSModel12.length!=0?         Container(
                   padding: EdgeInsets.all(2),
 
                   // width: double.infinity,
@@ -1000,8 +1002,8 @@ children: [CupertinoActivityIndicator(),Text('โหลดแปปนะจ๊�
                             fontWeight: FontWeight.bold,
                             letterSpacing: 1.0,
                           )),
-                ),
-                FutureBuilder(
+                ):Container(),
+               listProfileSSModel12.length!=0?        FutureBuilder(
                   future: Future.wait([
                     getDataProfile,
                   ]),
@@ -1031,8 +1033,8 @@ children: [CupertinoActivityIndicator(),Text('โหลดแปปนะจ๊�
                       ),
                     );
                   }),
-                ),
-                Container(
+                ):Container(),
+                listProfileSSModel13.length!=0?       Container(
                   padding: EdgeInsets.all(2),
 
                   // width: double.infinity,
@@ -1051,8 +1053,8 @@ children: [CupertinoActivityIndicator(),Text('โหลดแปปนะจ๊�
                             fontWeight: FontWeight.bold,
                             letterSpacing: 1.0,
                           )),
-                ),
-                FutureBuilder(
+                ):Container(),
+                  listProfileSSModel13.length!=0?     FutureBuilder(
                   future: Future.wait([
                     getDataProfile,
                   ]),
@@ -1082,8 +1084,8 @@ children: [CupertinoActivityIndicator(),Text('โหลดแปปนะจ๊�
                       ),
                     );
                   }),
-                ),
-                Container(
+                ):Container(),
+                  listProfileSSModel14.length!=0?     Container(
                   padding: EdgeInsets.all(2),
 
                   // width: double.infinity,
@@ -1102,8 +1104,8 @@ children: [CupertinoActivityIndicator(),Text('โหลดแปปนะจ๊�
                             fontWeight: FontWeight.bold,
                             letterSpacing: 1.0,
                           )),
-                ),
-                FutureBuilder(
+                ):Container(),
+                  listProfileSSModel14.length!=0?     FutureBuilder(
                   future: Future.wait([
                     getDataProfile,
                   ]),
@@ -1133,8 +1135,8 @@ children: [CupertinoActivityIndicator(),Text('โหลดแปปนะจ๊�
                       ),
                     );
                   }),
-                ),
-                Container(
+                ):Container(),
+                 listProfileSSModel15.length!=0?      Container(
                   padding: EdgeInsets.all(2),
 
                   // width: double.infinity,
@@ -1153,8 +1155,8 @@ children: [CupertinoActivityIndicator(),Text('โหลดแปปนะจ๊�
                             fontWeight: FontWeight.bold,
                             letterSpacing: 1.0,
                           )),
-                ),
-                FutureBuilder(
+                ):Container(),
+                  listProfileSSModel15.length!=0?     FutureBuilder(
                   future: Future.wait([
                     getDataProfile,
                   ]),
@@ -1184,7 +1186,7 @@ children: [CupertinoActivityIndicator(),Text('โหลดแปปนะจ๊�
                       ),
                     );
                   }),
-                ),
+                ):Container(),
               ],
             ),
           ),

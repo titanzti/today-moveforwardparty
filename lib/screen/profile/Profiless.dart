@@ -26,6 +26,7 @@ class ProfilessScreen extends StatefulWidget {
   final String lineId;
   final String facebookUrl;
   final String twitterUrl;
+  final bool isOfficial;
 
   const ProfilessScreen(
       {Key key,
@@ -35,7 +36,7 @@ class ProfilessScreen extends StatefulWidget {
       this.phonenumber,
       this.lineId,
       this.facebookUrl,
-      this.twitterUrl})
+      this.twitterUrl, this.isOfficial})
       : super(key: key);
 
   @override
@@ -281,8 +282,8 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
                   child: Stack(
                     children: [
                       Container(
-                        width: 100,
-                        height: 100,
+                        width: 125,
+                        height: 125,
                         decoration: BoxDecoration(
                             border: Border.all(width: 4, color: Colors.white),
                             boxShadow: [
@@ -298,34 +299,17 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
                                     "https://today-api.moveforwardparty.org/api${widget.image}/image"),
                                 fit: BoxFit.cover)),
                       ),
-                      Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: Container(
-                          height: 30,
-                          width: 30,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              width: 4,
-                              color: Colors.white,
-                            ),
-                            color: Colors.blue,
-                          ),
-                          child: Icon(
-                            Icons.edit,
-                            color: Colors.white,
-                            size: 18,
-                          ),
-                        ),
-                      ),
                     ],
                   ),
                 ),
                 Center(
                   child: Container(
                     padding: EdgeInsets.only(left: 15, top: 10, right: 15),
-                    child: widget.name == null
+                    child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+
+                      children: [
+                widget.name == null
                         ? Text(
                             'Label',
                             style: TextStyle(
@@ -340,6 +324,11 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
+                         widget.isOfficial==true? Icon(Icons.shield,color: Color(0xffFFD700),):Container(),
+
+                          // ${widget.isOfficial==true? Icon(Icons.shield):Text('NoOfficial')}
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(
@@ -397,20 +386,20 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
                         ? Container(
                             width: 40,
                             height: 40,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border.all(
-                                    color: Colors.white, // Set border color
-                                    width: 3.0), // Set border width
-                                borderRadius: BorderRadius.all(Radius.circular(
-                                    10.0)), // Set rounded corner radius
-                                boxShadow: [
-                                  BoxShadow(
-                                      blurRadius: 10,
-                                      color: Colors.grey[200],
-                                      offset: Offset(1, 3))
-                                ] // Make rounded corner of border
-                                ),
+                          decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(
+                              color: Colors.white, // Set border color
+                              width: 3.0), // Set border width
+                          borderRadius: BorderRadius.all(Radius.circular(
+                              10.0)), // Set rounded corner radius
+                          boxShadow: [
+                            BoxShadow(
+                                blurRadius: 10,
+                                color: Colors.grey[200],
+                                offset: Offset(1, 3))
+                          ] // Make rounded corner of border
+                          ),
                             // color: Colors.white,
                             child: InkWell(
                               onTap: () async {
@@ -459,9 +448,9 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
                             width: 40,
                             height: 40,
                             decoration: BoxDecoration(
-                                color: Colors.grey[800].withOpacity(0.3),
+                                // color: Colors.grey[800].withOpacity(0.3),
                                 border: Border.all(
-                                    color: Colors.white, // Set border color
+                                 color: Colors.grey[800].withOpacity(0.3),
                                     width: 3.0), // Set border width
                                 borderRadius: BorderRadius.all(Radius.circular(
                                     10.0)), // Set rounded corner radius
@@ -491,9 +480,9 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
                                 // );
                               },
                               child: Image.asset(
-                                'images/logofb.png',
-                                color: Colors.grey.withOpacity(1.0),
-                                colorBlendMode: BlendMode.softLight,
+                                'images/logofbgray.png',
+                                // color: Colors.grey.withOpacity(0.5),
+                                // colorBlendMode: BlendMode.softLight,
                               ),
                             )),
                     SizedBox(
@@ -504,25 +493,24 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
                         ? Container(
                             width: 40,
                             height: 40,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border.all(
-                                    color: Colors.white, // Set border color
-                                    width: 3.0), // Set border width
-                                borderRadius: BorderRadius.all(Radius.circular(
-                                    10.0)), // Set rounded corner radius
-                                boxShadow: [
-                                  BoxShadow(
-                                      blurRadius: 10,
-                                      color: Colors.grey[200],
-                                      offset: Offset(1, 3))
-                                ] // Make rounded corner of border
-                                ),
+                           decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(
+                              color: Colors.white, // Set border color
+                              width: 3.0), // Set border width
+                          borderRadius: BorderRadius.all(Radius.circular(
+                              10.0)), // Set rounded corner radius
+                          boxShadow: [
+                            BoxShadow(
+                                blurRadius: 10,
+                                color: Colors.grey[200],
+                                offset: Offset(1, 3))
+                          ] // Make rounded corner of border
+                          ),
                             // color: Colors.white,
                             child: InkWell(
                               onTap: () async {
                                 HapticFeedback.lightImpact();
-
                                 print('กด');
                                 var twitterurlreplaceAll;
                                 twitterurlreplaceAll = widget.twitterUrl
@@ -555,9 +543,8 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
                             width: 40,
                             height: 40,
                             decoration: BoxDecoration(
-                                color: Colors.grey[800].withOpacity(0.3),
                                 border: Border.all(
-                                    color: Colors.white, // Set border color
+                                color: Colors.grey[800].withOpacity(0.3),
                                     width: 3.0), // Set border width
                                 borderRadius: BorderRadius.all(Radius.circular(
                                     10.0)), // Set rounded corner radius
@@ -570,20 +557,17 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
                                 ),
                             // color: Colors.white,
                             child: InkWell(
-                              child: Container(
-                                color: Colors.yellow,
+                              child: Image.asset(
+                                'images/logotwgray.jpg',
+                                color: Colors.grey[800].withOpacity(0.3),
+                                colorBlendMode: BlendMode.softLight,
                               ),
-                              //     Image.asset(
-                              //   'images/logotw.png',
-                              //   color: Colors.grey[800].withOpacity(0.3),
-                              //   colorBlendMode: BlendMode.softLight,
-                              // ),
                             ),
                           ),
                     SizedBox(
                       width: 25,
                     ),
-                    Container(
+               widget.lineId!=null?     Container(
                       width: 40,
                       height: 40,
                       decoration: BoxDecoration(
@@ -626,11 +610,35 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
                         },
                         child: Image.asset('images/logoline.png'),
                       ),
-                    ),
+                    ):Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                color: Colors.grey[800].withOpacity(0.3),
+                                    width: 3.0), // Set border width
+                                borderRadius: BorderRadius.all(Radius.circular(
+                                    10.0)), // Set rounded corner radius
+                                boxShadow: [
+                                  BoxShadow(
+                                      blurRadius: 10,
+                                      color: Colors.grey[200],
+                                      offset: Offset(1, 3))
+                                ] // Make rounded corner of border
+                                ),
+                            // color: Colors.white,
+                            child: InkWell(
+                              child: Image.asset(
+                                'images/logolinegray.png',
+                                color: Colors.grey[800].withOpacity(0.3),
+                                colorBlendMode: BlendMode.softLight,
+                              ),
+                            ),
+                          ),
                     SizedBox(
                       width: 25,
                     ),
-                    Container(
+               widget.phonenumber!=null?     Container(
                       width: 40,
                       height: 40,
                       decoration: BoxDecoration(
@@ -656,7 +664,31 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
                         },
                         child: Image.asset('images/logophone.png'),
                       ),
-                    ),
+                    ):Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                color: Colors.grey[800].withOpacity(0.3),
+                                    width: 3.0), // Set border width
+                                borderRadius: BorderRadius.all(Radius.circular(
+                                    10.0)), // Set rounded corner radius
+                                boxShadow: [
+                                  BoxShadow(
+                                      blurRadius: 10,
+                                      color: Colors.grey[200],
+                                      offset: Offset(1, 3))
+                                ] // Make rounded corner of border
+                                ),
+                            // color: Colors.white,
+                            child: InkWell(
+                              child: Image.asset(
+                                'images/logophonegray.png',
+                                color: Colors.grey[800].withOpacity(0.3),
+                                colorBlendMode: BlendMode.softLight,
+                              ),
+                            ),
+                          ),
                   ],
                 ),
               ]),
@@ -1050,7 +1082,17 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
                           );
                         }),
                 Spacer(),
-                IconButton(
+                                Text(nDataList1.shareCount.toString()),
+
+            checktoken == ""  ? IconButton(
+                        icon: Icon(Icons.repeat),
+                        onPressed: () {
+                          showCupertinoModalBottomSheet(
+                            context: context,
+                            builder: (context) => Intro(),
+                          );
+                        })
+                    :    IconButton(
                     icon: Icon(Icons.repeat),
                     onPressed: () async {
                       var postid = nDataList1.id;
@@ -1061,7 +1103,15 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
                     }),
                 Spacer(),
                 Text(nDataList1.likeCount.toString()),
-                IconButton(
+             checktoken == ""  ? IconButton(
+                        icon: Icon(Icons.favorite_border),
+                        onPressed: () {
+                          showCupertinoModalBottomSheet(
+                            context: context,
+                            builder: (context) => Intro(),
+                          );
+                        })
+                    :     IconButton(
                     icon: Icon(Icons.favorite_border),
                     onPressed: () async {
                       var postid = nDataList1.id;

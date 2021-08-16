@@ -4,7 +4,6 @@ import 'package:appmove/model/searchhastag.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as Http;
-import 'package:appmove/model/postModel.dart';
 
 class Api {
   static Future logout() async {
@@ -15,6 +14,15 @@ class Api {
     var clear = await preferences.clear();
     preferences?.setBool("isLoggedIn", false);
     preferences?.setString("token", "");
+    preferences?.setString("imageURL", "");
+
+    //     await preferences.remove("imageURL");
+    //         await preferences.remove("myuid");
+
+    //     preferences?.setString("myuid", "");
+
+
+    
     print("!remover secc");
 
     return clear;
@@ -550,6 +558,45 @@ class Api {
     );
     print('body$body');
     print('responseupdataimage${responseData.body}');
+
+    return responseData;
+  }
+
+   static Future<Http.Response> createpost(
+     String uid, 
+   String token, 
+   String title, 
+   String detail) async {
+    print('createpost');
+    var url = "https://today-api.moveforwardparty.org/api/page/null/post";
+    final headers = {
+      "userid": uid,
+      "authorization": "Bearer $token",
+      "content-type": "application/json",
+      "accept": "application/json"
+      // "whereConditions": {"isHideStory": false},
+    };
+    Map data = {
+      "title":"test",
+      "detail":"test",
+      "emergencyEvent":"",
+      "emergencyEventTag":"",
+      "userTags":[],
+      "postsHashTags":[],
+      "postGallery":[],
+      "postSocialTW":false,
+      "postSocialFB":false
+      };
+
+    var body = jsonEncode(data);
+
+    final responseData = await Http.post(
+      url,
+      headers: headers,
+      body: body,
+    );
+    print('body$body');
+    print('repost${responseData.body}');
 
     return responseData;
   }

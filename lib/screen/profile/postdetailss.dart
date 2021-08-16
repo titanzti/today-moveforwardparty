@@ -172,19 +172,16 @@ class _PostDetailSSScreenState extends State<PostDetailSSScreen> {
       body: SingleChildScrollView(
         child: storytestreplaceAll == null
             ? Center(
-                child: Center(child: Text("No Detail")),
+                child: Center(child: Text("Loading...")),
               )
             : Container(
                 padding: EdgeInsets.all(10),
                 child: Column(
                   children: [
                     Container(
-                        width: 100,
+                        width: 300,
                         height: 100,
-                        child: Image.network(
-                          "$image",
-                          // filterQuality: FilterQuality.medium,
-                        )),
+                        child: new Image.asset('images/placeholder.png')),
                     Html(
                       data: """
                   ${storytestreplaceAll == null ? CupertinoActivityIndicator() : storytestreplaceAll}
@@ -202,7 +199,7 @@ class _PostDetailSSScreenState extends State<PostDetailSSScreen> {
                         }
                       },
                     ),
-                    Text('data'),
+                    // Text('data'),
                   ],
                 ),
               ),

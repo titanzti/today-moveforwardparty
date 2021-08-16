@@ -55,19 +55,19 @@ class _ModelshopState extends State<Modelshop> {
                     ),
                   ),
                 )),
-                Container(
-                  padding: EdgeInsets.only(left: 10),
-                  child: Wrap(
-                    direction: Axis.horizontal,
-                    spacing: 20.0,
-                    runSpacing: 10.0,
-                    children: <Widget>[
-                      listshop("สินค้าใหม่"),
-                      listshop("เสื้อ"),
-                      listshop("หมวก"),
-                    ],
-                  ),
-                ),
+                // Container(
+                //   padding: EdgeInsets.only(left: 10),
+                //   child: Wrap(
+                //     direction: Axis.horizontal,
+                //     spacing: 20.0,
+                //     runSpacing: 10.0,
+                //     children: <Widget>[
+                //       listshop("สินค้าใหม่"),
+                //       listshop("เสื้อ"),
+                //       listshop("หมวก"),
+                //     ],
+                //   ),
+                // ),
                 SizedBox(height: 10),
                 Container(
                   color: Colors.white,
@@ -95,7 +95,7 @@ class _ModelshopState extends State<Modelshop> {
                             height: 80,
                             width: 60,
                             child: Image.asset(
-                              'images/shairt.png',
+                              'images/polo.jpg',
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -106,7 +106,7 @@ class _ModelshopState extends State<Modelshop> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  "เสื้อยืด",
+                                  "เสื้อPolo",
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18),
@@ -117,10 +117,10 @@ class _ModelshopState extends State<Modelshop> {
                                       fontSize: 14, color: Colors.grey),
                                 ),
                                 Text(
-                                  '450 บาท',
+                                  '250 บาท',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 18),
+                                      fontSize: 16),
                                 ),
                               ],
                             ),
@@ -134,8 +134,8 @@ class _ModelshopState extends State<Modelshop> {
                                 onTap: () async{
                                HapticFeedback.lightImpact();
                                _scaffoldKey.currentState.showSnackBar(SnackBar(
-    content: Text('ไม่มีidlineจ้า'),
-));
+                               content: Text('ไม่มีidlineจ้า'),
+                                   ));
                           print('กด');
                           if (Platform.isAndroid) {
                             String uri =
@@ -194,7 +194,7 @@ class _ModelshopState extends State<Modelshop> {
                             height: 80,
                             width: 60,
                             child: Image.asset(
-                              'images/shairt.png',
+                              'images/hat.jpg',
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -205,7 +205,7 @@ class _ModelshopState extends State<Modelshop> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  "เสื้อยืด",
+                                  "หมวก",
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18),
@@ -219,7 +219,7 @@ class _ModelshopState extends State<Modelshop> {
                                   '450 บาท',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 18),
+                                      fontSize: 16),
                                 ),
                               ],
                             ),
@@ -266,7 +266,7 @@ class _ModelshopState extends State<Modelshop> {
                             height: 80,
                             width: 60,
                             child: Image.asset(
-                              'images/shairt.png',
+                              'images/bag.jpg',
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -278,7 +278,7 @@ class _ModelshopState extends State<Modelshop> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  "เสื้อยืด",
+                                  "กระเป๋าผ้าก้าวไกล",
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18),
@@ -292,157 +292,12 @@ class _ModelshopState extends State<Modelshop> {
                                   '450 บาท',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 18),
+                                      fontSize: 16),
                                 ),
                               ],
                             ),
                           ),
-                          Padding(
-                            padding: EdgeInsets.all(10),
-                            child: SizedBox(
-                              height: 30,
-                              width: 30,
-                              child: Image.asset(
-                                'images/logoline.png',
-                                fit: BoxFit.cover,
-                              ),
-                            ), // child: SvgPicture.asset("assets/icons/Lock.svg"),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  color: Colors.white,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 20),
-                      padding: EdgeInsets.all(10),
-                      height: 90,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(13),
-                        boxShadow: [
-                          BoxShadow(
-                            offset: Offset(0, 17),
-                            blurRadius: 23,
-                            spreadRadius: -13,
-                            color: Colors.grey[300],
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        children: <Widget>[
-                          SizedBox(
-                            height: 80,
-                            width: 60,
-                            child: Image.asset(
-                              'images/shairt.png',
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          SizedBox(width: 20),
-
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  "เสื้อยืด",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18),
-                                ),
-                                Text(
-                                  "รายละเอียดเพิ่มเติม",
-                                  style: TextStyle(
-                                      fontSize: 14, color: Colors.grey),
-                                ),
-                                Text(
-                                  '450 บาท',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(10),
-                            child: SizedBox(
-                              height: 30,
-                              width: 30,
-                              child: Image.asset(
-                                'images/logoline.png',
-                                fit: BoxFit.cover,
-                              ),
-                            ), // child: SvgPicture.asset("assets/icons/Lock.svg"),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  color: Colors.white,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 20),
-                      padding: EdgeInsets.all(10),
-                      height: 90,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(13),
-                        boxShadow: [
-                          BoxShadow(
-                            offset: Offset(0, 17),
-                            blurRadius: 23,
-                            spreadRadius: -13,
-                            color: Colors.grey[300],
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        children: <Widget>[
-                          SizedBox(
-                            height: 80,
-                            width: 60,
-                            child: Image.asset(
-                              'images/shairt.png',
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          SizedBox(width: 20),
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  "เสื้อยืด",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18),
-                                ),
-                                Text(
-                                  "รายละเอียดเพิ่มเติม",
-                                  style: TextStyle(
-                                      fontSize: 14, color: Colors.grey),
-                                ),
-                                Text(
-                                  '450 บาท',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
+                         Padding(
                             padding: EdgeInsets.all(10),
                             child: SizedBox(
                               height: 30,

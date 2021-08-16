@@ -52,9 +52,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                       Navigator.of(context).pushAndRemoveUntil(
                                           CupertinoPageRoute(
                                               builder: (BuildContext context) =>
-                                                  Appbar(
-                                                    istoken: "",
-                                                  )),
+                                                  Appbar()),
                                           (Route<dynamic> route) => false);
                                     },
                                     child: Text('Yes👌🏻'),

@@ -358,7 +358,7 @@ class _SearchbarState extends State<Searchbar> {
                     alignment: Alignment.bottomLeft,
                     child: new Container(
                       padding: EdgeInsets.all(10),
-                      color: Colors.white,
+                      // color: Colors.white,
                       child: Text(
                         "เทรนสำหรับคุณ",
                         style: TextStyle(

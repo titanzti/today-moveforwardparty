@@ -98,10 +98,10 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
           print('myuidhome$myuid'),
         }));
 
-    Api.gettoke().then((value) => value({
-          mytoken = value,
-          print('mytoken$mytoken'),
-        }));
+    // Api.gettoke().then((value) => value({
+    //       mytoken = value,
+    //       print('mytoken$mytoken'),
+    //     }));
 
     Api.getuserprofile(widget.istoken).then((responseData) => ({
           if (responseData.statusCode == 200)
@@ -128,24 +128,25 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
             }
         }));
 
-    print('mytoken${widget.istoken}');
+    print('widgetmytoken${widget.istoken}');
     scrollController = ScrollController();
-    Api.getprofilepost(widget.myuid, mytoken).then((responseData) async => ({
-          print('getprofilepost'),
-          if (responseData.statusCode == 200)
-            {
-              dataht = jsonDecode(responseData.body),
-              for (Map i in dataht["data"]["posts"])
-                {
-                  postshareid = i["_id"],
-                  print('postid$postid'),
-                  getpost =
-                      await getpostsearch(widget.myuid, mytoken, postshareid),
-                },
-            }
-        }));
+     getpost =getpostsearch(widget.myuid, mytoken, postshareid);
+    // Api.getprofilepost(widget.myuid, mytoken).then((responseData) async => ({
+    //       print('getprofilepost'),
+    //       if (responseData.statusCode == 200)
+    //         {
+    //           dataht = jsonDecode(responseData.body),
+    //           for (Map i in dataht["data"]["posts"])
+    //             {
+    //               postshareid = i["_id"],
+    //               print('postid$postid'),
+    //               getpost =
+    //                   await getpostsearch(widget.myuid, mytoken, postshareid),
+    //             },
+    //         }
+    //     }));
 
-    _postsController = new StreamController();
+    // _postsController = new StreamController();
 
     super.initState();
   }
@@ -159,7 +160,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
 
   Future getpostsearch(String uid, String token, String postid) async {
     print('getpostsearch$postid');
-    var url = "https://today-api.moveforwardparty.org/api/post/search";
+    var url = "https://today-api.moveforwardparty.org/api/profile/$uid/post/search";
     final headers = {
       "authorization": "Bearer $token",
       "userid": uid,
@@ -168,9 +169,9 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
       // "whereConditions": {"isHideStory": false},
     };
     Map data = {
-      "limit": 5,
-      "count": false,
-      "whereConditions": {"_id": postid}
+    "type":"",
+    "offset":0,
+    "limit":5
     };
     var body = jsonEncode(data);
     final responseData = await http.post(
@@ -184,7 +185,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
       dataht = jsonDecode(responseData.body);
       // print('getpostsearch2${responseData.body}');
 
-      for (Map i in dataht["data"]) {
+      for (Map i in dataht["data"]["posts"]) {
         // titletest = i["detail"];
         listModel.add(ProfilePostModel.fromJson(i));
         // _postsController.add(responseData);
@@ -341,57 +342,55 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
               elevation: 0,
               centerTitle: true,
               title: Text(
-                "โปรไฟล์ User",
+                "โปรไฟล์",
                 style: TextStyle(
                     color: Color(0xff0C3455),
                     fontWeight: FontWeight.bold,
                     fontSize: 18),
               ),
               actions: [
-                widget.istoken == ""
-                    ? Container()
-                    : InkWell(
-                        onTap: () async {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return SimpleDialog(
-                                  title: Text('logout?🤷🏻‍♂️'),
-                                  children: <Widget>[
-                                    SimpleDialogOption(
-                                      onPressed: () async {
-                                        await Api.logout();
-                                        Navigator.of(context)
-                                            .pushAndRemoveUntil(
-                                                CupertinoPageRoute(
-                                                    builder: (BuildContext
-                                                            context) =>
-                                                        Appbar(
-                                                          istoken: "",
-                                                        )),
-                                                (Route<dynamic> route) =>
-                                                    false);
-                                      },
-                                      child: Text('Yes👌🏻'),
-                                    ),
-                                    // SimpleDialogOption(
-                                    //   onPressed: handleImageSelecting,
-                                    //   child: Text('select a pic'),
-                                    // ),
-                                    SimpleDialogOption(
-                                      child: Text('cancel🙅🏻‍♂️'),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                    )
-                                  ],
-                                );
-                              });
-                        },
-                        child: Icon(
-                          Icons.logout,
-                        )),
-             widget.istoken == ""
+              // widget.istoken == ""||widget.istoken==null
+              //       ? Container()
+              //       : InkWell(
+              //           onTap: () async {
+              //             showDialog(
+              //                 context: context,
+              //                 builder: (context) {
+              //                   return SimpleDialog(
+              //                     title: Text('logout?🤷🏻‍♂️'),
+              //                     children: <Widget>[
+              //                       SimpleDialogOption(
+              //                         onPressed: () async {
+              //                           await Api.logout();
+              //                           Navigator.of(context)
+              //                               .pushAndRemoveUntil(
+              //                                   CupertinoPageRoute(
+              //                                       builder: (BuildContext
+              //                                               context) =>
+              //                                           Appbar()),
+              //                                   (Route<dynamic> route) =>
+              //                                       false);
+              //                         },
+              //                         child: Text('Yes👌🏻'),
+              //                       ),
+              //                       // SimpleDialogOption(
+              //                       //   onPressed: handleImageSelecting,
+              //                       //   child: Text('select a pic'),
+              //                       // ),
+              //                       SimpleDialogOption(
+              //                         child: Text('cancel🙅🏻‍♂️'),
+              //                         onPressed: () {
+              //                           Navigator.pop(context);
+              //                         },
+              //                       )
+              //                     ],
+              //                   );
+              //                 });
+              //           },
+              //           child: Icon(
+              //             Icons.logout,
+              //           )),
+            widget.istoken == ""||widget.istoken==null
                     ? Container():    InkWell(
                   child: IconButton(
                     icon: Icon(Icons.settings),
@@ -451,7 +450,8 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                                 ),
                               ),
                             ),
-                      widget.istoken==""?Container():      Positioned(
+                     widget.istoken == ""||widget.istoken==null?
+                      Container():      Positioned(
                               bottom: 0,
                               right: 0,
                               child: Container(
@@ -516,7 +516,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                       SizedBox(
                         height: 9,
                       ),
-                      widget.istoken == ""
+                      widget.istoken == ""||widget.istoken==null
                           ? Container()
                           : InkWell(
                               onTap: () {
@@ -556,109 +556,109 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                       SizedBox(
                         height: 10,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border.all(
-                                    color: Colors.white, // Set border color
-                                    width: 3.0), // Set border width
-                                borderRadius: BorderRadius.all(Radius.circular(
-                                    10.0)), // Set rounded corner radius
-                                boxShadow: [
-                                  BoxShadow(
-                                      blurRadius: 10,
-                                      color: Colors.grey[200],
-                                      offset: Offset(1, 3))
-                                ] // Make rounded corner of border
-                                ),
-                            // color: Colors.white,
-                            child: InkWell(
-                              child: Image.asset('images/logofb.png'),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 25,
-                          ),
-                          Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border.all(
-                                    color: Colors.white, // Set border color
-                                    width: 3.0), // Set border width
-                                borderRadius: BorderRadius.all(Radius.circular(
-                                    10.0)), // Set rounded corner radius
-                                boxShadow: [
-                                  BoxShadow(
-                                      blurRadius: 10,
-                                      color: Colors.grey[200],
-                                      offset: Offset(1, 3))
-                                ] // Make rounded corner of border
-                                ),
-                            // color: Colors.white,
-                            child: InkWell(
-                              child: Image.asset('images/logotw.png'),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 25,
-                          ),
-                          Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border.all(
-                                    color: Colors.white, // Set border color
-                                    width: 3.0), // Set border width
-                                borderRadius: BorderRadius.all(Radius.circular(
-                                    10.0)), // Set rounded corner radius
-                                boxShadow: [
-                                  BoxShadow(
-                                      blurRadius: 10,
-                                      color: Colors.grey[200],
-                                      offset: Offset(1, 3))
-                                ] // Make rounded corner of border
-                                ),
-                            // color: Colors.white,
-                            child: InkWell(
-                              child: Image.asset('images/logoline.png'),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 25,
-                          ),
-                          Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border.all(
-                                    color: Colors.white, // Set border color
-                                    width: 3.0), // Set border width
-                                borderRadius: BorderRadius.all(Radius.circular(
-                                    10.0)), // Set rounded corner radius
-                                boxShadow: [
-                                  BoxShadow(
-                                      blurRadius: 10,
-                                      color: Colors.grey[200],
-                                      offset: Offset(1, 3))
-                                ] // Make rounded corner of border
-                                ),
-                            // color: Colors.white,
-                            child: InkWell(
-                              onTap: () => launch("tel://21213123123"),
-                              child: Image.asset('images/logophone.png'),
-                            ),
-                          ),
-                        ],
-                      ),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.center,
+                      //   children: <Widget>[
+                      //     Container(
+                      //       width: 40,
+                      //       height: 40,
+                      //       decoration: BoxDecoration(
+                      //           color: Colors.white,
+                      //           border: Border.all(
+                      //               color: Colors.white, // Set border color
+                      //               width: 3.0), // Set border width
+                      //           borderRadius: BorderRadius.all(Radius.circular(
+                      //               10.0)), // Set rounded corner radius
+                      //           boxShadow: [
+                      //             BoxShadow(
+                      //                 blurRadius: 10,
+                      //                 color: Colors.grey[200],
+                      //                 offset: Offset(1, 3))
+                      //           ] // Make rounded corner of border
+                      //           ),
+                      //       // color: Colors.white,
+                      //       child: InkWell(
+                      //         child: Image.asset('images/logofb.png'),
+                      //       ),
+                      //     ),
+                      //     SizedBox(
+                      //       width: 25,
+                      //     ),
+                      //     Container(
+                      //       width: 40,
+                      //       height: 40,
+                      //       decoration: BoxDecoration(
+                      //           color: Colors.white,
+                      //           border: Border.all(
+                      //               color: Colors.white, // Set border color
+                      //               width: 3.0), // Set border width
+                      //           borderRadius: BorderRadius.all(Radius.circular(
+                      //               10.0)), // Set rounded corner radius
+                      //           boxShadow: [
+                      //             BoxShadow(
+                      //                 blurRadius: 10,
+                      //                 color: Colors.grey[200],
+                      //                 offset: Offset(1, 3))
+                      //           ] // Make rounded corner of border
+                      //           ),
+                      //       // color: Colors.white,
+                      //       child: InkWell(
+                      //         child: Image.asset('images/logotw.png'),
+                      //       ),
+                      //     ),
+                      //     SizedBox(
+                      //       width: 25,
+                      //     ),
+                      //     Container(
+                      //       width: 40,
+                      //       height: 40,
+                      //       decoration: BoxDecoration(
+                      //           color: Colors.white,
+                      //           border: Border.all(
+                      //               color: Colors.white, // Set border color
+                      //               width: 3.0), // Set border width
+                      //           borderRadius: BorderRadius.all(Radius.circular(
+                      //               10.0)), // Set rounded corner radius
+                      //           boxShadow: [
+                      //             BoxShadow(
+                      //                 blurRadius: 10,
+                      //                 color: Colors.grey[200],
+                      //                 offset: Offset(1, 3))
+                      //           ] // Make rounded corner of border
+                      //           ),
+                      //       // color: Colors.white,
+                      //       child: InkWell(
+                      //         child: Image.asset('images/logoline.png'),
+                      //       ),
+                      //     ),
+                      //     SizedBox(
+                      //       width: 25,
+                      //     ),
+                      //     Container(
+                      //       width: 40,
+                      //       height: 40,
+                      //       decoration: BoxDecoration(
+                      //           color: Colors.white,
+                      //           border: Border.all(
+                      //               color: Colors.white, // Set border color
+                      //               width: 3.0), // Set border width
+                      //           borderRadius: BorderRadius.all(Radius.circular(
+                      //               10.0)), // Set rounded corner radius
+                      //           boxShadow: [
+                      //             BoxShadow(
+                      //                 blurRadius: 10,
+                      //                 color: Colors.grey[200],
+                      //                 offset: Offset(1, 3))
+                      //           ] // Make rounded corner of border
+                      //           ),
+                      //       // color: Colors.white,
+                      //       child: InkWell(
+                      //         onTap: () => launch("tel://21213123123"),
+                      //         child: Image.asset('images/logophone.png'),
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
                     ]),
                   ),
                 ),
@@ -699,7 +699,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                                       // print('mypostid$mypostid');
 
                                       return ListTile(
-                                        title: Text('data${data.id}'),
+                                        title: Text('data${data.title}'),
                                         subtitle: Text('data'),
                                       );
                                     });

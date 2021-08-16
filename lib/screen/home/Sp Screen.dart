@@ -20,13 +20,13 @@ class _SpScreenState extends State<SpScreen> {
              color: Color(0xff0C3455),
               fontWeight: FontWeight.bold,
               fontSize: 28),),
-           //Image.asset('images/logo.png',height: 300,width: 500,),
+           Image.asset('images/logo.png',height: 300,width: 500,),
             SizedBox(
               height: 20,
             ),
-            CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-            )
+            // CircularProgressIndicator(
+            //   valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            // )
           ],
         ),
       ),

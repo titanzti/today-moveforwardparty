@@ -1,23 +1,19 @@
+import 'package:appmove/api/Api.dart';
 import 'package:appmove/screen/info/info.dart';
 import 'package:appmove/screen/home/HomeScreen.dart';
 import 'package:appmove/screen/loginandregister/Intro.dart';
-import 'package:appmove/screen/loginandregister/Login.dart';
 import 'package:appmove/screen/modle/Modelshop.dart';
 import 'package:appmove/screen/profile/Profile.dart';
-import 'package:appmove/screen/profile/Profiless.dart';
 import 'package:appmove/screen/support/Support.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class Appbar extends StatefulWidget {
   // final bool islogin;
-  final String istoken;
-  final String myuid;
 
-  const Appbar({Key key, this.istoken, this.myuid}) : super(key: key);
+  const Appbar({Key key}) : super(key: key);
   @override
   _AppbarState createState() => _AppbarState();
 }
@@ -53,10 +49,26 @@ class _AppbarState extends State<Appbar> {
   bool isClick = true;
   bool _enabled = false;
 
+  var checktoken;
+
+  var myuid;
+
   @override
   void initState() {
     super.initState();
-    setState(() {});
+    setState(() {
+      Api.gettoke().then((value) => value({
+            checktoken = value,
+            print('checktokenAppbar$checktoken'),
+          }));
+
+      Api.getmyuid().then((value) => ({
+            setState(() {
+              myuid = value;
+            }),
+            print('myuidAppbar$myuid'),
+          }));
+    });
     // _nameRetriever();
   }
 
@@ -87,7 +99,7 @@ class _AppbarState extends State<Appbar> {
                 ),
           onPressed: () {
             setState(() {
-                            HapticFeedback.lightImpact();
+              HapticFeedback.lightImpact();
 
               isClick = false;
               _enabled = !_enabled;
@@ -113,7 +125,7 @@ class _AppbarState extends State<Appbar> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                                                    HapticFeedback.lightImpact();
+                        HapticFeedback.lightImpact();
 
                         currentScreen = Info();
                         currentTab = 1;
@@ -142,7 +154,7 @@ class _AppbarState extends State<Appbar> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                                                    HapticFeedback.lightImpact();
+                        HapticFeedback.lightImpact();
 
                         currentScreen = Support();
                         currentTab = 2;
@@ -179,7 +191,7 @@ class _AppbarState extends State<Appbar> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                                                    HapticFeedback.lightImpact();
+                        HapticFeedback.lightImpact();
 
                         currentScreen = Modelshop();
                         currentTab = 3;
@@ -209,12 +221,13 @@ class _AppbarState extends State<Appbar> {
                     onPressed: () {
                       setState(() {
                         // currentScreen = Profile();
-                            HapticFeedback.lightImpact();
+                        HapticFeedback.lightImpact();
 
                         currentScreen = Profile(
-                          istoken: widget.istoken,myuid: widget.myuid,
+                          istoken: checktoken,
+                          myuid: myuid,
                         );
-                        if (widget.istoken == null || widget.istoken == "") {
+                        if (checktoken == null || checktoken == "") {
                           showCupertinoModalBottomSheet(
                             context: context,
                             builder: (context) => Intro(),

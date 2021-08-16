@@ -1,11 +1,5 @@
-import 'package:appmove/screen/info/info.dart';
-import 'package:appmove/screen/home/HomeScreen.dart';
-import 'package:appmove/screen/home/Sp%20Screen.dart';
 import 'package:appmove/screen/home/NavigationBar.dart';
-import 'package:appmove/screen/loginandregister/Intro.dart';
-import 'package:appmove/screen/loginandregister/Login.dart';
-import 'package:appmove/screen/loginandregister/Register.dart';
-import 'package:appmove/screen/profile/Profiless.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,40 +14,41 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: SharedPreferences.getInstance(),
-        builder:
-            (BuildContext context, AsyncSnapshot<SharedPreferences> prefs) {
-          var isloggedIn = prefs.data;
-          // final bool isloginn = isloggedIn.getBool('isLoggedIn');
-          final String istoken = isloggedIn.getString("token");
-                    final String mytoken = isloggedIn.getString("myuid");
+    return 
+    // FutureBuilder(
+    //     future: SharedPreferences.getInstance(),
+    //     builder:
+    //         (BuildContext context, AsyncSnapshot<SharedPreferences> prefs) {
+    //       var isloggedIn = prefs.data;
+    //       // final bool isloginn = isloggedIn.getBool('isLoggedIn');
+    //       //  String istoken = isloggedIn.getString("token")??"";
+    //       //            String mytoken = isloggedIn.getString("myuid")??"";
 
 
-          if (prefs.hasData) {
-            // if (x.getString('type') == 'doctor') {
-            if (istoken == null || istoken == "") {
-              return MaterialApp(
-                  debugShowCheckedModeBanner: false,
-                  home: Appbar(istoken: istoken,myuid: mytoken,));
-            } else {
-              return MaterialApp(
-                  debugShowCheckedModeBanner: false,
-                  home: Appbar(istoken: istoken,myuid: mytoken,));
-            }
-          }
+    //       if (prefs.hasData) {
+    //         // if (x.getString('type') == 'doctor') {
+    //            return MaterialApp(
+    //               debugShowCheckedModeBanner: false,
+    //               home: Appbar());
+    //         // if (istoken == null || istoken == "") {
+             
+    //         // } else {
+    //         //   return MaterialApp(
+    //         //       debugShowCheckedModeBanner: false,
+    //         //       home: Appbar(istoken: istoken,myuid: mytoken,));
+    //         // }
+    //       }
 
-          return SpScreen();
-        });
-    //    MaterialApp(
-    //   title: 'Flutter Demo',
-    //   // darkTheme: ThemeData(brightness: Brightness.dark),
-    //   theme: ThemeData(
-    //     visualDensity: VisualDensity.adaptivePlatformDensity,
-    //   ),
-    //   debugShowCheckedModeBanner: false,
-    //   home: TTt(),
-    // );
+    //       return SpScreen();
+    //     });
+       MaterialApp(
+      // darkTheme: ThemeData(brightness: Brightness.dark),
+      theme: ThemeData(
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      debugShowCheckedModeBanner: false,
+      home: Appbar(),
+    );
   }
 }
 
