@@ -726,20 +726,23 @@ class _RegisterState extends State<Register> {
   Widget continueButton = TextButton(
     child: Text("Next"),
     onPressed:  () {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => MyApp()),
-        );
+      Navigator.of(context).pushAndRemoveUntil(
+              CupertinoPageRoute(
+                  builder: (BuildContext context) => Appbar()),
+              (Route<dynamic> route) => false);
+      // Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //         builder: (context) => MyApp()),
+      //   );
     },
   );
 
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
-    title: Text("Register"),
-    content: Text('สำเร็จค้าบบบ'),
+    // title: Text("Register"),
+    content: Text('Register Success'),
     actions: [
-      
       continueButton,
     ],
   );

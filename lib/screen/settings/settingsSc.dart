@@ -27,14 +27,13 @@ class _SettingScreenState extends State<SettingScreen> {
               shrinkWrap: false,
               sections: [
                 SettingsSection(
-                  title: 'Section',
                   tiles: [
-                    SettingsTile(
-                      title: 'Language',
-                      subtitle: 'English',
-                      leading: Icon(Icons.language),
-                      onPressed: (BuildContext context) {},
-                    ),
+                    // SettingsTile(
+                    //   title: 'Language',
+                    //   subtitle: 'English',
+                    //   leading: Icon(Icons.language),
+                    //   onPressed: (BuildContext context) {},
+                    // ),
                     SettingsTile(
                       title: 'Logout',
                       // subtitle: 'English',

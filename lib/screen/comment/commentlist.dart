@@ -194,8 +194,7 @@ class _CommentListState extends State<CommentList> {
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold),
                                             ),
-                                            content:
-                                                new Text("My alert message"),
+                                           
                                             actions: [
                                               CupertinoDialogAction(
                                                 isDefaultAction: true,
@@ -310,7 +309,7 @@ class _CommentListState extends State<CommentList> {
                                 padding:
                                     const EdgeInsets.only(left: 8.0, top: 4.0),
                                 child: Container(
-                                  width: size.width * 0.38,
+                                  width: size.width * 0.25,
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceAround,
@@ -328,16 +327,16 @@ class _CommentListState extends State<CommentList> {
                                           // style:TextStyle(fontWeight: FontWeight.bold,color:_currentMyData.myLikeCommnetList != null && _currentMyData.myLikeCommnetList.contains(widget.data['commentID']) ? Colors.blue[900] : Colors.grey[700])
                                         ),
                                       ),
-                                      GestureDetector(
-                                          onTap: () {
-                                            // widget.replyComment([widget.data['userName'],widget.data['commentID'],widget.data['FCMToken']]);
-//                                _replyComment(widget.data['userName'],widget.data['commentID'],widget.data['FCMToken']);
-                                            print('leave comment of commnet');
-                                          },
-                                          child: Text('Reply',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.grey[700]))),
+//                                       GestureDetector(
+//                                           onTap: () {
+//                                             // widget.replyComment([widget.data['userName'],widget.data['commentID'],widget.data['FCMToken']]);
+// //                                _replyComment(widget.data['userName'],widget.data['commentID'],widget.data['FCMToken']);
+//                                             print('leave comment of commnet');
+//                                           },
+//                                           child: Text('Reply',
+//                                               style: TextStyle(
+//                                                   fontWeight: FontWeight.bold,
+//                                                   color: Colors.grey[700]))),
                                     ],
                                   ),
                                 ),
@@ -448,11 +447,14 @@ class _CommentListState extends State<CommentList> {
             _handleRefresh();
           }(),
           child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+
             children: <Widget>[
               Container(
+                padding: EdgeInsets.all(20),
                 child: Text(
                   'Comment',
-                  style: TextStyle(color: Colors.black, fontSize: 18),
+                  style: TextStyle(color: Colors.black, fontSize: 20,fontWeight: FontWeight.bold),
                 ),
               ),
               Expanded(

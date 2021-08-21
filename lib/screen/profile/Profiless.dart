@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:appmove/api/Api.dart';
 import 'package:appmove/model/postlistSSmodel.dart';
 import 'package:appmove/screen/comment/commentlist.dart';
+import 'package:appmove/screen/home/repostwithcomment.dart';
 import 'package:appmove/screen/loginandregister/Intro.dart';
 import 'package:appmove/screen/profile/postdetailss.dart';
 import 'package:appmove/utils/internetConnectivity.dart';
@@ -13,6 +14,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:http/http.dart' as Http;
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
@@ -27,6 +29,7 @@ class ProfilessScreen extends StatefulWidget {
   final String facebookUrl;
   final String twitterUrl;
   final bool isOfficial;
+  final String pageUsername;
 
   const ProfilessScreen(
       {Key key,
@@ -36,7 +39,7 @@ class ProfilessScreen extends StatefulWidget {
       this.phonenumber,
       this.lineId,
       this.facebookUrl,
-      this.twitterUrl, this.isOfficial})
+      this.twitterUrl, this.isOfficial, this.pageUsername})
       : super(key: key);
 
   @override
@@ -481,8 +484,8 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
                               },
                               child: Image.asset(
                                 'images/logofbgray.png',
-                                // color: Colors.grey.withOpacity(0.5),
-                                // colorBlendMode: BlendMode.softLight,
+                                color: Colors.grey.withOpacity(0.5),
+                                colorBlendMode: BlendMode.softLight,
                               ),
                             )),
                     SizedBox(
@@ -558,7 +561,7 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
                             // color: Colors.white,
                             child: InkWell(
                               child: Image.asset(
-                                'images/logotwgray.jpg',
+                                'images/logotwgray.png',
                                 color: Colors.grey[800].withOpacity(0.3),
                                 colorBlendMode: BlendMode.softLight,
                               ),
@@ -814,35 +817,138 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
       ),
     );
   }
-
-  void _showSettingsPanel(String postid) {
+void _showSettingsPanel(
+    String postid,
+    String postpagename,
+    String postcoverImage,
+    String posttitle,
+    String postdetail,
+    String ownerimageUrl,
+    DateTime createdDate,
+    String postpagepageUsername,
+  ) {
     showModalBottomSheet<dynamic>(
         isScrollControlled: false,
         backgroundColor: Colors.transparent,
         context: context,
         builder: (context) {
           return DraggableScrollableSheet(
-            initialChildSize: 0.8,
-            minChildSize: 0.1,
-            maxChildSize: 0.9,
+            initialChildSize: 0.5,
+            minChildSize: 0.3,
+            maxChildSize: 0.7,
             expand: false,
             builder: (BuildContext context, ScrollController scrollController) {
               return Container(
-                color: Colors.white,
+                //  color: Colors.white,
+
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10)),
+                ),
                 child: Column(
                   children: [
+                    Container(
+                      width: 50,
+                      //  height: 50,
+                      child: Divider(
+                        thickness: 5,
+                        color: Colors.black,
+                      ),
+                    ),
+                    Expanded(
+                      child: InkWell(
+                        onTap: () async {
+                          var jsonResponse;
+                          var status;
+                          bool isshow = false;
+
+                          await Api.repost(postid, myuid, checktoken)
+                              .then((response) => ({
+                                    jsonResponse = jsonDecode(response.body),
+                                    if (response.statusCode == 200)
+                                      {
+                                        status = jsonResponse["status"],
+                                        print(status),
+                                        if (status == 1)
+                                          {
+                                            setState(() {
+                                              isshow = true;
+                                            }),
+                                          }
+                                      }
+                                  }));
+                          Navigator.pop(context);
+                          WidgetsBinding.instance.addPostFrameCallback((_) =>
+                              _scaffoldKey.currentState.showSnackBar(SnackBar(
+                                content: Text('Posted!'),
+                                backgroundColor: Color(0xffF47932),
+                                behavior: SnackBarBehavior.floating,
+                                duration: new Duration(milliseconds: 3000),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                  side: BorderSide(
+                                    color: Colors.white,
+                                    width: 2,
+                                  ),
+                                ),
+                              )));
+                        },
+                        child: ListTile(
+                          title: Text('บอกต่อเรื่องราว'),
+                          leading: Icon(FontAwesome.retweet),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            Navigator.of(context).pop();
+                          });
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => RepostWithComSc(
+                                        postid: postid,
+                                        postpagename: postpagename,
+                                        postcoverImage: postcoverImage,
+                                        posttitle: posttitle,
+                                        postdetail: postdetail,
+                                        ownerimageUrl: ownerimageUrl,
+                                        createdDate: createdDate,
+                                        postpagepageUsername:
+                                            postpagepageUsername,
+                                        token: checktoken,
+                                        myuid: myuid,
+                                      )));
+                        },
+                        child: ListTile(
+                          title: Text('บอกต่อเรื่องราวพร้อมความคิดเห็น'),
+                          leading: Icon(FontAwesome.pencil),
+                        ),
+                      ),
+                    ),
                     Row(
                       children: [
                         SizedBox(
                           width: 5,
                           height: 5,
                         ),
+
                         // Container(
                         //   width: 50,
                         //   height: 50,
                         //   decoration: BoxDecoration(
                         //     // border: Border.all(width: 4, color: Colors.white),
-
+                        //     boxShadow: [
+                        //       BoxShadow(
+                        //         spreadRadius: 2,
+                        //         blurRadius: 10,
+                        //         color: Colors.black.withOpacity(0.1),
+                        //       ),
+                        //     ],
                         //     shape: BoxShape.circle,
                         //     image: DecorationImage(
                         //       fit: BoxFit.cover,
@@ -851,9 +957,9 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
                         //     ),
                         //   ),
                         // ),
-                        SizedBox(
-                          width: 5,
-                        ),
+                        // SizedBox(
+                        //   width: 5,
+                        // ),
                         // Text(
                         //   '$displayName1',
                         //   style: TextStyle(
@@ -861,95 +967,106 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
                         // ),
                       ],
                     ),
-                    Container(
-                        width: double.infinity,
-                        height: 100,
-                        child: TextFormField(
-                          controller: _detailController,
-                        )),
-                    RaisedButton(
-                      child: Text(
-                        "Share",
-                        style: TextStyle(fontSize: 20),
+                    // Container(
+                    //     width: double.infinity,
+                    //     height: 100,
+                    //     child: TextFormField(
+                    //       controller: _detailController,
+                    //     )),
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            Navigator.of(context).pop();
+                          });
+                        },
+                        child: ListTile(
+                          title: Center(child: Text('ยกเลิก')),
+                        ),
                       ),
-                      onPressed: () async {
-                        var jsonResponse;
-                        var status;
-                        bool isshow = false;
-
-                        _detailController.text == ""
-                            ? await Api.repost(postid, myuid, checktoken)
-                                .then((response) => ({
-                                      jsonResponse = jsonDecode(response.body),
-                                      if (response.statusCode == 200)
-                                        {
-                                          status = jsonResponse["status"],
-                                          print(status),
-                                          if (status == 1)
-                                            {
-                                              setState(() {
-                                                isshow = true;
-                                              }),
-                                            }
-                                        }
-                                    }))
-                            : await Api.repostwithdetail(postid, myuid,
-                                    checktoken, _detailController.text)
-                                .then((response) => ({
-                                      jsonResponse = jsonDecode(response.body),
-                                      if (response.statusCode == 200)
-                                        {
-                                          status = jsonResponse["status"],
-                                          print(status),
-                                          if (status == 1)
-                                            {
-                                              setState(() {
-                                                isshow = true;
-                                                _detailController.clear();
-                                              }),
-                                            }
-                                        }
-                                    }));
-                        Navigator.pop(context);
-                        isshow == true
-                            ? WidgetsBinding.instance.addPostFrameCallback(
-                                (_) => _scaffoldKey.currentState
-                                        .showSnackBar(SnackBar(
-                                      content: Text('Posted!'),
-                                      backgroundColor: Color(0xffF47932),
-                                      behavior: SnackBarBehavior.floating,
-                                      duration:
-                                          new Duration(milliseconds: 3000),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(20),
-                                        side: BorderSide(
-                                          color: Colors.white,
-                                          width: 2,
-                                        ),
-                                      ),
-                                    )))
-                            : WidgetsBinding.instance.addPostFrameCallback(
-                                (_) => _scaffoldKey.currentState
-                                        .showSnackBar(SnackBar(
-                                      content: Text('Error!'),
-                                      backgroundColor: Color(0xffF47932),
-                                      behavior: SnackBarBehavior.floating,
-                                      duration:
-                                          new Duration(milliseconds: 3000),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(20),
-                                        side: BorderSide(
-                                          color: Colors.white,
-                                          width: 2,
-                                        ),
-                                      ),
-                                    )));
-                      },
-                      color: Colors.red,
-                      textColor: Colors.white,
-                      padding: EdgeInsets.all(8.0),
-                      splashColor: Colors.grey,
-                    )
+                    ),
+                    // RaisedButton(
+                    //   child: Text(
+                    //     "Share",
+                    //     style: TextStyle(fontSize: 20),
+                    //   ),
+                    //   onPressed: () async {
+                    //     var jsonResponse;
+                    //     var status;
+                    //     bool isshow = false;
+                    //     _detailController.text == ""
+                    //         ? await Api.repost(postid, myuid, checktoken)
+                    //             .then((response) => ({
+                    //                   jsonResponse = jsonDecode(response.body),
+                    //                   if (response.statusCode == 200)
+                    //                     {
+                    //                       status = jsonResponse["status"],
+                    //                       print(status),
+                    //                       if (status == 1)
+                    //                         {
+                    //                           setState(() {
+                    //                             isshow = true;
+                    //                           }),
+                    //                         }
+                    //                     }
+                    //                 }))
+                    //         : await Api.repostwithdetail(postid, myuid,
+                    //                 checktoken, _detailController.text)
+                    //             .then((response) => ({
+                    //                   jsonResponse = jsonDecode(response.body),
+                    //                   if (response.statusCode == 200)
+                    //                     {
+                    //                       status = jsonResponse["status"],
+                    //                       print(status),
+                    //                       if (status == 1)
+                    //                         {
+                    //                           setState(() {
+                    //                             isshow = true;
+                    //                             _detailController.clear();
+                    //                           }),
+                    //                         }
+                    //                     }
+                    //                 }));
+                    //     Navigator.pop(context);
+                    //     isshow == true
+                    //         ? WidgetsBinding.instance.addPostFrameCallback(
+                    //             (_) => _scaffoldKey.currentState
+                    //                     .showSnackBar(SnackBar(
+                    //                   content: Text('Posted!'),
+                    //                   backgroundColor: Color(0xffF47932),
+                    //                   behavior: SnackBarBehavior.floating,
+                    //                   duration:
+                    //                       new Duration(milliseconds: 3000),
+                    //                   shape: RoundedRectangleBorder(
+                    //                     borderRadius: BorderRadius.circular(20),
+                    //                     side: BorderSide(
+                    //                       color: Colors.white,
+                    //                       width: 2,
+                    //                     ),
+                    //                   ),
+                    //                 )))
+                    //         : WidgetsBinding.instance.addPostFrameCallback(
+                    //             (_) => _scaffoldKey.currentState
+                    //                     .showSnackBar(SnackBar(
+                    //                   content: Text('Error!'),
+                    //                   backgroundColor: Color(0xffF47932),
+                    //                   behavior: SnackBarBehavior.floating,
+                    //                   duration:
+                    //                       new Duration(milliseconds: 3000),
+                    //                   shape: RoundedRectangleBorder(
+                    //                     borderRadius: BorderRadius.circular(20),
+                    //                     side: BorderSide(
+                    //                       color: Colors.white,
+                    //                       width: 2,
+                    //                     ),
+                    //                   ),
+                    //                 )));
+                    //   },
+                    //   color: Colors.red,
+                    //   textColor: Colors.white,
+                    //   padding: EdgeInsets.all(8.0),
+                    //   splashColor: Colors.grey,
+                    // )
                   ],
                 ),
                 // ListView(
@@ -970,7 +1087,6 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
           );
         });
   }
-
   Widget PostList(nDataList1, story) {
     // String result = str.substring(
     //   startIndex + start.length,
@@ -1005,9 +1121,14 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
         title: Text("${widget.name}"),
         subtitle: Column(
           children: <Widget>[
-            SizedBox(
-              height: 5,
-            ),
+            //  Text('${widget.pageUsername}',
+            //         style: TextStyle(
+            //           fontSize: 14,
+            //         )),
+                SizedBox(
+                  width: 5,
+                ),
+           
             nDataList1.coverImage != null
                 ? Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -1096,8 +1217,18 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
                     icon: Icon(Icons.repeat),
                     onPressed: () async {
                       var postid = nDataList1.id;
+                      var postcoverImage = nDataList1.coverImage;
+                      var posttitle = nDataList1.title;
+                      var postdetail = nDataList1.detail;
+                      DateTime createdDate = nDataList1.createdDate;
 
-                      _showSettingsPanel(postid);
+                      _showSettingsPanel(postid, widget.name,
+                            postcoverImage,
+                            posttitle,
+                            postdetail,
+                            widget.image,
+                            createdDate,
+                            widget.pageUsername);
 
                       print("กดlike");
                     }),
@@ -1144,13 +1275,12 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
             )
           ],
         ),
-        leading: CircleAvatar(
-          child: Container(
-            color: Colors.white,
-            child: Image.network(
+         leading: CircleAvatar(
+          backgroundImage: NetworkImage(
                 "https://today-api.moveforwardparty.org/api${widget.image}/image"),
-          ),
+          radius: 25,
         ),
+    
         // trailing: Icon(icons[index])
       )),
     );

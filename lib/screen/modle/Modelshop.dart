@@ -74,9 +74,9 @@ class _ModelshopState extends State<Modelshop> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 20),
+                      margin: EdgeInsets.symmetric(vertical: 8),
                       padding: EdgeInsets.all(10),
-                      height: 90,
+                      height: 120,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(13),
@@ -173,9 +173,9 @@ class _ModelshopState extends State<Modelshop> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 20),
+                      margin: EdgeInsets.symmetric(vertical: 8),
                       padding: EdgeInsets.all(10),
-                      height: 90,
+                      height: 120,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(13),
@@ -245,9 +245,9 @@ class _ModelshopState extends State<Modelshop> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 20),
+                      margin: EdgeInsets.symmetric(vertical: 8),
                       padding: EdgeInsets.all(10),
-                      height: 90,
+                      height: 120,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(13),
@@ -270,7 +270,7 @@ class _ModelshopState extends State<Modelshop> {
                               fit: BoxFit.cover,
                             ),
                           ),
-                                                    SizedBox(width: 20),
+                    SizedBox(width: 20),
 
                           Expanded(
                             child: Column(
@@ -278,7 +278,7 @@ class _ModelshopState extends State<Modelshop> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  "กระเป๋าผ้าก้าวไกล",
+                                  "กระเป๋าผ้า",
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18),

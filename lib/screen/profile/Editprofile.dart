@@ -348,8 +348,8 @@ class _EditprofileState extends State<Editprofile> {
                                 child: Container(
                                   padding: EdgeInsets.only(
                                       left: 15, top: 10, right: 15),
-                                  width: 100,
-                                  height: 100,
+                                  width: 120,
+                                  height: 120,
                                   decoration: BoxDecoration(
                                     border: Border.all(
                                         width: 4, color: Colors.white),

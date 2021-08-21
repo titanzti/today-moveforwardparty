@@ -1381,13 +1381,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               height: 10,
             ),
             Text(postpagename,
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
             Row(
+mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text('$postpagepageUsername',
                     style: TextStyle(
                       fontSize: 14,
-                    )),
+                    ),
+                    ),
                 SizedBox(
                   width: 5,
                 ),
@@ -1473,7 +1475,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 Text(postcommentCount.toString()),
                 checktoken == ""
                     ? IconButton(
-                        icon: Icon(FontAwesome.comment_o),
+                        icon: Icon(Icons.comment),
                         onPressed: () {
                           HapticFeedback.lightImpact();
                           showCupertinoModalBottomSheet(
@@ -1482,7 +1484,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           );
                         })
                     : IconButton(
-                        icon: Icon(FontAwesome.comment),
+                        icon: Icon(Icons.comment),
                         onPressed: () {
                           HapticFeedback.lightImpact();
 
@@ -1499,7 +1501,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 Text(postshareCount),
                 checktoken == ""
                     ? IconButton(
-                        icon: Icon(FontAwesome.retweet),
+                        icon: Icon(Icons.repeat),
                         onPressed: () {
                           HapticFeedback.lightImpact();
                           showCupertinoModalBottomSheet(
@@ -1508,7 +1510,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           );
                         })
                     : IconButton(
-                        icon: Icon(FontAwesome.retweet),
+                        icon: Icon(Icons.repeat),
                         onPressed: () async {
                           HapticFeedback.lightImpact();
 
@@ -1567,46 +1569,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   }));
                           print("กดlike");
                         }),
-                //         LikeButton(
-                //   size: 25,
-                //   circleColor:
-                //       CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
-                //   bubblesColor: BubblesColor(
-                //     dotPrimaryColor: Color(0xffF47932),
-                //     dotSecondaryColor: Color(0xffF47932),
-                //   ),
-                //   likeBuilder: (bool isLiked) {
-                //     print('isLiked$isLiked');
-                //     return Icon(
-                //    isLiked? FontAwesome.heart: FontAwesome.heart_o,
-                //       color: isLiked ? Color(0xffF47932) : Colors.grey,
-                //       size: 25,
-                //     );
-                //   },
-                //      onTap: onLikeButtonTapped,
-
-                //   likeCount: nDataList1.post.likeCount,
-                //   countBuilder: (int count, bool isLiked, String text) {
-                //     var color = isLiked ? Colors.deepPurpleAccent : Colors.grey;
-                //     Widget result;
-                //     if (count == 0) {
-                //       result = Text(
-                //         "love",
-                //         style: TextStyle(color: color),
-                //       );
-                //     } else
-                //       result = Text(
-                //         text,
-                //         style: TextStyle(color: color),
-                //       );
-                //     return result;
-                //   },
-                // ),
               ],
             ),
-            // Divider(
-            //   height: 2,
-            // ),
           ],
         ),
         leading: CircleAvatar(

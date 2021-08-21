@@ -407,19 +407,22 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
             body: SingleChildScrollView(
               controller: scrollController,
               physics: BouncingScrollPhysics(),
-              child: Column(children: <Widget>[
+              child: Column(
+                children: <Widget>[
+                   
                 Container(
-                  color: Colors.white,
-                  padding: EdgeInsets.only(left: 15, top: 10, right: 15),
+                  padding: EdgeInsets.only(left: 15, top: 1, right: 15),
                   child: GestureDetector(
                     onTap: () {},
-                    child: Column(children: [
+                    child: Column(
+                      children: [
                       Center(
                         child: Stack(
+                          alignment: Alignment.bottomCenter,
                           children: [
                             // Text('data'),
-                            Container(
-                              width: double.infinity,
+                           Container(
+                              width: 500,
                               height: 200,
                               child: Image.network(
                                   '${iscover == true ? Image.file(_image) : 'https://today-api.moveforwardparty.org/api$cover/image'}'),
@@ -427,10 +430,10 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                             Align(
                               alignment: Alignment.bottomCenter,
                               child: Container(
-                                padding: EdgeInsets.only(
-                                    left: 15, top: 10, right: 15),
-                                width: 100,
-                                height: 100,
+                                // padding: EdgeInsets.only(
+                                //     left: 15, top: 5, right: 15),
+                                width: 120,
+                                height: 120,
                                 decoration: BoxDecoration(
                                   border:
                                       Border.all(width: 4, color: Colors.white),
@@ -455,8 +458,8 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                               bottom: 0,
                               right: 0,
                               child: Container(
-                                height: 30,
-                                width: 30,
+                                height: 35,
+                                width: 35,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   border: Border.all(
@@ -470,7 +473,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                                   child: Icon(
                                     Icons.camera_enhance,
                                     color: Colors.white,
-                                    size: 18,
+                                    size: 25,
                                   ),
                                 ),
                               ),
@@ -659,131 +662,132 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                       //     ),
                       //   ],
                       // ),
+                      Divider(),
                     ]),
                   ),
                 ),
-                Center(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(20),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            FutureBuilder(
-                              future: Future.wait([
-                                getpost,
-                              ]),
-                              // initialData: InitialData,
-                              builder: (BuildContext context,
-                                  AsyncSnapshot snapshot) {
-                                return ListView.builder(
-                                    physics: ClampingScrollPhysics(),
-                                    shrinkWrap: true,
-                                    padding: const EdgeInsets.all(8.0),
-                                    scrollDirection: Axis.vertical,
-                                    itemCount: listModel.length,
-                                    itemBuilder: (
-                                      BuildContext context,
-                                      int index,
-                                    ) {
-                                      var data = listModel[index];
-                                      if (listModel.length == 0) {
-                                        return CupertinoActivityIndicator();
-                                      }
-                                      // var mypostid = data.referencePost;
-                                      // print('mypostid$mypostid');
+                // Center(
+                //   child: Column(
+                //     crossAxisAlignment: CrossAxisAlignment.center,
+                //     children: <Widget>[
+                //       SizedBox(
+                //         height: 20,
+                //       ),
+                //       Padding(
+                //         padding: EdgeInsets.all(20),
+                //         child: Column(
+                //           mainAxisAlignment: MainAxisAlignment.center,
+                //           children: <Widget>[
+                //             FutureBuilder(
+                //               future: Future.wait([
+                //                 getpost,
+                //               ]),
+                //               // initialData: InitialData,
+                //               builder: (BuildContext context,
+                //                   AsyncSnapshot snapshot) {
+                //                 return ListView.builder(
+                //                     physics: ClampingScrollPhysics(),
+                //                     shrinkWrap: true,
+                //                     padding: const EdgeInsets.all(8.0),
+                //                     scrollDirection: Axis.vertical,
+                //                     itemCount: listModel.length,
+                //                     itemBuilder: (
+                //                       BuildContext context,
+                //                       int index,
+                //                     ) {
+                //                       var data = listModel[index];
+                //                       if (listModel.length == 0) {
+                //                         return CupertinoActivityIndicator();
+                //                       }
+                //                       // var mypostid = data.referencePost;
+                //                       // print('mypostid$mypostid');
 
-                                      return ListTile(
-                                        title: Text('data${data.title}'),
-                                        subtitle: Text('data'),
-                                      );
-                                    });
-                              },
-                            ),
+                //                       return ListTile(
+                //                         title: Text('data${data.title}'),
+                //                         subtitle: Text('data'),
+                //                       );
+                //                     });
+                //               },
+                //             ),
 
-                            // StreamBuilder(
-                            //   stream: _postsController.stream,
-                            //   builder: (BuildContext context,
-                            //       AsyncSnapshot snapshot) {
-                            //     return ListView.builder(
-                            //         physics: ClampingScrollPhysics(),
-                            //         shrinkWrap: true,
-                            //         padding: const EdgeInsets.all(8.0),
-                            //         scrollDirection: Axis.vertical,
-                            //         itemCount: listModel.length,
-                            //         itemBuilder: (
-                            //           BuildContext context,
-                            //           int index,
-                            //         ) {
-                            //           var data = listModel[index];
-                            //           if (listModel.length == 0) {
-                            //             return CupertinoActivityIndicator();
-                            //           }
-                            //           // var mypostid = data.referencePost;
-                            //           // print('mypostid$mypostid');
+                //             // StreamBuilder(
+                //             //   stream: _postsController.stream,
+                //             //   builder: (BuildContext context,
+                //             //       AsyncSnapshot snapshot) {
+                //             //     return ListView.builder(
+                //             //         physics: ClampingScrollPhysics(),
+                //             //         shrinkWrap: true,
+                //             //         padding: const EdgeInsets.all(8.0),
+                //             //         scrollDirection: Axis.vertical,
+                //             //         itemCount: listModel.length,
+                //             //         itemBuilder: (
+                //             //           BuildContext context,
+                //             //           int index,
+                //             //         ) {
+                //             //           var data = listModel[index];
+                //             //           if (listModel.length == 0) {
+                //             //             return CupertinoActivityIndicator();
+                //             //           }
+                //             //           // var mypostid = data.referencePost;
+                //             //           // print('mypostid$mypostid');
 
-                            //           return ListTile(
-                            //             title: Text('data${data.title}'),
-                            //             subtitle: Text('data'),
-                            //           );
-                            //         });
-                            //   },
-                            // ),
+                //             //           return ListTile(
+                //             //             title: Text('data${data.title}'),
+                //             //             subtitle: Text('data'),
+                //             //           );
+                //             //         });
+                //             //   },
+                //             // ),
 
-                            // Builder(
-                            //   builder: (BuildContext context) {
-                            //     return ListView.builder(
-                            //         physics: ClampingScrollPhysics(),
-                            //         shrinkWrap: true,
-                            //         padding: const EdgeInsets.all(8.0),
-                            //         scrollDirection: Axis.vertical,
-                            //         itemCount: listModel.length,
-                            //         itemBuilder: (
-                            //           BuildContext context,
-                            //           int index,
-                            //         ) {
-                            //           var data = listModel[index];
-                            //           if (listModel.length == 0) {
-                            //             return CupertinoActivityIndicator();
-                            //           }
-                            //           var mypostid = data.referencePost;
-                            //           print('mypostid$mypostid');
-                            //           Api.getpostsearch(widget.myuid, mytoken,mypostid)
-                            //    .then((responseData) => ({
-                            //      print('getpostsearch'),
-                            //   if (responseData.statusCode == 200)
-                            //  {
-                            //     dataht = jsonDecode(responseData.body),
-                            //         print('getpostsearch2${responseData.body}'),
+                //             // Builder(
+                //             //   builder: (BuildContext context) {
+                //             //     return ListView.builder(
+                //             //         physics: ClampingScrollPhysics(),
+                //             //         shrinkWrap: true,
+                //             //         padding: const EdgeInsets.all(8.0),
+                //             //         scrollDirection: Axis.vertical,
+                //             //         itemCount: listModel.length,
+                //             //         itemBuilder: (
+                //             //           BuildContext context,
+                //             //           int index,
+                //             //         ) {
+                //             //           var data = listModel[index];
+                //             //           if (listModel.length == 0) {
+                //             //             return CupertinoActivityIndicator();
+                //             //           }
+                //             //           var mypostid = data.referencePost;
+                //             //           print('mypostid$mypostid');
+                //             //           Api.getpostsearch(widget.myuid, mytoken,mypostid)
+                //             //    .then((responseData) => ({
+                //             //      print('getpostsearch'),
+                //             //   if (responseData.statusCode == 200)
+                //             //  {
+                //             //     dataht = jsonDecode(responseData.body),
+                //             //         print('getpostsearch2${responseData.body}'),
 
-                            //       for (Map i in dataht["data"])
-                            //      {
-                            //       titletest= i["detail"],
-                            //        print('titlegetpostsearch$titletest'),
-                            //          // listModel.add(ProfilePostModel.fromJson(i)),
-                            //      },
-                            //    }
-                            //       }));
+                //             //       for (Map i in dataht["data"])
+                //             //      {
+                //             //       titletest= i["detail"],
+                //             //        print('titlegetpostsearch$titletest'),
+                //             //          // listModel.add(ProfilePostModel.fromJson(i)),
+                //             //      },
+                //             //    }
+                //             //       }));
 
-                            //           return ListTile(
-                            //               title: Text('data${data.detail}'),
-                            //               subtitle: Text('data$titletest'),
-                            //               );
-                            //         });
-                            //   },
-                            // ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 30),
-                    ],
-                  ),
-                ),
+                //             //           return ListTile(
+                //             //               title: Text('data${data.detail}'),
+                //             //               subtitle: Text('data$titletest'),
+                //             //               );
+                //             //         });
+                //             //   },
+                //             // ),
+                //           ],
+                //         ),
+                //       ),
+                //       SizedBox(height: 30),
+                //     ],
+                //   ),
+                // ),
               ]),
             ),
           );

@@ -462,6 +462,37 @@ class Api {
 
     return responseData;
   }
+   static Future<Http.Response> islikecomment(
+      String postid, String uid, String token) async {
+    print('sendcomment');
+    var url = "https://today-api.moveforwardparty.org/api/post/$postid/like";
+    final headers = {
+      "userid": uid,
+      "authorization": "Bearer $token",
+      "content-type": "application/json",
+      "accept": "application/json"
+      // "whereConditions": {"isHideStory": false},
+    };
+    Map data = {
+      //  "asset":
+      //  {"mimeType":"image/png",
+      //  "data":base64image,
+      //  "fileName":fileName,
+      //  "size":193148}
+    };
+
+    var body = jsonEncode(data);
+
+    final responseData = await Http.post(
+      url,
+      headers: headers,
+      body: body,
+    );
+    print('body$body');
+    print('islike${responseData.body}');
+
+    return responseData;
+  }
 
   static Future<Http.Response> getprofilepost(String uid, String token) async {
     print('getprofilepost$uid');

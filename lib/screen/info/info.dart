@@ -279,7 +279,8 @@ class _InfoState extends State<Info> {
                     lineId: nDataList.lineId,
                     facebookUrl: nDataList.facebookUrl,
                     twitterUrl: nDataList.twitterUrl,
-                    isOfficial:nDataList.isOfficial
+                    isOfficial:nDataList.isOfficial,
+                    pageUsername: nDataList.pageUsername,
                   )),
         );
       },
