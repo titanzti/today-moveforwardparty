@@ -779,7 +779,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                       height: 10,
                                     ),
                                     Text(
-                                      'เหตุการ์ณด่วน',
+                                      'เหตุการณ์ด่วน',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 18),
@@ -1494,6 +1494,7 @@ mainAxisAlignment: MainAxisAlignment.start,
                             builder: (context) => CommentList(
                               myuid: myuid,
                               postid: postid,
+                              token: checktoken,
                             ),
                           );
                         }),

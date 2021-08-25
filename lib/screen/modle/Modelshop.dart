@@ -133,13 +133,11 @@ class _ModelshopState extends State<Modelshop> {
                               child: InkWell(
                                 onTap: () async{
                                HapticFeedback.lightImpact();
-                               _scaffoldKey.currentState.showSnackBar(SnackBar(
-                               content: Text('ไม่มีidlineจ้า'),
-                                   ));
+                             
                           print('กด');
                           if (Platform.isAndroid) {
                             String uri =
-                                'line://oaMessage/@${'widget.lineId'}/123';
+                                'line://oaMessage/@mfpshop/สนใจ';
                             if (await canLaunch(uri)) {
                               await launch(uri);
                             } else {
@@ -148,7 +146,7 @@ class _ModelshopState extends State<Modelshop> {
                           } else if (Platform.isIOS) {
                             // iOS
                             String uri =
-                                'line://oaMessage/@${'widget.lineId'}/123';
+                                'line://oaMessage/@mfpshop/สนใจ';
                             if (await canLaunch(uri)) {
                               await launch(uri);
                             } else {
@@ -229,9 +227,34 @@ class _ModelshopState extends State<Modelshop> {
                             child: SizedBox(
                               height: 30,
                               width: 30,
-                              child: Image.asset(
+                              child:InkWell(
+                                onTap: () async{
+                               HapticFeedback.lightImpact();
+                              
+                          print('กด');
+                          if (Platform.isAndroid) {
+                            String uri =
+                                'line://oaMessage/@mfpshop/สนใจ';
+                            if (await canLaunch(uri)) {
+                              await launch(uri);
+                            } else {
+                              throw 'Could not launch $uri';
+                            }
+                          } else if (Platform.isIOS) {
+                            // iOS
+                            String uri =
+                                'line://oaMessage/@mfpshop/สนใจ';
+                            if (await canLaunch(uri)) {
+                              await launch(uri);
+                            } else {
+                              throw 'Could not launch $uri';
+                            }
+                          }
+                                },
+                               child:  Image.asset(
                                 'images/logoline.png',
                                 fit: BoxFit.cover,
+                              ),
                               ),
                             ), // child: SvgPicture.asset("assets/icons/Lock.svg"),
                           ),
@@ -302,9 +325,33 @@ class _ModelshopState extends State<Modelshop> {
                             child: SizedBox(
                               height: 30,
                               width: 30,
-                              child: Image.asset(
+                              child: InkWell(
+                                onTap: () async{
+                               HapticFeedback.lightImpact();
+                             
+                          if (Platform.isAndroid) {
+                            String uri =
+                                'line://oaMessage/@mfpshop/สนใจ';
+                            if (await canLaunch(uri)) {
+                              await launch(uri);
+                            } else {
+                              throw 'Could not launch $uri';
+                            }
+                          } else if (Platform.isIOS) {
+                            // iOS
+                            String uri =
+                                'line://oaMessage/@mfpshop/สนใจ';
+                            if (await canLaunch(uri)) {
+                              await launch(uri);
+                            } else {
+                              throw 'Could not launch $uri';
+                            }
+                          }
+                                },
+                               child:  Image.asset(
                                 'images/logoline.png',
                                 fit: BoxFit.cover,
+                              ),
                               ),
                             ), // child: SvgPicture.asset("assets/icons/Lock.svg"),
                           ),

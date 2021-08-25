@@ -300,356 +300,353 @@ class _EditprofileState extends State<Editprofile> {
         title: Text(
           "แก้ไขโปรไฟล์",
           style: TextStyle(
-              color: Color(0xff0C3455),
-              fontWeight: FontWeight.bold,
-              fontSize: 18),
+              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),
         ),
       ),
       body: SingleChildScrollView(
         child: Form(
           key: _formKey,
           child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Stack(children: <Widget>[
-                  Container(
-                      child: GestureDetector(
-                    onTap: () {},
-                    child: Stack(
-                      children: [
-                        _image != null
-                            ? InkWell(
-                                onTap: () => _showPicker(context),
-                                child: Container(
-                                  padding: EdgeInsets.only(
-                                      left: 15, top: 10, right: 15),
-                                  width: 100,
-                                  height: 100,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        width: 4, color: Colors.white),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        spreadRadius: 2,
-                                        blurRadius: 10,
-                                        color: Colors.black.withOpacity(0.1),
-                                      ),
-                                    ],
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                        image: FileImage(_image),
-                                        fit: BoxFit.cover),
+            child: Container(
+              padding: EdgeInsets.only(left: 15, top: 20, right: 15),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Stack(children: <Widget>[
+                    Container(
+                        child: GestureDetector(
+                      onTap: () {},
+                      child: Stack(
+                        children: [
+                          _image != null
+                              ? InkWell(
+                                  onTap: () => _showPicker(context),
+                                  child: Container(
+                                    padding: EdgeInsets.only(
+                                        left: 15, top: 10, right: 15),
+                                    width: 100,
+                                    height: 100,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          width: 4, color: Colors.white),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          spreadRadius: 2,
+                                          blurRadius: 10,
+                                          color: Colors.black.withOpacity(0.1),
+                                        ),
+                                      ],
+                                      shape: BoxShape.circle,
+                                      image: DecorationImage(
+                                          image: FileImage(_image),
+                                          fit: BoxFit.cover),
+                                    ),
                                   ),
-                                ),
-                              )
-                            : InkWell(
-                                onTap: () => _showPicker(context),
-                                child: Container(
-                                  padding: EdgeInsets.only(
-                                      left: 15, top: 10, right: 15),
-                                  width: 120,
-                                  height: 120,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        width: 4, color: Colors.white),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        spreadRadius: 2,
-                                        blurRadius: 10,
-                                        color: Colors.black.withOpacity(0.1),
+                                )
+                              : InkWell(
+                                  onTap: () => _showPicker(context),
+                                  child: Container(
+                                    padding: EdgeInsets.only(
+                                        left: 15, top: 10, right: 15),
+                                    width: 120,
+                                    height: 120,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          width: 4, color: Colors.white),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          spreadRadius: 2,
+                                          blurRadius: 10,
+                                          color: Colors.black.withOpacity(0.1),
+                                        ),
+                                      ],
+                                      shape: BoxShape.circle,
+                                      image: DecorationImage(
+                                        fit: BoxFit.cover,
+                                        image: new NetworkImage(
+                                            "https://today-api.moveforwardparty.org/api${widget.image}/image"),
                                       ),
-                                    ],
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: new NetworkImage(
-                                          "https://today-api.moveforwardparty.org/api${widget.image}/image"),
                                     ),
                                   ),
                                 ),
-                              ),
-                        //             Positioned(
-                        //               bottom: 0,
-                        //               right: 0,
-                        //               child: Center(
-                        //   child: GestureDetector(
-                        //     onTap: () {
-                        //       _showPicker(context);
-                        //     },
-                        //     child: CircleAvatar(
-                        //       radius: 55,
-                        //       backgroundColor: Color(0xffFDCF09),
-                        //       child: _image != null
-                        //           ? ClipRRect(
-                        //               borderRadius: BorderRadius.circular(50),
-                        //               child: Image.file(
-                        //                 _image,
-                        //                 width: 150,
-                        //                 height: 150,
-                        //                 fit: BoxFit.fitHeight,
-                        //               ),
-                        //             )
-                        //           : ClipRRect(
-                        //               borderRadius: BorderRadius.circular(50),
-                        //               child: CachedNetworkImage(
-                        //                 imageUrl:
-                        //                     "https://today-api.moveforwardparty.org/api${widget.image}/image",width: 150,height: 150,
-                        //                 placeholder: (context, url) =>
-                        //                     new CupertinoActivityIndicator(),
-                        //                 errorWidget: (context, url, error) =>
-                        //                     Container(
-                        //                         decoration: BoxDecoration(
-                        //                         borderRadius:
-                        //                             BorderRadius.all(Radius.circular(8)),
-                        //                       ),
-                        //                       child: new Image.asset('images/placeholder.png')),
-                        //               ),
-                        //             )
-
-                        //     ),
-                        //   ),
-                        // )
-
-                        //             ),
-                      ],
-                    ),
-                  ))
-                ]),
-                SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 16),
-                  child: TextFormField(
-                    initialValue: widget.displayName,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        borderSide: BorderSide.none,
-                      ),
-                      filled: true,
-                      fillColor: Color(0xFFe7edeb),
-                      hintText: 'ชื่อที่ต้องการแสดง:',
-                    ),
-                    onSaved: (String value) {
-                      displayName = value;
-                    },
-                  ),
-                ),
-                SizedBox(
-                  height: 10.0,
-                ),
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 16),
-                  child: TextFormField(
-                    initialValue: widget.firstName,
-                    keyboardType: TextInputType.text,
-                    // controller: _firstNameController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        borderSide: BorderSide.none,
-                      ),
-                      filled: true,
-                      fillColor: Color(0xFFe7edeb),
-                      hintText: 'ชื่อ:',
-                    ),
-                    onSaved: (String value) {
-                      firstName = value;
-                    },
-                  ),
-                ),
-                SizedBox(
-                  height: 10.0,
-                ),
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 16),
-                  child: TextFormField(
-                    initialValue: widget.lastName,
-                    keyboardType: TextInputType.text,
-                    // controller: _lastNameController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        borderSide: BorderSide.none,
-                      ),
-                      filled: true,
-                      fillColor: Color(0xFFe7edeb),
-                      hintText: 'นามสกุล:',
-                    ),
-                    onSaved: (String value) {
-                      lastName = value;
-                    },
-                  ),
-                ),
-                SizedBox(
-                  height: 10.0,
-                ),
-                SizedBox(
-                  height: 10.0,
-                ),
-                Row(
-                  children: [
-                    Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Radio(
-                              value: 0,
-                              groupValue: selecr,
-                              onChanged: (val) {
-                                selecr = val;
-                                setState(() {
-                                  String genderman = "0";
-                                  genderother = false;
-
-                                  genderselect = genderman;
-
-                                  print('test$genderselect');
-                                });
-                              }),
-                          Text('ชาย'),
                         ],
                       ),
+                    ))
+                  ]),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(
+                      left: 15.0,
                     ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Container(
-                      // width: 150,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Radio(
-                              value: 1,
-                              groupValue: selecr,
-                              onChanged: (val) {
-                                selecr = val;
-                                setState(() {
-                                  String genderlady = "1";
-                                  genderother = false;
-
-                                  genderselect = genderlady;
-                                  print('genderselect$genderselect');
-                                });
-                              }),
-                          Text('หญิง'),
-                        ],
+                    child: Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        "ชื่อที่ต้องการแสดง",
+                        style: TextStyle(
+                            color: Color(0xff0C3455),
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Radio(
-                              value: Colors.green,
-                              groupValue: bulbColor,
-                              onChanged: (val) {
-                                bulbColor = val;
-                                setState(() {
-                                  genderother = true;
-                                });
-                              }),
-                          Text('อื่นๆ'),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                genderother == true
-                    ? Container(
-                        margin: EdgeInsets.symmetric(horizontal: 16),
-                        child: TextFormField(
-                          // controller: _customGenderController,
-                          keyboardType: TextInputType.visiblePassword,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                              borderSide: BorderSide.none,
-                            ),
-                            filled: true,
-                            fillColor: Color(0xFFe7edeb),
-                            hintText: 'เพศ:',
-                          ),
-                          onSaved: (String value) {
-                            gender = value;
-                          },
-                          onChanged: (String value) {
-                            gender = value;
-                            print(gender);
-                          },
-                          validator: (String value) {
-                            if (value.isEmpty) {
-                              return 'Please enter a _customGender';
-                            }
-
-                            return null;
-                          },
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 16),
+                    child: TextFormField(
+                      initialValue: widget.displayName,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          borderSide: BorderSide.none,
                         ),
-                      )
-                    : Container(),
-                SizedBox(
-                  height: 10,
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                _isloading == true
-                    ? InkWell(
-                        child: Container(
+                        filled: true,
+                        fillColor: Color(0xFFe7edeb),
+                        hintText: 'ชื่อที่ต้องการแสดง:',
+                      ),
+                      onSaved: (String value) {
+                        displayName = value;
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(
+                      left: 15.0,
+                    ),
+                    child: Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        "ชื่อ",
+                        style: TextStyle(
+                            color: Color(0xff0C3455),
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 16),
+                    child: TextFormField(
+                      initialValue: widget.firstName,
+                      keyboardType: TextInputType.text,
+                      // controller: _firstNameController,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          borderSide: BorderSide.none,
+                        ),
+                        filled: true,
+                        fillColor: Color(0xFFe7edeb),
+                        hintText: 'ชื่อ:',
+                      ),
+                      onSaved: (String value) {
+                        firstName = value;
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(
+                      left: 15.0,
+                    ),
+                    child: Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        "นามสกุล",
+                        style: TextStyle(
+                            color: Color(0xff0C3455),
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 16),
+                    child: TextFormField(
+                      initialValue: widget.lastName,
+                      keyboardType: TextInputType.text,
+                      // controller: _lastNameController,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          borderSide: BorderSide.none,
+                        ),
+                        filled: true,
+                        fillColor: Color(0xFFe7edeb),
+                        hintText: 'นามสกุล:',
+                      ),
+                      onSaved: (String value) {
+                        lastName = value;
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Radio(
+                                value: 0,
+                                groupValue: selecr,
+                                onChanged: (val) {
+                                  selecr = val;
+                                  setState(() {
+                                    String genderman = "0";
+                                    genderother = false;
+
+                                    genderselect = genderman;
+
+                                    print('test$genderselect');
+                                  });
+                                }),
+                            Text('ชาย'),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                        // width: 150,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Radio(
+                                value: 1,
+                                groupValue: selecr,
+                                onChanged: (val) {
+                                  selecr = val;
+                                  setState(() {
+                                    String genderlady = "1";
+                                    genderother = false;
+
+                                    genderselect = genderlady;
+                                    print('genderselect$genderselect');
+                                  });
+                                }),
+                            Text('หญิง'),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Radio(
+                                value: Colors.green,
+                                groupValue: bulbColor,
+                                onChanged: (val) {
+                                  bulbColor = val;
+                                  setState(() {
+                                    genderother = true;
+                                  });
+                                }),
+                            Text('อื่นๆ'),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  genderother == true
+                      ? Container(
+                          margin: EdgeInsets.symmetric(horizontal: 16),
+                          child: TextFormField(
+                            // controller: _customGenderController,
+                            keyboardType: TextInputType.visiblePassword,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                                borderSide: BorderSide.none,
+                              ),
+                              filled: true,
+                              fillColor: Color(0xFFe7edeb),
+                              hintText: 'เพศ:',
+                            ),
+                            onSaved: (String value) {
+                              gender = value;
+                            },
+                            onChanged: (String value) {
+                              gender = value;
+                              print(gender);
+                            },
+                            validator: (String value) {
+                              if (value.isEmpty) {
+                                return 'Please enter a _customGender';
+                              }
+
+                              return null;
+                            },
+                          ),
+                        )
+                      : Container(),
+                  SizedBox(
+                    height: 18,
+                  ),
+                  _isloading == true
+                      ? InkWell(
+                          child: Container(
+                            height: 50,
+                            margin: EdgeInsets.symmetric(horizontal: 14),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(50),
+                              color: Color(0xff0C3455),
+                            ),
+                            child: Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          ),
+                        )
+                      : Container(
                           height: 50,
-                          margin: EdgeInsets.symmetric(horizontal: 14),
+                          margin: EdgeInsets.symmetric(horizontal: 16),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(50),
                             color: Color(0xff0C3455),
                           ),
-                          child: Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        ),
-                      )
-                    : Container(
-                        height: 50,
-                        margin: EdgeInsets.symmetric(horizontal: 16),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          color: Color(0xff0C3455),
-                        ),
-                        child: InkWell(
-                          onTap: () async {
-                            print('กด');
-                            setState(() {
-                              _isloading = true;
-                            });
-                            _formKey.currentState.save();
-                            await editprofile(
-                                displayName,
-                                widget.email,
-                                firstName,
-                                lastName,
-                                selecr,
-                                genderother == true ? "" : "",
-                                widget.mytoken,
-                                widget.id);
-                          },
-                          child: Center(
-                            child: Text(
-                              "แก้ไข",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
+                          child: InkWell(
+                            onTap: () async {
+                              print('กด');
+                              setState(() {
+                                _isloading = true;
+                              });
+                              _formKey.currentState.save();
+                              await editprofile(
+                                  displayName,
+                                  widget.email,
+                                  firstName,
+                                  lastName,
+                                  selecr,
+                                  genderother == true ? "" : "",
+                                  widget.mytoken,
+                                  widget.id);
+                            },
+                            child: Center(
+                              child: Text(
+                                "แก้ไข",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-              ],
+                  SizedBox(
+                    height: 10,
+                  ),
+                ],
+              ),
             ),
           ),
         ),

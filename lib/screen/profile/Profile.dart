@@ -738,6 +738,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                 //             //         });
                 //             //   },
                 //             // ),
+                Center(child: Text('ไม่มีโพส',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,))),
 
                 //             // Builder(
                 //             //   builder: (BuildContext context) {

@@ -281,6 +281,7 @@ class _InfoState extends State<Info> {
                     twitterUrl: nDataList.twitterUrl,
                     isOfficial:nDataList.isOfficial,
                     pageUsername: nDataList.pageUsername,
+                    isFollow: nDataList.isFollow,
                   )),
         );
       },

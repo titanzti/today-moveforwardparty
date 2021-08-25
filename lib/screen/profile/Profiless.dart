@@ -8,6 +8,7 @@ import 'package:appmove/screen/home/repostwithcomment.dart';
 import 'package:appmove/screen/loginandregister/Intro.dart';
 import 'package:appmove/screen/profile/postdetailss.dart';
 import 'package:appmove/utils/internetConnectivity.dart';
+import 'package:appmove/utils/utils.dart';
 import 'package:appmove/widgets/allWidgets.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -30,6 +31,7 @@ class ProfilessScreen extends StatefulWidget {
   final String twitterUrl;
   final bool isOfficial;
   final String pageUsername;
+  final bool isFollow;
 
   const ProfilessScreen(
       {Key key,
@@ -39,7 +41,7 @@ class ProfilessScreen extends StatefulWidget {
       this.phonenumber,
       this.lineId,
       this.facebookUrl,
-      this.twitterUrl, this.isOfficial, this.pageUsername})
+      this.twitterUrl, this.isOfficial, this.pageUsername, this.isFollow})
       : super(key: key);
 
   @override
@@ -210,7 +212,7 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('facebookUrl${widget.facebookUrl}');
+    print(' widget.isFollow${ widget.isFollow}');
     print('twitterUrl${widget.twitterUrl}');
 
     widget.facebookUrl != "" ? print('มีค่า') : print('ไม่มีค่า');
@@ -380,8 +382,54 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
                 //         ),
                 //       ),
                 SizedBox(
-                  height: 10,
+                  height: 5,
                 ),
+            //  widget.isFollow!=true?  InkWell(
+            //                   onTap: () {
+                               
+            //                   },
+            //                   child: Container(
+            //                     height: 35,
+            //                     width: 150,
+            //                     // margin: EdgeInsets.symmetric(horizontal: 201),
+            //                     decoration: BoxDecoration(
+            //                       borderRadius: BorderRadius.circular(50),
+            //                       color: Color(0xff0C3455),
+            //                     ),
+            //                     child: Center(
+            //                       child: Text(
+            //                         "ติดตาม",
+            //                         style: TextStyle(
+            //                             color: Colors.white,
+            //                             fontWeight: FontWeight.bold),
+            //                       ),
+            //                     ),
+            //                   ),
+            //                 ):InkWell(
+            //                   onTap: () {
+                               
+            //                   },
+            //                   child: Container(
+            //                     height: 35,
+            //                     width: 150,
+            //                     // margin: EdgeInsets.symmetric(horizontal: 201),
+            //                     decoration: BoxDecoration(
+            //                       borderRadius: BorderRadius.circular(50),
+            //                       color: Colors.orange,
+            //                     ),
+            //                     child: Center(
+            //                       child: Text(
+            //                         "ติดตามแล้ว",
+            //                         style: TextStyle(
+            //                             color: Colors.white,
+            //                             fontWeight: FontWeight.bold),
+            //                       ),
+            //                     ),
+            //                   ),
+            //                 ),
+                //             SizedBox(
+                //   height: 10,
+                // ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -694,6 +742,9 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
                           ),
                   ],
                 ),
+                                    SizedBox(
+                  height: 10,
+                ),
               ]),
             ),
           ),
@@ -774,7 +825,7 @@ class _ProfilessScreenState extends State<ProfilessScreen> {
                         builder: (BuildContext context,
                             AsyncSnapshot<dynamic> snapshot) {
                           if (!snapshot.hasData) {
-                            return Text("ไม่มีข้อมูล");
+                            return Text("Loading...");
                           }
                           return new Builder(
                             builder: (BuildContext context) {
@@ -1112,6 +1163,7 @@ void _showSettingsPanel(
               builder: (context) => PostDetailSSScreen(
                     id: nDataList1.id,
                     htmlData: story,
+                    image: nDataList1.coverImage,
                   )),
         );
         print('กด');
@@ -1120,14 +1172,22 @@ void _showSettingsPanel(
           child: ListTile(
         title: Text("${widget.name}"),
         subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+
           children: <Widget>[
+          
+                Text(Utils.readTimestamp(nDataList1.createdDate.millisecondsSinceEpoch),
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey,
+                    )),
             //  Text('${widget.pageUsername}',
             //         style: TextStyle(
             //           fontSize: 14,
             //         )),
-                SizedBox(
-                  width: 5,
-                ),
+                // SizedBox(
+                //   width: 5,
+                // ),
            
             nDataList1.coverImage != null
                 ? Padding(
@@ -1175,6 +1235,7 @@ void _showSettingsPanel(
             SizedBox(
               height: 10,
             ),
+            
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -1199,6 +1260,7 @@ void _showSettingsPanel(
                             builder: (context) => CommentList(
                               myuid: myuid,
                               postid: postid,
+                              token: checktoken,
                             ),
                           );
                         }),

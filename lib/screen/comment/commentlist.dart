@@ -14,8 +14,9 @@ import 'package:http/http.dart' as Http;
 class CommentList extends StatefulWidget {
   final String myuid;
   final String postid;
+  final String token;
 
-  const CommentList({Key key, this.myuid, this.postid}) : super(key: key);
+  const CommentList({Key key, this.myuid, this.postid, this.token}) : super(key: key);
   // const CommentList({ Key? key }) : super(key: key);
 
   @override
@@ -27,7 +28,9 @@ class _CommentListState extends State<CommentList> {
   var dataht;
   List<CommentlistModel> listModel = [];
   TextEditingController _commentController = TextEditingController();
+    TextEditingController _commenteditController = TextEditingController();
 
+   bool idedit=false;
   var jsonResponse, mytoken;
   Future getcommentlist;
   bool onref = false;
@@ -162,11 +165,16 @@ class _CommentListState extends State<CommentList> {
           itemBuilder: (BuildContext context, int index) {
             var data = listModel[index];
             var commentid = data.id;
+            _commenteditController.text= data.comment;
 
             return new InkWell(
                 onTap: () {
-                  print("=>>>>>${data.id}");
-                  showCupertinoModalPopup<void>(
+                  var myuid;
+                  myuid=widget.myuid;
+                  print("=>>>>>$myuid");
+                                    print("=>>>>>${data.user.id}");
+
+              data.user.id==myuid?    showCupertinoModalPopup<void>(
                       context: context,
                       builder: (BuildContext context) => CupertinoActionSheet(
                             // title: const Text('Title'),
@@ -175,6 +183,9 @@ class _CommentListState extends State<CommentList> {
                               CupertinoActionSheetAction(
                                 child: const Text('Edit'),
                                 onPressed: () {
+                                  setState(() {
+                                    idedit=true;
+                                  });
                                   Navigator.pop(context);
                                 },
                               ),
@@ -227,7 +238,7 @@ class _CommentListState extends State<CommentList> {
                                 Navigator.pop(context);
                               },
                             ),
-                          ));
+                          )):Container();
                 },
                 child: Padding(
                   padding: EdgeInsets.all(8.0),
@@ -277,13 +288,98 @@ class _CommentListState extends State<CommentList> {
                                               fontWeight: FontWeight.bold),
                                         ),
                                       ),
-                                      Padding(
+                                  idedit!=true?    Padding(
                                         padding:
                                             const EdgeInsets.only(left: 4.0),
                                         child: Text(
                                           data.comment,
                                           maxLines: null,
                                         ),
+                                        // widget.data['toCommentID'] == null ? Text(widget.data['commentContent'],maxLines: null,) :
+                                        // RichText(
+                                        //   text: TextSpan(
+                                        //     children: <TextSpan>[
+                                        //       TextSpan(text: widget.data['toUserID'], style: TextStyle(fontWeight: FontWeight.bold,color: Colors.blue[800])),
+                                        //       TextSpan(text: Utils.commentWithoutReplyUser(widget.data['commentContent']), style: TextStyle(color:Colors.black)),
+                                        //     ],
+                                        //   ),
+                                        // ),
+                                      ): Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 4.0),
+                                        child:  TextFormField(
+              
+                onSaved: (String value){
+
+                },        
+                onChanged: (String value){
+                  _commenteditController.text=value;
+                  print(value);
+                },      
+                autofocus: true,
+                initialValue: _commenteditController.text,
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.all(20.0),
+                  // hintText: "Add comment ",
+                  
+                  suffixIcon: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween, // added line
+                mainAxisSize: MainAxisSize.min, // added line
+                children: <Widget>[
+
+                   IconButton(
+                    icon: Icon(
+                      Icons.close,
+                      color: Colors.black,
+                    ), onPressed: () {  
+                      setState(() {
+                        idedit=false;
+                      });
+                    }),
+                      IconButton(
+                    icon: Icon(
+                      Icons.send,
+                      color: Colors.black,
+                    ),
+                    onPressed: () async {
+                      // print("sendcomment");
+                      // print("${widget.postid}");
+                  print('กด');
+                  Api.iseditcomment(widget.postid, widget.myuid, widget.token, commentid, _commenteditController.text).then((value) => ({
+                                    jsonResponse = jsonDecode(value.body),
+                                    print('message${jsonResponse['message']}'),
+                                    if (value.statusCode == 200)
+                                      {
+                                        if (jsonResponse['message'] ==
+                                            "Update PostsComment Successful")
+                                          {
+                                            setState(() {
+                                              _commenteditController.clear();
+                                              idedit=false;
+                                              _handleRefresh();
+                                             
+                                            }),
+                                          }
+                                      }
+                                  }));
+
+                      // // setState(() {
+                      // //   onref = true;
+                      // // });
+                      // await Api.iseditcomment(widget.postid, widget.myuid, mytoken,data.id,
+                      //     _commentController.text);
+
+                      // setState(() {
+                      //   _commentController.clear();
+                      // });
+                    },
+                    
+                  ),
+                 
+                    ],
+                  ),
+                ),
+              ),
                                         // widget.data['toCommentID'] == null ? Text(widget.data['commentContent'],maxLines: null,) :
                                         // RichText(
                                         //   text: TextSpan(
@@ -307,22 +403,79 @@ class _CommentListState extends State<CommentList> {
                               ),
                               Padding(
                                 padding:
-                                    const EdgeInsets.only(left: 8.0, top: 4.0),
+                                    const EdgeInsets.only(left: 10.0, top: 2.0),
                                 child: Container(
-                                  width: size.width * 0.25,
+                                  width: size.width * 0.45,
                                   child: Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
+                                        MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       Text(Utils.readTimestamp(data
                                           .createdDate.millisecondsSinceEpoch)),
-                                      GestureDetector(
-                                        // onTap: () => _updateLikeCount(_currentMyData.myLikeCommnetList != null && _currentMyData.myLikeCommnetList.contains(widget.data['commentID']) ? true : false),
+                                          SizedBox(width: 2,),
+                                          Text('${data.likeCount.toString()}'),
+
+                                   data.isLike!= true?   GestureDetector(
+                                        onTap: () async=>  Api.islikecomment(widget.postid,widget.myuid,widget.token,commentid).then((value) => ({
+                                    jsonResponse = jsonDecode(value.body),
+                                    print('message${jsonResponse['message']}'),
+                                    if (value.statusCode == 200)
+                                      {
+                                        if (jsonResponse['message'] ==
+                                            "Like Post Comment Success")
+                                          {
+                                            setState(() {
+                                              data.likeCount++;
+                                              data.isLike=true;
+                                            }),
+                                          }
+                                        else if (jsonResponse['message'] ==
+                                            "UnLike Post Comment Success")
+                                          {
+                                            setState(() {
+                                              data.likeCount--;
+                                              data.isLike=false;
+                                            }),
+                                          }
+                                      }
+                                  })),
                                         child: Text(
                                           'Like',
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               color: Colors.grey[700]),
+
+                                          // style:TextStyle(fontWeight: FontWeight.bold,color:_currentMyData.myLikeCommnetList != null && _currentMyData.myLikeCommnetList.contains(widget.data['commentID']) ? Colors.blue[900] : Colors.grey[700])
+                                        ),
+                                      ):GestureDetector(
+                                        onTap: () async=>  Api.islikecomment(widget.postid,widget.myuid,widget.token,commentid).then((value) => ({
+                                    jsonResponse = jsonDecode(value.body),
+                                    print('message${jsonResponse['message']}'),
+                                    if (value.statusCode == 200)
+                                      {
+                                        if (jsonResponse['message'] ==
+                                            "Like Post Comment Success")
+                                          {
+                                            setState(() {
+                                              data.likeCount++;
+                                              data.isLike=true;
+                                            }),
+                                          }
+                                        else if (jsonResponse['message'] ==
+                                            "UnLike Post Comment Success")
+                                          {
+                                            setState(() {
+                                              data.likeCount--;
+                                              data.isLike=false;
+                                            }),
+                                          }
+                                      }
+                                  })),
+                                        child: Text(
+                                          'Like',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.orange),
 
                                           // style:TextStyle(fontWeight: FontWeight.bold,color:_currentMyData.myLikeCommnetList != null && _currentMyData.myLikeCommnetList.contains(widget.data['commentID']) ? Colors.blue[900] : Colors.grey[700])
                                         ),
@@ -432,6 +585,7 @@ class _CommentListState extends State<CommentList> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
+
     if (onref == true) {
       _handleRefresh();
     }
@@ -460,7 +614,7 @@ class _CommentListState extends State<CommentList> {
               Expanded(
                 child: _buildCommentList(size),
               ),
-              TextFormField(
+            idedit!=true?  TextFormField(
                 controller: _commentController,
                 onFieldSubmitted: (String msg) async {
                   //  await  Api.sendcomment(widget.postid);
@@ -500,7 +654,7 @@ class _CommentListState extends State<CommentList> {
                     },
                   ),
                 ),
-              ),
+              ):Container(),
             ],
           ),
         ),

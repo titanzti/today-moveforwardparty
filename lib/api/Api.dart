@@ -463,9 +463,9 @@ class Api {
     return responseData;
   }
    static Future<Http.Response> islikecomment(
-      String postid, String uid, String token) async {
-    print('sendcomment');
-    var url = "https://today-api.moveforwardparty.org/api/post/$postid/like";
+      String postid, String uid, String token,String commentid) async {
+    print('islikecomment');
+    var url = "https://today-api.moveforwardparty.org/api/post/$postid/comment/$commentid/like";
     final headers = {
       "userid": uid,
       "authorization": "Bearer $token",
@@ -474,11 +474,6 @@ class Api {
       // "whereConditions": {"isHideStory": false},
     };
     Map data = {
-      //  "asset":
-      //  {"mimeType":"image/png",
-      //  "data":base64image,
-      //  "fileName":fileName,
-      //  "size":193148}
     };
 
     var body = jsonEncode(data);
@@ -489,7 +484,60 @@ class Api {
       body: body,
     );
     print('body$body');
-    print('islike${responseData.body}');
+        print('headers$headers');
+
+    print('islikecomment${responseData.body}');
+
+    return responseData;
+  }
+    static Future<Http.Response> iseditcomment(
+      String postid, String uid, String token,String commentid,String commenttext) async {
+    print('iseditcomment');
+    var url = "https://today-api.moveforwardparty.org/api/post/$postid/comment/$commentid";
+    final headers = {
+      "userid": uid,
+      "authorization": "Bearer $token",
+      "content-type": "application/json",
+      "accept": "application/json"
+      // "whereConditions": {"isHideStory": false},
+    };
+    Map data = {
+      "comment":commenttext};
+
+    var body = jsonEncode(data);
+
+    final responseData = await Http.put(
+      url,
+      headers: headers,
+      body: body,
+    );
+    print('body$body');
+    print('iseditcomment${responseData.body}');
+
+    return responseData;
+  }
+    static Future<Http.Response> isfollow(
+      String postid, String uid, String token,String pageid ) async {
+    print('isfollow');
+    var url = "https://today-api.moveforwardparty.org/api/page/$pageid/follow";
+    final headers = {
+      "userid": uid,
+      "authorization": "Bearer $token",
+      "content-type": "application/json",
+      "accept": "application/json"
+      // "whereConditions": {"isHideStory": false},
+    };
+    Map data = {};
+
+    var body = jsonEncode(data);
+
+    final responseData = await Http.post(
+      url,
+      headers: headers,
+      body: body,
+    );
+    print('body$body');
+    print('isfollow${responseData.body}');
 
     return responseData;
   }
