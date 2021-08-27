@@ -405,7 +405,7 @@ class _CommentListState extends State<CommentList> {
                                 padding:
                                     const EdgeInsets.only(left: 10.0, top: 2.0),
                                 child: Container(
-                                  width: size.width * 0.45,
+                                  width: size.width * 0.25,
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,

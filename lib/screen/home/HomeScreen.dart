@@ -1642,11 +1642,11 @@ mainAxisAlignment: MainAxisAlignment.start,
                     expandText: 'show more',
                     linkStyle:
                         TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                    collapseText: 'show less',
+                    collapseText: '\nshow less\n',
                     prefixStyle:
                         TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                     maxLines: 5,
-                    linkColor: Colors.black,
+                    linkColor:  Color(0xffF47932),
                     onExpandedChanged: (value) => print(value),
                   ),
             SizedBox(
